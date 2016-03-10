@@ -13,7 +13,7 @@ public class UserHome extends AppCompatActivity {
         setContentView(R.layout.activity_user_home);
         String username = getIntent().getStringExtra("Username");
 
-        EditText tv = (EditText)findViewById(R.id.TVuser_name);
+        TextView tv = (TextView) findViewById(R.id.TVuser_name);
         tv.setText(username);
     }
 }

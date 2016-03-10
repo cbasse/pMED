@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.sql.SQLException;
+
 /**
  * Created by Jacky Sitzman on 3/7/2016.
  */
@@ -22,9 +24,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     int COL_UNAME_INDEX=1;
     int COL_PASSWORD_INDEX=2;
 
-    SQLiteDatabase db;
+    private SQLiteDatabase db;
+
     private static final String TABLE_CREATE = "create table subjects (id integer primary key not null, " +
-            "uname text not null, pass text not null):";
+            "uname text not null, pass text not null)";
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -39,7 +42,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
-        String query = "select * from subjects";
+        String query = "select * from " + TABLE_NAME;
         Cursor cursor = db.rawQuery(query, null);
         int count = cursor.getCount();
 

@@ -13,9 +13,7 @@ public class Subjects {
     public String getUname() {
         return this.uname;
     }
-    public void setPass(String pass) {
-        this.pass = pass;
-    }
+    public void setPass(String pass) { this.pass = pass; }
     public String getPass() {
         return this.pass;
     }
