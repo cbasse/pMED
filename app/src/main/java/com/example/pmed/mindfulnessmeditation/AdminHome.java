@@ -1,7 +1,9 @@
 package com.example.pmed.mindfulnessmeditation;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 public class AdminHome extends AppCompatActivity {
@@ -14,5 +16,12 @@ public class AdminHome extends AppCompatActivity {
 
         TextView tv = (TextView)findViewById(R.id.TVadmin_name);
         tv.setText(username);
+    }
+
+    public void onClickButton(View v) {
+        if(v.getId() == R.id.button_user_accounts) {
+            Intent i = new Intent(AdminHome.this, ManageUserAccounts.class);
+            startActivity(i);
+        }
     }
 }

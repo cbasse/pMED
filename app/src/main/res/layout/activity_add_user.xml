@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.pmed.mindfulnessmeditation.UserSignup">
+    tools:context="com.example.pmed.mindfulnessmeditation.AddUser">
 
     <TextView
         android:layout_width="wrap_content"
@@ -71,10 +71,10 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Sign up"
-        android:id="@+id/button_user_enroll"
+        android:text="Add"
+        android:id="@+id/button_user_added"
         android:layout_marginTop="81dp"
-        android:onClick="onSignUpClick"
+        android:onClick="onClickButton"
         android:layout_below="@+id/TFpass1"
         android:layout_centerHorizontal="true" />
 
@@ -82,7 +82,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="User Sign up"
+        android:text="Add User"
         android:id="@+id/textView8"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />

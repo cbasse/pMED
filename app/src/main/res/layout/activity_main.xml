@@ -10,43 +10,51 @@
     tools:context="com.example.pmed.mindfulnessmeditation.MainActivity"
     android:background="#3a4f9c">
 
-
-    <Button
+    <TextView
+        android:text="Mindfulness Meditation"
+        android:id="@+id/textView_mindfuleness"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_marginTop="37dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:textColor="#ffffffff" />
+
+    <ImageView
+        android:id="@+id/image_logo"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/pmed_logo"
+        android:layout_below="@id/textView_mindfuleness"
+        android:layout_marginTop="20dp"/>
+
+
+    <Button
         android:text="User"
         android:id="@+id/button_user"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:onClick="onButtonClick"
         android:background="#ffffffff"
-        android:layout_above="@+id/button_admin"
+        android:layout_below="@+id/image_logo"
         android:layout_alignLeft="@+id/button_admin"
         android:layout_alignStart="@+id/button_admin"
         android:layout_alignRight="@+id/button_admin"
-        android:layout_alignEnd="@+id/button_admin" />
+        android:layout_alignEnd="@+id/button_admin"
+        android:layout_marginTop="25dp"/>
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:text="Administrator"
         android:id="@+id/button_admin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:onClick="onButtonClick"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:background="#ffffffff"
-        android:layout_marginBottom="174dp"
-        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Mindfulness Meditation"
-        android:id="@+id/textView9"
-        android:layout_marginTop="37dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:textColor="#ffffffff"/>
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/button_user"/>
 
 </RelativeLayout>

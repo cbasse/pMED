@@ -7,18 +7,19 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class UserSignup extends AppCompatActivity {
+public class AddUser extends AppCompatActivity {
 
     DatabaseHelper helper = new DatabaseHelper(this);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_signup);
+        setContentView(R.layout.activity_add_user);
     }
 
-    public void onSignUpClick(View v) {
 
-        if(v.getId() == R.id.button_user_enroll) {
+    public void onClickButton(View v) {
+
+        if(v.getId() == R.id.button_user_added) {
             EditText uname = (EditText)findViewById(R.id.TFuname);
             EditText pass1 = (EditText)findViewById(R.id.TFpass1);
             EditText pass2 = (EditText)findViewById(R.id.TFpass2);
@@ -29,7 +30,7 @@ public class UserSignup extends AppCompatActivity {
 
             if(!pass1_str.equals(pass2_str)) {
                 //popup msg
-                Toast pass = Toast.makeText(UserSignup.this, "Passwords don't match", Toast.LENGTH_SHORT);
+                Toast pass = Toast.makeText(AddUser.this, "Passwords don't match", Toast.LENGTH_SHORT);
                 pass.show();
             }
             else {
@@ -43,7 +44,7 @@ public class UserSignup extends AppCompatActivity {
                 //EditText a = (EditText)findViewById(R.id.TFuser_name);
                 //String str = a.getText().toString();
 
-                Intent i = new Intent(UserSignup.this, UserLogin.class);
+                Intent i = new Intent(AddUser.this, ManageUserAccounts.class);
                 //i.putExtra("Username", str);
                 startActivity(i);
             }

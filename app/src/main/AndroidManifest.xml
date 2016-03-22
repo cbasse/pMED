@@ -6,6 +6,12 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+
+    <permission android:name="andriod.permission.BLUETOOTH"
+        android:label="BLUETOOTH" />
+    <permission android:name="andriod.permission.BLUETOOTH_ADMIN" />
 
     <application
         android:allowBackup="true"
@@ -24,7 +30,9 @@
         <activity android:name=".AdminLogin" />
         <activity android:name=".UserLogin" />
         <activity android:name=".UserHome" />
-        <activity android:name=".UserSignup"></activity>
+        <activity android:name=".AddUser" />
+        <activity android:name=".ManageUserAccounts" />
+        <activity android:name=".RecordPhysData"></activity>
     </application>
 
 </manifest>

@@ -19,6 +19,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:layout_alignRight="@id/TVwelcome"
         android:layout_alignEnd="@id/TVwelcome"
         android:textColor="#ffffffff"/>
 
@@ -37,24 +38,26 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Manage Participant Accounts"
-        android:id="@+id/button"
+        android:id="@+id/button_user_accounts"
         android:layout_marginTop="56dp"
         android:background="#ffffff"
         android:layout_below="@+id/TVwelcome"
         android:layout_centerHorizontal="true"
         android:paddingLeft="10dp"
-        android:paddingRight="10dp"/>
+        android:paddingRight="10dp"
+        android:onClick="onClickButton"
+        android:nestedScrollingEnabled="true" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Update Experiment"
         android:id="@+id/button2"
-        android:layout_below="@+id/button"
-        android:layout_alignRight="@+id/button"
-        android:layout_alignEnd="@+id/button"
-        android:layout_alignLeft="@+id/button"
-        android:layout_alignStart="@+id/button"
+        android:layout_below="@+id/button_user_accounts"
+        android:layout_alignRight="@+id/button_user_accounts"
+        android:layout_alignEnd="@+id/button_user_accounts"
+        android:layout_alignLeft="@+id/button_user_accounts"
+        android:layout_alignStart="@+id/button_user_accounts"
         android:layout_marginTop="10dp"
         android:background="#ffffff" />
 
@@ -64,10 +67,10 @@
         android:text="Export Data"
         android:id="@+id/button3"
         android:layout_below="@+id/button2"
-        android:layout_alignRight="@+id/button"
-        android:layout_alignEnd="@+id/button"
-        android:layout_alignLeft="@+id/button"
-        android:layout_alignStart="@+id/button"
+        android:layout_alignRight="@+id/button_user_accounts"
+        android:layout_alignEnd="@+id/button_user_accounts"
+        android:layout_alignLeft="@+id/button_user_accounts"
+        android:layout_alignStart="@+id/button_user_accounts"
         android:layout_marginTop="10dp"
         android:background="#ffffff" />
 
@@ -77,10 +80,10 @@
         android:text="Settings"
         android:id="@+id/button4"
         android:layout_below="@+id/button3"
-        android:layout_alignRight="@+id/button"
-        android:layout_alignEnd="@+id/button"
-        android:layout_alignLeft="@+id/button"
-        android:layout_alignStart="@+id/button"
+        android:layout_alignRight="@+id/button_user_accounts"
+        android:layout_alignEnd="@+id/button_user_accounts"
+        android:layout_alignLeft="@+id/button_user_accounts"
+        android:layout_alignStart="@+id/button_user_accounts"
         android:layout_marginTop="10dp"
         android:background="#ffffff" />
 
@@ -90,10 +93,10 @@
         android:text="Logout"
         android:id="@+id/button5"
         android:layout_below="@+id/button4"
-        android:layout_alignLeft="@+id/button"
-        android:layout_alignStart="@+id/button"
-        android:layout_alignRight="@+id/button"
-        android:layout_alignEnd="@+id/button"
+        android:layout_alignLeft="@+id/button_user_accounts"
+        android:layout_alignStart="@+id/button_user_accounts"
+        android:layout_alignRight="@+id/button_user_accounts"
+        android:layout_alignEnd="@+id/button_user_accounts"
         android:layout_marginTop="10dp"
         android:background="#ffffff" />
 

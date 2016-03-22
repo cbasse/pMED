@@ -28,8 +28,8 @@ public class UserLogin extends AppCompatActivity {
             String password = helper.searchPass(str);
 
             if(pass.equals(password)) {
-                Intent i = new Intent(UserLogin.this, UserHome.class);
-                i.putExtra("Username",str);
+                Intent i = new Intent(UserLogin.this, RecordPhysData.class);
+                //i.putExtra("Username",str);
                 startActivity(i);
             }
             else {
@@ -37,11 +37,6 @@ public class UserLogin extends AppCompatActivity {
                 Toast temp = Toast.makeText(UserLogin.this, "Username and Password don't match", Toast.LENGTH_SHORT);
                 temp.show();
             }
-        }
-
-        if(v.getId() == R.id.button_user_signup) {
-            Intent i = new Intent(UserLogin.this, UserSignup.class);
-            startActivity(i);
         }
     }
 }
