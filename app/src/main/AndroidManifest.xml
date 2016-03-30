@@ -9,7 +9,8 @@
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
 
-    <permission android:name="andriod.permission.BLUETOOTH"
+    <permission
+        android:name="andriod.permission.BLUETOOTH"
         android:label="BLUETOOTH" />
     <permission android:name="andriod.permission.BLUETOOTH_ADMIN" />
 
@@ -32,7 +33,11 @@
         <activity android:name=".UserHome" />
         <activity android:name=".AddUser" />
         <activity android:name=".ManageUserAccounts" />
-        <activity android:name=".RecordPhysData"></activity>
+        <activity android:name=".RecordPhysData" />
+        <activity android:name=".Subjects" />
+        <activity android:name=".DatabaseHelper" />
+        <activity android:name=".ListDataAdapter" />
+
     </application>
 
 </manifest>

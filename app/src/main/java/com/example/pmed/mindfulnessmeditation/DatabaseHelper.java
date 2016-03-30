@@ -20,9 +20,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_UNAME = "uname";
     private static final String COLUMN_PASS = "pass";
 
-    int COL_ID_INDEX=0;
-    int COL_UNAME_INDEX=1;
-    int COL_PASSWORD_INDEX=2;
 
     private SQLiteDatabase db;
 
@@ -38,6 +35,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         this.db = db;
     }
 
+
     public void insertSubjects(Subjects s) {
         db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -45,8 +43,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String query = "select * from " + TABLE_NAME;
         Cursor cursor = db.rawQuery(query, null);
         int count = cursor.getCount();
+        //s.setId(Integer.toString(count));
 
-        values.put(COLUMN_ID, count); //subject id number
+        //values.put(COLUMN_ID, s.getId()); //subject id number
         values.put(COLUMN_UNAME, s.getUname());
         values.put(COLUMN_PASS, s.getPass());
 
@@ -63,16 +62,35 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         if(cursor.moveToFirst()) {
             do {
-                a = cursor.getString(COL_UNAME_INDEX);
-                b = cursor.getString(COL_PASSWORD_INDEX);
+                a = cursor.getString(1);
+                b = cursor.getString(2);
                 if(a.equals(uname)) {
-                    b = cursor.getString(COL_PASSWORD_INDEX);
+                    b = cursor.getString(2);
                     break;
                 }
             }
             while(cursor.moveToNext());
         }
         return b;
+    }
+
+    /*public String globalPassword() {
+        String globalPassword = "";
+        String query = "select * from subjects where isAdmin = true";
+        Cursor cursor = db.rawQuery(query, null);
+
+        if(cursor.moveToFirst()) {
+            globalPassword = cursor.getString(4);
+        }
+
+        return globalPassword;
+    }*/
+
+    public Cursor getInformation(SQLiteDatabase db) {
+        Cursor cursor;
+        String[] projections = {COLUMN_ID, COLUMN_UNAME, COLUMN_PASS};
+        cursor = db.query(TABLE_NAME,projections,null,null,null,null,null);
+        return cursor;
     }
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {

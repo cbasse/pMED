@@ -7,6 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="#3a4f9c"
     tools:context="com.example.pmed.mindfulnessmeditation.NewConnectedListener">
 
     <TextView
@@ -130,13 +131,9 @@
         android:id="@+id/ButtonStart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="126dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignRight="@+id/StatusTextBox"
-        android:layout_alignEnd="@+id/StatusTextBox"
-        android:visibility="gone"></Button>
+        android:layout_centerHorizontal="true"></Button>
 
     <TextView
         android:id = "@+id/CountdownText"

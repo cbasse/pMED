@@ -40,11 +40,15 @@
         android:text="Manage Participant Accounts"
         android:id="@+id/button_user_accounts"
         android:layout_marginTop="56dp"
-        android:background="#ffffff"
+        android:background="@drawable/my_button"
         android:layout_below="@+id/TVwelcome"
         android:layout_centerHorizontal="true"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
+        android:paddingBottom="20dp"
+        android:paddingTop="20dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:textSize="20dp"
+        android:typeface="normal"
         android:onClick="onClickButton"
         android:nestedScrollingEnabled="true" />
 
@@ -58,8 +62,14 @@
         android:layout_alignEnd="@+id/button_user_accounts"
         android:layout_alignLeft="@+id/button_user_accounts"
         android:layout_alignStart="@+id/button_user_accounts"
-        android:layout_marginTop="10dp"
-        android:background="#ffffff" />
+        android:layout_marginTop="15dp"
+        android:paddingBottom="20dp"
+        android:paddingTop="20dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:textSize="20dp"
+        android:typeface="normal"
+        android:background="@drawable/my_button" />
 
     <Button
         android:layout_width="wrap_content"
@@ -71,8 +81,14 @@
         android:layout_alignEnd="@+id/button_user_accounts"
         android:layout_alignLeft="@+id/button_user_accounts"
         android:layout_alignStart="@+id/button_user_accounts"
-        android:layout_marginTop="10dp"
-        android:background="#ffffff" />
+        android:layout_marginTop="15dp"
+        android:paddingBottom="20dp"
+        android:paddingTop="20dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:textSize="20dp"
+        android:typeface="normal"
+        android:background="@drawable/my_button" />
 
     <Button
         android:layout_width="wrap_content"
@@ -84,8 +100,14 @@
         android:layout_alignEnd="@+id/button_user_accounts"
         android:layout_alignLeft="@+id/button_user_accounts"
         android:layout_alignStart="@+id/button_user_accounts"
-        android:layout_marginTop="10dp"
-        android:background="#ffffff" />
+        android:layout_marginTop="15dp"
+        android:paddingBottom="20dp"
+        android:paddingTop="20dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:textSize="20dp"
+        android:typeface="normal"
+        android:background="@drawable/my_button" />
 
     <Button
         android:layout_width="wrap_content"
@@ -97,7 +119,13 @@
         android:layout_alignStart="@+id/button_user_accounts"
         android:layout_alignRight="@+id/button_user_accounts"
         android:layout_alignEnd="@+id/button_user_accounts"
-        android:layout_marginTop="10dp"
-        android:background="#ffffff" />
+        android:layout_marginTop="15dp"
+        android:paddingBottom="20dp"
+        android:paddingTop="20dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:textSize="20dp"
+        android:typeface="normal"
+        android:background="@drawable/my_button" />
 
 </RelativeLayout>
