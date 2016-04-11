@@ -9,7 +9,8 @@
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
 
-    <permission android:name="andriod.permission.BLUETOOTH"
+    <permission
+        android:name="andriod.permission.BLUETOOTH"
         android:label="BLUETOOTH" />
     <permission android:name="andriod.permission.BLUETOOTH_ADMIN" />
 
@@ -32,7 +33,16 @@
         <activity android:name=".UserHome" />
         <activity android:name=".AddUser" />
         <activity android:name=".ManageUserAccounts" />
-        <activity android:name=".RecordPhysData"></activity>
+        <activity android:name=".RecordPhysData" />
+        <activity
+            android:name=".FormActivity"
+            android:label="@string/title_activity_form"
+            android:parentActivityName=".UserLogin"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.pmed.mindfulnessmeditation.UserLogin" />
+        </activity>
     </application>
 
 </manifest>

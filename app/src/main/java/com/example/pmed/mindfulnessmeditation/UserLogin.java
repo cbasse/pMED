@@ -28,7 +28,8 @@ public class UserLogin extends AppCompatActivity {
             String password = helper.searchPass(str);
 
             if(pass.equals(password)) {
-                Intent i = new Intent(UserLogin.this, RecordPhysData.class);
+                //Intent i = new Intent(UserLogin.this, RecordPhysData.class);
+                Intent i = new Intent(UserLogin.this, FormActivity.class);
                 //i.putExtra("Username",str);
                 startActivity(i);
             }
