@@ -56,7 +56,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Update Experiment"
-        android:id="@+id/button2"
+        android:id="@+id/button_update_experiment"
         android:layout_below="@+id/button_user_accounts"
         android:layout_alignRight="@+id/button_user_accounts"
         android:layout_alignEnd="@+id/button_user_accounts"
@@ -69,14 +69,16 @@
         android:paddingRight="20dp"
         android:textSize="20dp"
         android:typeface="normal"
-        android:background="@drawable/my_button" />
+        android:background="@drawable/my_button"
+        android:onClick="onClickButton"
+        />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Export Data"
         android:id="@+id/button3"
-        android:layout_below="@+id/button2"
+        android:layout_below="@+id/button_update_experiment"
         android:layout_alignRight="@+id/button_user_accounts"
         android:layout_alignEnd="@+id/button_user_accounts"
         android:layout_alignLeft="@+id/button_user_accounts"
