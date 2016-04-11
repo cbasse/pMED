@@ -26,6 +26,7 @@ public class UserLogin extends AppCompatActivity {
             String pass = b.getText().toString();
 
             String password = helper.searchPass(str);
+            //String password = helper.globalPassword();
 
             if(pass.equals(password)) {
                 //Intent i = new Intent(UserLogin.this, RecordPhysData.class);

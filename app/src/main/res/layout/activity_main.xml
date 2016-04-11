@@ -16,18 +16,34 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:layout_marginTop="37dp"
+        android:layout_marginTop="35dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
+        android:textStyle="bold|normal"
+        android:fontFamily="sans-serif-medium"
+        android:textSize="50dp"
+        android:textColor="#ffffffff" />
+
+    <TextView
+        android:text="THE PRACTICE OF LIVING IN THE MOMENT"
+        android:id="@+id/textView_quote"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/textView_mindfuleness"
+        android:textStyle="normal|italic|bold"
+        android:fontFamily="sans-serif-thin"
+        android:textSize="22dp"
         android:textColor="#ffffffff" />
 
     <ImageView
         android:id="@+id/image_logo"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="375dp"
+        android:layout_height="375dp"
+        android:layout_centerHorizontal="true"
         android:src="@drawable/pmed_logo"
-        android:layout_below="@id/textView_mindfuleness"
-        android:layout_marginTop="20dp"/>
+        android:layout_below="@id/textView_quote"
+        android:layout_marginTop="20dp" />
 
 
     <Button
@@ -36,13 +52,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="onButtonClick"
-        android:background="#ffffffff"
+        android:background="@drawable/my_button"
         android:layout_below="@+id/image_logo"
         android:layout_alignLeft="@+id/button_admin"
         android:layout_alignStart="@+id/button_admin"
         android:layout_alignRight="@+id/button_admin"
         android:layout_alignEnd="@+id/button_admin"
-        android:layout_marginTop="25dp"/>
+        android:layout_marginTop="25dp"
+        android:paddingBottom="20dp"
+        android:paddingTop="20dp"
+        android:textSize="20dp"
+        android:typeface="normal" />
 
     <Button
         android:text="Administrator"
@@ -50,11 +70,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="onButtonClick"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:background="#ffffffff"
+        android:paddingBottom="20dp"
+        android:paddingTop="20dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:textSize="20dp"
+        android:typeface="normal"
+        android:background="@drawable/my_button"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
-        android:layout_below="@id/button_user"/>
+        android:layout_marginTop="13dp"
+        android:layout_below="@id/button_user" />
 
 </RelativeLayout>

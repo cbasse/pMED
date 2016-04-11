@@ -23,5 +23,11 @@ public class AdminHome extends AppCompatActivity {
             Intent i = new Intent(AdminHome.this, ManageUserAccounts.class);
             startActivity(i);
         }
+
+        if(v.getId() == R.id.button_update_experiment) {
+            Intent i = new Intent(AdminHome.this, UpdateExperiment.class);
+            startActivity(i);
+        }
     }
+
 }
