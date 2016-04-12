@@ -58,7 +58,7 @@ public class NewConnectedListener extends ConnectListenerImpl {
         RqPacketType.LOGGING_ENABLE = true;
 
 
-        //Creates a new ZephyrProtocol object and passes it the BTComms object
+        //Creates a new ZephyrProtocol object and passes it the BTComms object]]
         ZephyrProtocol _protocol = new ZephyrProtocol(eventArgs.getSource().getComms(), RqPacketType);
         //ZephyrProtocol _protocol = new ZephyrProtocol(eventArgs.getSource().getComms(), );
         _protocol.addZephyrPacketEventListener(new ZephyrPacketListener() {

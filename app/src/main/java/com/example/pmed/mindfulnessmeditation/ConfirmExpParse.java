@@ -14,6 +14,8 @@ import java.util.List;
 
 /**
  * Created by harri on 4/5/2016.
+ * For uploading a file in admin view
+ * Admin -> update experiment -> select a file -> CONFIRM PARSING PAGE
  */
 public class ConfirmExpParse extends AppCompatActivity {
 

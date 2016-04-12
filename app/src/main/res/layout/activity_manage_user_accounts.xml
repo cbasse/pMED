@@ -43,7 +43,8 @@
         android:paddingRight="20dp"
         android:textSize="20dp"
         android:typeface="normal"
-        android:onClick="onClickButton" />
+        android:onClick="onClickButton"
+        android:background="#ffffff" />
 
 
 </RelativeLayout>

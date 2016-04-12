@@ -35,7 +35,6 @@
         <activity android:name=".AddUser" />
         <activity android:name=".ManageUserAccounts" />
         <activity android:name=".RecordPhysData" />
-<<<<<<< HEAD
         <activity
             android:name=".FormActivity"
             android:label="@string/title_activity_form"
@@ -45,14 +44,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.pmed.mindfulnessmeditation.UserLogin" />
         </activity>
-=======
-        <activity android:name=".Subjects" /> // I dont think we need this l_dawg
-        <activity android:name=".DatabaseHelper" /> // I dont think we need this l_dawg
-        <activity android:name=".ListDataAdapter" /> // I dont think we need this - l_dawg
-
+        =======
         <activity android:name=".UpdateExperiment" />
         <activity android:name=".ConfirmExpParse" />
->>>>>>> d30739d008e70527091d4fe87c8a0c2380438e02
+        >>>>>>> d30739d008e70527091d4fe87c8a0c2380438e02
+        <activity android:name=".Audio"></activity>
     </application>
 
 </manifest>
