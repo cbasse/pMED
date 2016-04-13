@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.media.Image;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Message;
@@ -15,6 +16,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -61,10 +63,12 @@ public class RecordPhysData extends AppCompatActivity {
 
         //Obtaining the handle to act on the CONNECT button
         TextView tv = (TextView) findViewById(R.id.labelStatusMsg);
-        String ErrorText  = "Not Connected to BioHarness !";
+        String ErrorText  = "Not Connected to BioHarness";
         tv.setText(ErrorText);
 
-        Button btnConnect = (Button) findViewById(R.id.ButtonConnect);
+        final Button btnConnect = (Button) findViewById(R.id.ButtonConnect);
+        final ImageView imgWifi = (ImageView) findViewById(R.id.image_wifi);
+        final Button nextBtn = (Button) findViewById(R.id.ButtonNext);
         if (btnConnect != null)
         {
             btnConnect.setOnClickListener(new View.OnClickListener() {
@@ -97,20 +101,7 @@ public class RecordPhysData extends AppCompatActivity {
                     _NConnListener = new NewConnectedListener(Newhandler,Newhandler);
                     _bt.addConnectedEventListener(_NConnListener);
 
-                    TextView tv1 = (EditText)findViewById(R.id.labelHeartRate);
-                    tv1.setText("000");
 
-                    tv1 = (EditText)findViewById(R.id.labelRespRate);
-                    tv1.setText("0.0");
-
-                    tv1 = 	(EditText)findViewById(R.id.labelSkinTemp);
-                    tv1.setText("0.0");
-
-                    tv1 = 	(EditText)findViewById(R.id.labelPosture);
-                    tv1.setText("000");
-
-                    tv1 = 	(EditText)findViewById(R.id.labelPeakAcc);
-                    tv1.setText("0.0");
                     if(_bt.IsConnected())
                     {
                         _bt.start();
@@ -124,6 +115,8 @@ public class RecordPhysData extends AppCompatActivity {
                         //!!!!!!!!!!!!!CONECTED
 
                         final Button startBtn = (Button) findViewById(R.id.ButtonStart);
+                        imgWifi.setVisibility(View.GONE);
+                        btnConnect.setVisibility(View.GONE);
                         startBtn.setVisibility(View.VISIBLE);
                         timerText = (TextView)findViewById(R.id.CountdownText);
                         timerText.setVisibility((View.VISIBLE));
@@ -135,7 +128,7 @@ public class RecordPhysData extends AppCompatActivity {
                             }
                             public void onFinish(){
                                 startBtn.setVisibility(View.GONE);
-                                Button nextBtn = (Button) findViewById(R.id.ButtonNext);
+                                timerText.setVisibility(View.GONE);
                                 nextBtn.setVisibility(View.VISIBLE);
                             }
                         };
@@ -146,17 +139,25 @@ public class RecordPhysData extends AppCompatActivity {
                                 startBtn.setVisibility(View.GONE);
                             }
                         });
+                        nextBtn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent i = new Intent(RecordPhysData.this, Audio.class);
+                                startActivity(i);
+                            }
+                        });
 
                     }
                     else
                     {
                         TextView tv = (TextView) findViewById(R.id.labelStatusMsg);
-                        String ErrorText  = "Unable to Connect !";
+                        String ErrorText  = "Unable to Connect";
                         tv.setText(ErrorText);
                     }
                 }
             });
         }
+
         /*Obtaining the handle to act on the DISCONNECT button*/
         Button btnDisconnect = (Button) findViewById(R.id.ButtonDisconnect);
         if (btnDisconnect != null)
@@ -168,7 +169,7 @@ public class RecordPhysData extends AppCompatActivity {
                     // TODO Auto-generated method stub
 					/*Reset the global variables*/
                     TextView tv = (TextView) findViewById(R.id.labelStatusMsg);
-                    String ErrorText  = "Disconnected from BioHarness!";
+                    String ErrorText  = "Disconnected from BioHarness";
                     tv.setText(ErrorText);
 
 					/*This disconnects listener from acting on received messages*/
@@ -225,42 +226,32 @@ public class RecordPhysData extends AppCompatActivity {
     final Handler Newhandler = new Handler(){
         public void handleMessage(Message msg)
         {
-            TextView tv;
+
             switch (msg.what)
             {
                 case HEART_RATE:
                     String HeartRatetext = msg.getData().getString("HeartRate");
-                    tv = (EditText)findViewById(R.id.labelHeartRate);
                     System.out.println("Heart Rate Info is "+ HeartRatetext);
-                    if (tv != null)tv.setText(HeartRatetext);
                     break;
 
                 case RESPIRATION_RATE:
                     String RespirationRatetext = msg.getData().getString("RespirationRate");
-                    tv = (EditText)findViewById(R.id.labelRespRate);
-                    if (tv != null)tv.setText(RespirationRatetext);
 
                     break;
 
                 case SKIN_TEMPERATURE:
                     String SkinTemperaturetext = msg.getData().getString("SkinTemperature");
-                    tv = (EditText)findViewById(R.id.labelSkinTemp);
-                    if (tv != null)tv.setText(SkinTemperaturetext);
 
                     break;
 
                 case POSTURE:
                     String PostureText = msg.getData().getString("Posture");
-                    tv = (EditText)findViewById(R.id.labelPosture);
-                    if (tv != null)tv.setText(PostureText);
 
 
                     break;
 
                 case PEAK_ACCLERATION:
                     String PeakAccText = msg.getData().getString("PeakAcceleration");
-                    tv = (EditText)findViewById(R.id.labelPeakAcc);
-                    if (tv != null)tv.setText(PeakAccText);
 
                     break;
 

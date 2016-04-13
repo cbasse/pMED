@@ -2,6 +2,9 @@ package com.example.pmed.mindfulnessmeditation;
 
 /**
  * Created by harris on 4/5/2016.
+ * FOR UPLOADING FILES IN ADMIN VIEW
+ * Admin -> update experiment -> SELECT A FILE
+ *
  */
 
 import android.content.Intent;

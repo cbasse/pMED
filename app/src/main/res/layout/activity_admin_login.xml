@@ -10,16 +10,58 @@
     android:background="#3a4f9c"
     tools:context="com.example.pmed.mindfulnessmeditation.AdminLogin">
 
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:textStyle="normal|bold"
+        android:fontFamily="sans-serif-thin"
+        android:id="@+id/title" >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="ADMIN"
+        android:id="@+id/textView1"
+        android:textColor="#FFA401"
+        android:textSize="40dp"
+        android:layout_marginTop="20dp" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="LOGIN"
+        android:id="@+id/textView3"
+        android:textColor="#ffffff"
+        android:textSize="40dp"
+        android:layout_marginTop="20dp"
+        android:layout_toRightOf="@+id/textView1"
+        android:layout_toEndOf="@+id/textView1"/>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/image_wifi"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/icon_user2"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/title"
+        android:layout_marginTop="15dp"/>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Username"
         android:id="@+id/textView"
-        android:layout_marginTop="56dp"
-        android:layout_alignParentTop="true"
+        android:textColor="#ffffff"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_below="@+id/image_wifi" />
+
 
     <EditText
         android:layout_width="fill_parent"
@@ -27,7 +69,11 @@
         android:id="@+id/TFadmin_name"
         android:layout_below="@+id/textView"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:textColor="#ffffff"
+        android:theme="@style/MyEditTextTheme"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -35,9 +81,11 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Password"
         android:id="@+id/textView2"
+        android:layout_marginLeft="20dp"
         android:layout_below="@+id/TFadmin_name"
         android:layout_alignRight="@+id/textView"
-        android:layout_alignEnd="@+id/textView" />
+        android:layout_alignEnd="@+id/textView"
+        android:textColor="#ffffff" />
 
     <EditText
         android:layout_width="fill_parent"
@@ -47,29 +95,28 @@
         android:id="@+id/TFadmin_password"
         android:layout_below="@+id/textView2"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:textColor="#ffffff"
+        android:theme="@style/MyEditTextTheme"/>
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Log In"
         android:id="@+id/button_admin_login"
         android:onClick="onButtonClick"
-        android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         android:paddingBottom="20dp"
         android:paddingTop="20dp"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
         android:textSize="20dp"
-        android:typeface="normal" />
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_below="@id/TFadmin_password"
+        android:layout_marginTop="20dp"
+        android:textStyle="normal|bold"
+        android:background="#FFA401"
+        android:textColor="#ffffff"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Administrator Login"
-        android:id="@+id/textView3"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
 </RelativeLayout>

@@ -8,7 +8,48 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:background="#3a4f9c"
-    tools:context="com.example.pmed.mindfulnessmeditation.AddUser">
+    tools:context="com.example.pmed.mindfulnessmeditation.AddUser"
+    style="bold">
+
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:textStyle="normal|bold"
+        android:fontFamily="sans-serif-thin"
+        android:id="@+id/title">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="ADD"
+        android:id="@+id/textView9"
+        android:textColor="#FFA401"
+        android:textSize="40dp"
+        android:layout_marginTop="20dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="USER"
+        android:id="@+id/textView8"
+        android:textColor="#ffffffff"
+        android:textSize="40dp"
+        android:layout_marginTop="20dp"
+        android:layout_toRightOf="@+id/textView9"
+        android:layout_toEndOf="@+id/textView9" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/image_wifi"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/icon_add_user"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/title"
+        android:layout_marginTop="15dp"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -16,10 +57,11 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Username"
         android:id="@+id/textView5"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="56dp" />
+        android:textColor="#ffffffff"
+        android:layout_below="@id/image_wifi"
+        android:layout_alignLeft="@+id/TFuname"
+        android:layout_alignStart="@+id/TFuname"
+        android:layout_marginTop="20dp"/>
 
     <EditText
         android:layout_width="fill_parent"
@@ -27,7 +69,11 @@
         android:id="@+id/TFuname"
         android:layout_below="@+id/textView5"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:textColor="#ffffff"
+        android:theme="@style/MyEditTextTheme"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -37,7 +83,9 @@
         android:id="@+id/textView6"
         android:layout_below="@+id/TFuname"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="20dp"
+        android:textColor="#ffffffff" />
 
     <EditText
         android:layout_width="fill_parent"
@@ -47,7 +95,11 @@
         android:id="@+id/TFpass1"
         android:layout_below="@+id/textView6"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:textColor="#ffffffff"
+        android:theme="@style/MyEditTextTheme"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -57,7 +109,9 @@
         android:id="@+id/textView7"
         android:layout_below="@+id/TFpass1"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="20dp"
+        android:textColor="#ffffffff" />
 
     <EditText
         android:layout_width="fill_parent"
@@ -67,31 +121,42 @@
         android:id="@+id/TFpass2"
         android:layout_below="@+id/textView7"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:textColor="#ffffffff"
+        android:theme="@style/MyEditTextTheme"/>
+
+
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:background="#ffffff"
+        android:padding="0dp"
+        android:layout_below="@+id/TFpass2"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp">
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Add"
         android:id="@+id/button_user_added"
-        android:layout_marginTop="81dp"
         android:onClick="onClickButton"
-        android:layout_below="@+id/TFpass1"
-        android:layout_centerHorizontal="true"
         android:paddingBottom="20dp"
         android:paddingTop="20dp"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
         android:textSize="20dp"
-        android:typeface="normal"/>
+        android:layout_below="@+id/TFpass2"
+        android:background="#FFA401"
+        android:textColor="#ffffff"
+        android:typeface="normal"
+        android:textStyle="normal|bold"
+        android:layout_alignRight="@+id/TFpass2"
+        android:layout_alignEnd="@+id/TFpass2" />
+    </LinearLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Add User"
-        android:id="@+id/textView8"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
