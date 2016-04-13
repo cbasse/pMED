@@ -6,14 +6,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.pmed.mindfulnessmeditation.FormActivity"
+    android:paddingTop="@dimen/promptTopMargin"
     >
 
     <TextView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textColor="@color/formTextColor"
+        android:textSize="@dimen/formTextSize"
+        android:layout_marginBottom="@dimen/promptQuestionMarginBottom"
+        />
     <RadioGroup
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/promptOptionMarginLeft"
         >
 
         <!-- prompt_radiobuttonml get programmatically inserted here from FormManager.multipleChoice() -->

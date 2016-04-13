@@ -266,4 +266,11 @@ public class RecordPhysData extends AppCompatActivity {
         //Intent intent = new Intent(this);
 
     }
+
+    public void onButtonClick(View view) {
+        if (view.getId() == R.id.ButtonNext) {
+            Intent i = new Intent(this, FormActivity.class);
+            startActivity(i);
+        }
+    }
 }

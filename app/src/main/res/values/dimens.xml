@@ -5,4 +5,11 @@
     <dimen name="app_bar_height">180dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="text_margin">16dp</dimen>
+    <dimen name="formTextSize">20sp</dimen>
+    <dimen name="promptTopMargin">40dp</dimen>
+    <dimen name="promptQuestionMarginBottom">10dp</dimen>
+    <dimen name="promptOptionMarginLeft">10dp</dimen>
+
+    <dimen name="promptOptionPaddingTop">5dp</dimen>
+    <dimen name="promptOptionPaddingBottom">5dp</dimen>
 </resources>

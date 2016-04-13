@@ -3,19 +3,31 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
+
+    android:color="@color/formTextColor"
+    android:textSize="@dimen/formTextSize"
+    android:paddingBottom="@dimen/promptOptionPaddingBottom"
+    android:paddingTop="@dimen/promptOptionPaddingTop"
+    android:paddingLeft="@dimen/promptOptionMarginLeft"
     >
 
     <TextView
         android:id="@+id/likert_row_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+
+        android:textColor="@color/formTextColor"
+        android:textSize="@dimen/formTextSize"
         />
 
     <Spinner
         android:id="@+id/likert_row_spinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        >
+
+        android:textColor="@color/formTextColor"
+        android:textSize="@dimen/formTextSize"
+        android:background="#ffffff">
 
     </Spinner>
 
