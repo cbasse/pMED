@@ -1,23 +1,31 @@
 package com.example.pmed.formmanager;
 
-import android.provider.MediaStore;
+import android.content.Context;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.RelativeLayout;
+import android.widget.Spinner;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.example.pmed.formparser.Form;
+import com.example.pmed.formparser.Option;
 import com.example.pmed.formparser.Prompt;
+import com.example.pmed.formparser.Question;
 import com.example.pmed.mindfulnessmeditation.R;
 
 import android.view.LayoutInflater;
+
+import org.w3c.dom.Text;
 
 /**
  * Created by calebbasse on 4/2/16.
@@ -26,17 +34,22 @@ public class FormManager {
     public Form form;
     public LayoutInflater inflater;
     public ViewGroup vg;
-
-    public FormManager(Form f, LayoutInflater inf, ViewGroup vg) {
+    public Context c;
+    public FormManager(Form f, LayoutInflater inf, ViewGroup vg, Context c) {
         form = f;
         inflater = inf;
         this.vg = vg;
+        this.c = c;
 
         for (int i = 0; i < form.prompts.length; i++) {
-            if (form.prompts[i].promptType == "mult") {
+            if (form.prompts[i].promptType.equals("mult")) {
                 multipleChoice(i);
-            } else if (form.prompts[i].promptType == "check") {
+            } else if (form.prompts[i].promptType.equals("check")) {
                 checkbox(i);
+            } else if (form.prompts[i].promptType.equals("short")) {
+                shortAnswer(i);
+            } else if (form.prompts[i].promptType.equals("likert")) {
+                likert(i);
             }
         }
 
@@ -45,7 +58,7 @@ public class FormManager {
     public void multipleChoice(final int promptIndex) {
         Prompt p = form.prompts[promptIndex];
         ViewGroup mult = (ViewGroup) inflater.inflate(R.layout.prompt_mult, null);
-        ((TextView)mult.getChildAt(0)).setText(p.question);
+        ((TextView)mult.getChildAt(0)).setText(p.question.getText());
 
         RadioGroup radioGroup = (RadioGroup) mult.getChildAt(1);
 
@@ -53,7 +66,7 @@ public class FormManager {
         int id;
         EditText textField;
         for (int i = 0; i < p.options.length; i++) {
-            checkbox = (RadioButton) inflater.inflate(R.layout.prompt_mult_checkbox, null);
+            checkbox = (RadioButton) inflater.inflate(R.layout.prompt_radiobutton, null);
             checkbox.setText(p.options[i].choice);
             //id = RadioButton.generateViewId();
             //checkbox.setId(id);
@@ -87,7 +100,7 @@ public class FormManager {
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                form.prompts[promptIndex].answer = Integer.toString(checkedId);
+                form.prompts[promptIndex].answerText = Integer.toString(checkedId);
                 if (form.prompts[promptIndex].options[checkedId-1].textBox == true) {
 
                 }
@@ -100,7 +113,7 @@ public class FormManager {
     public void checkbox(final int promptIndex) {
         Prompt p = form.prompts[promptIndex];
         ViewGroup checkGroup = (ViewGroup) inflater.inflate(R.layout.prompt_check, null);
-        ((TextView)checkGroup.getChildAt(0)).setText(p.question);
+        ((TextView)checkGroup.getChildAt(0)).setText(p.question.getText());
 
         //RadioGroup radioGroup = (RadioGroup) mult.getChildAt(1);
 
@@ -108,7 +121,7 @@ public class FormManager {
         int id;
         EditText textField;
         for (int i = 0; i < p.options.length; i++) {
-            checkbox = (CheckBox) inflater.inflate(R.layout.prompt_check_checkbox, null);
+            checkbox = (CheckBox) inflater.inflate(R.layout.prompt_checkbox, null);
             checkbox.setText(p.options[i].choice);
             //id = RadioButton.generateViewId();
             //checkbox.setId(id);
@@ -151,4 +164,52 @@ public class FormManager {
         });*/
 
     }
+
+    public void shortAnswer(final int promptIndex) {
+        Prompt p = form.prompts[promptIndex];
+        ViewGroup shortGroup = (ViewGroup) inflater.inflate(R.layout.prompt_short, null);
+        ((TextView)shortGroup.getChildAt(0)).setText(p.question.getText());
+
+        vg.addView(shortGroup);
+    }
+
+    public void likert(final int promptIndex) {
+        Prompt p = form.prompts[promptIndex];
+        LinearLayout likertGroup = (LinearLayout) inflater.inflate(R.layout.prompt_likert, null);
+
+        TextView descText = (TextView) likertGroup.findViewById(R.id.likert_desc_text);
+        descText.setText(p.likertDescription);
+
+        Question question;
+        LinearLayout likertRow;
+        TextView likertRowText;
+        Spinner likertRowSpinner;
+        for (int i = 0; i < p.likertQuestions.length; i++) {
+            question = p.likertQuestions[i];
+            likertRow = (LinearLayout) inflater.inflate(R.layout.prompt_likert_row, null);
+            likertRowText = (TextView) likertRow.findViewById(R.id.likert_row_text);
+            likertRowText.setText(question.getText());
+
+            likertRowSpinner = (Spinner) likertRow.findViewById(R.id.likert_row_spinner);
+            ArrayAdapter<Option> adapter = new ArrayAdapter<Option>(c, android.R.layout.simple_spinner_item, p.options);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            likertRowSpinner.setAdapter(adapter);
+            likertGroup.addView(likertRow);
+        }
+
+
+
+        //TableRow likertRow = (TableRow) inflater.inflate(R.layout.prompt_likert_row, null);
+
+
+
+
+
+
+
+
+        vg.addView(likertGroup);
+    }
+
+
 }

@@ -38,12 +38,12 @@ public class FormActivity extends AppCompatActivity {
         //Log.d("WORKING DIRECTORY", System.getProperty("user.dir"));
         String formsDirectoryPath = Environment.getExternalStoragePublicDirectory("Forms").getAbsolutePath();
         Log.d("WORKING DIRECTORY", formsDirectoryPath);
-        Form form = new Form(new File(formsDirectoryPath + "/text_q.xml"));
+        Form form = new Form(new File(formsDirectoryPath + "/bl_q.xml"));
 
         LayoutInflater inflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 
-        FormManager choice = new FormManager(form, inflater, group);
+        FormManager choice = new FormManager(form, inflater, group, this);
 
 
 

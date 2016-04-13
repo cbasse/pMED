@@ -4,5 +4,10 @@ package com.example.pmed.formparser;
  */
 public class Option {
     public String choice;
+    public String score = "";
     public Boolean textBox = false;
+
+    public String toString() {
+        return choice;
+    }
 }

@@ -1,13 +1,13 @@
 package com.example.pmed.formparser;
 
-/**
- * Created by calebbasse on 3/22/16.
- */
+import com.example.pmed.formparser.Prompt;
+
 import java.io.IOException;
 import java.io.StringReader;
 
 import java.io.BufferedReader;
 import java.io.LineNumberReader;
+
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileNotFoundException;
@@ -23,7 +23,8 @@ public class Form
 {
     public Prompt[] prompts;
     public String formName;
-    XmlPullParser xpp;
+    public String formDesc;
+    private XmlPullParser xpp;
 
     public Form(File formFile)
     {
@@ -32,11 +33,14 @@ public class Form
             XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
             factory.setNamespaceAware(true);
             xpp = factory.newPullParser();
-            xpp.setInput( new FileReader (formFile) );
+            xpp.setInput( new FileReader (formFile));
             xpp.next();
             //System.out.println(XmlPullParser.START_TAG + " " + XmlPullParser.END_TAG + " " + XmlPullParser.END_DOCUMENT + " " + XmlPullParser.START_DOCUMENT + XmlPullParser.TEXT);
 
             formName = parseFormName();
+
+            formDesc = parseTag("desc", true);
+            System.out.println(formDesc);
 
             ArrayList<Prompt> temp_prompts = new ArrayList<Prompt>();
 
@@ -49,9 +53,29 @@ public class Form
             System.out.println("\n\nquestionnaire name: " + formName + "\n");
             for (int i = 0; i < prompts.length; i++)
             {
+                if (prompts[i].promptType == "likert")
+                {
+                    System.out.println("question type: " + prompts[i].promptType);
+                    System.out.println("name: " + prompts[i].name);
+                    for (int j = 0; j < prompts[i].options.length; j++)
+                    {
+                        System.out.println("option: " + prompts[i].options[j].choice);
+                        System.out.println("value: " + prompts[i].options[j].score);
+                    }
+                    for (int j = 0; j < prompts[i].likertQuestions.length; j++)
+                    {
+                        System.out.println("option: " + prompts[i].likertQuestions[j].getText());
+                        System.out.println("reverse: " + prompts[i].likertQuestions[j].isReverse());
+                        System.out.println("positive: " + prompts[i].likertQuestions[j].isPositive());
+                    }
+                    System.out.println();
+                    continue;
+                }
+
+
                 System.out.println("question type: " + prompts[i].promptType);
                 System.out.println("name: " + prompts[i].name);
-                System.out.println("question: " + prompts[i].question);
+                System.out.println("question: " + prompts[i].question.getText());
                 if (prompts[i].promptType != "short")
                 {
                     for (int j = 0; j < prompts[i].options.length; j++)
@@ -73,8 +97,6 @@ public class Form
             System.out.println(formName);
             System.exit(0);
         }
-
-
     }
 
     private Prompt parsePrompt()
@@ -84,7 +106,7 @@ public class Form
         Prompt prompt;
 
         if (promptType.equals("likert"))
-            prompt = parsePromptStandard("likert");
+            prompt = parsePromptLikert();
         else if (promptType.equals("mult"))
             prompt = parsePromptStandard("mult");
         else if (promptType.equals("check"))
@@ -106,7 +128,7 @@ public class Form
         xpp.next();
         checkWhitespace();
         String promptName = parsePromptName();
-        String question = parseQuestion();
+        Question question = parseQuestion();
         if (!promptType.equals("short"))
         {
             ArrayList<Option> options = new ArrayList<Option>();
@@ -120,8 +142,55 @@ public class Form
         }
         else
         {
-            return new Prompt(promptType, promptName, "", null);
+            return new Prompt(promptType, promptName, question, null);
         }
+    }
+
+    private Prompt parsePromptLikert()
+            throws Exception
+    {
+        xpp.next();
+        checkWhitespace();
+        String promptName = parsePromptName();
+        String description = parsePromptDesc();
+
+        ArrayList<Option> options = new ArrayList<Option>();
+        ArrayList<Question> likertQuestions = new ArrayList<Question>();
+
+        while (xpp.getName().equals("op"))
+        {
+            options.add(parseOptionLikert());
+        }
+
+        while (xpp.getEventType() != XmlPullParser.END_TAG)
+        {
+            String name = xpp.getName();
+            switch (name) {
+                case "q":
+                    likertQuestions.add(new Question(parseTag("q", false), false));
+                    break;
+                case "q-rev":
+                    likertQuestions.add(new Question(parseTag("q-rev", false), true));
+                    break;
+                case "q-pos":
+                    likertQuestions.add(new Question(parseTag("q-pos", false), false, true));
+                    break;
+                case "q-pos-rev":
+                    likertQuestions.add(new Question(parseTag("q-pos-rev", false), true, true));
+                    break;
+                case "q-neg":
+                    likertQuestions.add(new Question(parseTag("q-neg", false), false, false));
+                    break;
+                case "q-neg-rev":
+                    likertQuestions.add(new Question(parseTag("q-neg-rev", false), true, false));
+                    break;
+                default:
+                    throw new Exception("Line: " + (xpp.getLineNumber()+1) + " tag following </op> tag must be a <op> tag or likert questionn tag(eg. <q>, <q-rev>, <q-rev-pos>, etc), right now it's " + xpp.getName());
+            }
+        }
+
+
+        return new Prompt("likert", promptName, null, options.toArray(new Option[1]), likertQuestions.toArray(new Question[1]), description);
     }
 
     private String parseFormName()
@@ -163,7 +232,27 @@ public class Form
         return formName;
     }
 
-    private String parseQuestion()
+    private String parsePromptDesc()
+            throws Exception
+    {
+        String formName = "";
+
+        if (xpp.getEventType() != XmlPullParser.START_TAG)
+            throw new Exception("Line: " + (xpp.getLineNumber()+1) + " <name> tag in <likert> must be followed by a <desc> tag");
+        if (!xpp.getName().equals("desc"))
+            throw new Exception("Line: " + (xpp.getLineNumber()+1) + " <name> tag in <likert> must be followed by a <desc> tag, right now it's " + xpp.getName());
+        if (xpp.next() == XmlPullParser.TEXT)
+            formName = xpp.getText();
+        if (xpp.next() != XmlPullParser.END_TAG)
+            throw new Exception("Line: " + (xpp.getLineNumber()+1) + " Xml <desc> tag must end with </desc> tag");
+
+        xpp.next();
+        checkWhitespace();
+
+        return formName;
+    }
+
+    private Question parseQuestion()
             throws Exception
     {
         checkWhitespace();
@@ -174,9 +263,9 @@ public class Form
             throw new Exception("Line: " + (xpp.getLineNumber()+1) + " Prompt must start with <q> tag, right now it's " + xpp.getName());
         if (xpp.next() != XmlPullParser.TEXT)
             throw new Exception("Line: " + (xpp.getLineNumber()+1) + " Xml <q> must have text content");
-        String question = xpp.getText();
+        Question question = new Question(xpp.getText());
         if (xpp.next() != XmlPullParser.END_TAG)
-            throw new Exception("Line: " + (xpp.getLineNumber()+1) + " Xml <q> tag must end with </name> tag");
+            throw new Exception("Line: " + (xpp.getLineNumber()+1) + " Xml <q> tag must end with </q> tag");
 
         xpp.next();
         checkWhitespace();
@@ -205,6 +294,52 @@ public class Form
         checkWhitespace();
 
         return option;
+    }
+
+    private Option parseOptionLikert()
+            throws Exception
+    {
+        Option option = new Option();
+        xpp.next();
+        checkWhitespace();
+
+        String text = parseTag("text", false);
+        String score = parseTag("score", false);
+
+        option.choice = text;
+        option.score = score;
+
+        xpp.next();
+        checkWhitespace();
+
+        return option;
+    }
+
+    private String parseTag(String tag, Boolean allowEmpty)
+            throws Exception
+    {
+        String content = "";
+
+        checkWhitespace();
+        if (xpp.getEventType() != XmlPullParser.START_TAG)
+            throw new Exception("Line: " + (xpp.getLineNumber()+1) + " expected <" + tag + "> tag here");
+        if (!xpp.getName().equals(tag))
+            throw new Exception("Line: " + (xpp.getLineNumber()+1) + " expected <" + tag + ">, right now it's <" + xpp.getName() + ">");
+        if (xpp.next() != XmlPullParser.TEXT && !allowEmpty)
+            throw new Exception("Line: " + (xpp.getLineNumber()+1) + " Xml <" + tag + "> must have text content");
+        if (allowEmpty && xpp.getEventType() == XmlPullParser.END_TAG) {
+            xpp.next();
+            checkWhitespace();
+
+            return "";
+        } else {
+            content = xpp.getText();
+            if (xpp.next() != XmlPullParser.END_TAG)
+                throw new Exception("Line: " + (xpp.getLineNumber()+1) + " Xml <" + tag + "> tag must end with </" + tag + "> tag");
+            xpp.next();
+            checkWhitespace();
+            return content;
+        }
     }
 
     private void checkWhitespace()
