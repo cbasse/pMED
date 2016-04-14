@@ -8,7 +8,8 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:id="@+id/activity_confirm_exp_parse"
-    tools:context="com.example.pmed.mindfulnessmeditation.ConfirmExpParse">
+    tools:context="com.example.pmed.mindfulnessmeditation.ConfirmExpParse"
+    android:background="#3a4f9c">
 
     <TextView
         android:layout_width="wrap_content"
@@ -26,7 +27,7 @@
         android:id="@+id/ConfirmParseBtn"
         android:layout_below="@+id/ConfirmParsingText"
         android:layout_toLeftOf="@+id/ConfirmParsingText"
-        />
+        android:background="#ffffff" />
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -34,7 +35,7 @@
         android:id="@+id/CancelParseBtn"
         android:layout_below="@+id/ConfirmParsingText"
         android:layout_toRightOf="@+id/ConfirmParsingText"
-        />
+        android:background="#ffffff" />
 
     <TextView
         android:layout_width="wrap_content"

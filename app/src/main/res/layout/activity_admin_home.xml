@@ -8,126 +8,182 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.pmed.mindfulnessmeditation.AdminHome"
-    android:background="#3a4f9c">
+    android:background="#3a4f9c"
+    android:textAlignment="inherit">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Welcome, "
-        android:id="@+id/TVwelcome"
+        android:layout_width="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:textStyle="normal|bold"
+        android:fontFamily="sans-serif-thin"
+        android:id="@+id/title">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="ADMIN"
+            android:id="@+id/textView9"
+            android:textColor="#FFA401"
+            android:textSize="40dp"
+            android:layout_marginTop="20dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="HOMEPAGE"
+            android:id="@+id/textView8"
+            android:textColor="#ffffffff"
+            android:textSize="40dp"
+            android:layout_marginTop="20dp"
+            android:layout_toRightOf="@+id/textView9"
+            android:layout_toEndOf="@+id/textView9" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/icon_home"
+        android:layout_width="110dp"
+        android:layout_height="110dp"
+        android:src="@drawable/icon_home"
+        android:layout_marginTop="100dp"
+        android:onClick="onClickButton"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_alignRight="@id/TVwelcome"
-        android:layout_alignEnd="@id/TVwelcome"
-        android:textColor="#ffffffff"/>
+        android:layout_marginStart="66dp"
+        android:layout_marginLeft="66dp" />
+
+    <ImageView
+        android:id="@+id/icon_password"
+        android:layout_width="110dp"
+        android:layout_height="110dp"
+        android:src="@drawable/icon_password"
+        android:onClick="onClickButton"
+        android:layout_alignTop="@+id/icon_export"
+        android:layout_centerHorizontal="true" />
+
+    <ImageView
+        android:id="@+id/icon_participtants"
+        android:layout_width="110dp"
+        android:layout_height="110dp"
+        android:src="@drawable/icon_participants"
+        android:onClick="onClickButton"
+        android:layout_alignTop="@+id/icon_home"
+        android:layout_centerHorizontal="true" />
+
+    <ImageView
+        android:id="@+id/icon_export"
+        android:layout_width="110dp"
+        android:layout_height="110dp"
+        android:src="@drawable/icon_export"
+        android:onClick="onClickButton"
+        android:layout_alignTop="@+id/icon_logout"
+        android:layout_alignLeft="@+id/icon_home"
+        android:layout_alignStart="@+id/icon_home" />
+
+    <ImageView
+        android:id="@+id/icon_update"
+        android:layout_width="110dp"
+        android:layout_height="110dp"
+        android:src="@drawable/icon_update"
+        android:onClick="onClickButton"
+        android:layout_alignTop="@+id/icon_home"
+        android:layout_toRightOf="@+id/textView10"
+        android:layout_toEndOf="@+id/textView10"
+        android:layout_marginLeft="50dp"
+        android:layout_marginStart="50dp" />
+
+    <ImageView
+        android:id="@+id/icon_logout"
+        android:layout_width="110dp"
+        android:layout_height="110dp"
+        android:src="@drawable/icon_logout"
+        android:onClick="onClickButton"
+        android:layout_below="@+id/icon_update"
+        android:layout_alignLeft="@+id/icon_update"
+        android:layout_alignStart="@+id/icon_update"
+        android:layout_marginTop="98dp" />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/emptyString"
-        android:id="@+id/TVadmin_name"
-        android:layout_alignTop="@+id/TVwelcome"
-        android:layout_toRightOf="@+id/TVwelcome"
-        android:layout_toEndOf="@+id/TVwelcome"
-        android:textColor="#ffffffff"/>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Manage Participant Accounts"
-        android:id="@+id/button_user_accounts"
-        android:layout_marginTop="56dp"
-        android:background="@drawable/my_button"
-        android:layout_below="@+id/TVwelcome"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Change Password"
+        android:id="@+id/textView10"
+        android:layout_below="@+id/icon_password"
         android:layout_centerHorizontal="true"
-        android:paddingBottom="20dp"
-        android:paddingTop="20dp"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
         android:textSize="20dp"
-        android:typeface="normal"
-        android:onClick="onClickButton"
-        android:nestedScrollingEnabled="true" />
+        android:gravity="center"
+        android:textStyle="bold"
+        android:layout_marginTop="5dp"/>
 
-    <Button
-        android:layout_width="wrap_content"
+    <TextView
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
-        android:text="Update Experiment"
-        android:id="@+id/button_update_experiment"
-        android:layout_below="@+id/button_user_accounts"
-        android:layout_alignRight="@+id/button_user_accounts"
-        android:layout_alignEnd="@+id/button_user_accounts"
-        android:layout_alignLeft="@+id/button_user_accounts"
-        android:layout_alignStart="@+id/button_user_accounts"
-        android:layout_marginTop="15dp"
-        android:paddingBottom="20dp"
-        android:paddingTop="20dp"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Manage User Accounts"
+        android:id="@+id/textView11"
+        android:layout_below="@+id/icon_participtants"
+        android:layout_centerHorizontal="true"
         android:textSize="20dp"
-        android:typeface="normal"
-        android:background="@drawable/my_button"
-        android:onClick="onClickButton"
-        />
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_alignTop="@+id/textView15"/>
 
-    <Button
-        android:layout_width="wrap_content"
+    <TextView
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
-        android:text="Export Data"
-        android:id="@+id/button3"
-        android:layout_below="@+id/button_update_experiment"
-        android:layout_alignRight="@+id/button_user_accounts"
-        android:layout_alignEnd="@+id/button_user_accounts"
-        android:layout_alignLeft="@+id/button_user_accounts"
-        android:layout_alignStart="@+id/button_user_accounts"
-        android:layout_marginTop="15dp"
-        android:paddingBottom="20dp"
-        android:paddingTop="20dp"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Update Experiments"
+        android:id="@+id/textView12"
         android:textSize="20dp"
-        android:typeface="normal"
-        android:background="@drawable/my_button" />
+        android:gravity="center"
+        android:layout_alignTop="@+id/textView15"
+        android:layout_alignLeft="@+id/icon_update"
+        android:layout_alignStart="@+id/icon_update"
+        android:textStyle="bold" />
 
-    <Button
-        android:layout_width="wrap_content"
+    <TextView
+        android:layout_width="110dp"
         android:layout_height="wrap_content"
-        android:text="Settings"
-        android:id="@+id/button4"
-        android:layout_below="@+id/button3"
-        android:layout_alignRight="@+id/button_user_accounts"
-        android:layout_alignEnd="@+id/button_user_accounts"
-        android:layout_alignLeft="@+id/button_user_accounts"
-        android:layout_alignStart="@+id/button_user_accounts"
-        android:layout_marginTop="15dp"
-        android:paddingBottom="20dp"
-        android:paddingTop="20dp"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:textSize="20dp"
-        android:typeface="normal"
-        android:background="@drawable/my_button" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Logout"
-        android:id="@+id/button5"
-        android:layout_below="@+id/button4"
-        android:layout_alignLeft="@+id/button_user_accounts"
-        android:layout_alignStart="@+id/button_user_accounts"
-        android:layout_alignRight="@+id/button_user_accounts"
-        android:layout_alignEnd="@+id/button_user_accounts"
-        android:layout_marginTop="15dp"
-        android:paddingBottom="20dp"
-        android:paddingTop="20dp"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
+        android:id="@+id/textView13"
         android:textSize="20dp"
-        android:typeface="normal"
-        android:background="@drawable/my_button" />
+        android:gravity="center"
+        android:layout_below="@+id/icon_logout"
+        android:layout_alignLeft="@+id/icon_logout"
+        android:layout_alignStart="@+id/icon_logout"
+        android:textStyle="bold"
+        android:layout_marginTop="5dp"/>
 
+    <TextView
+        android:layout_width="110dp"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Export Data"
+        android:id="@+id/textView14"
+        android:layout_below="@+id/icon_export"
+        android:layout_alignLeft="@+id/icon_export"
+        android:layout_alignStart="@+id/icon_export"
+        android:textSize="20dp"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:layout_marginTop="5dp"/>
+
+    <TextView
+        android:layout_width="110dp"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Admin Home"
+        android:id="@+id/textView15"
+        android:textSize="20dp"
+        android:gravity="center"
+        android:layout_alignLeft="@+id/icon_home"
+        android:layout_alignStart="@+id/icon_home"
+        android:textStyle="bold"
+        android:layout_below="@id/icon_home"
+        android:layout_marginTop="5dp"/>
 </RelativeLayout>

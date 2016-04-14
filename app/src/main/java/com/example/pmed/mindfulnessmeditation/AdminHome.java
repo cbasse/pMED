@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class AdminHome extends AppCompatActivity {
 
@@ -12,22 +13,25 @@ public class AdminHome extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_home);
-        String username = getIntent().getStringExtra("AdminUsername");
-
-        TextView tv = (TextView)findViewById(R.id.TVadmin_name);
-        tv.setText(username);
     }
 
     public void onClickButton(View v) {
-        if(v.getId() == R.id.button_user_accounts) {
+
+        if(v.getId() == R.id.icon_participtants) {
             Intent i = new Intent(AdminHome.this, ManageUserAccounts.class);
             startActivity(i);
         }
 
-        if(v.getId() == R.id.button_update_experiment) {
+        if(v.getId() == R.id.icon_update) {
             Intent i = new Intent(AdminHome.this, UpdateExperiment.class);
             startActivity(i);
         }
+
+        if(v.getId() == R.id.icon_logout) {
+            Intent i = new Intent(AdminHome.this, MainActivity.class);
+            startActivity(i);
+        }
+
     }
 
 }

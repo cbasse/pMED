@@ -91,20 +91,27 @@
         android:id="@+id/ButtonNext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@id/labelStatusMsg"
-        android:visibility="visible"
+        android:visibility="gone"
         android:paddingLeft="50dp"
         android:paddingRight="50dp"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
-        android:layout_marginBottom="20dp"
         android:textStyle="bold|normal"
         android:textSize="20dp"
         android:background="#ffffff"
+        android:onClick="onButtonClick"
         android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:onClick="onButtonClick"></Button>
+        android:layout_centerHorizontal="true"></Button>
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Test Button"
+        android:id="@+id/button_test"
+        android:layout_above="@+id/labelStatusMsg"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="119dp"
+        android:onClick="onButtonClick"/>
 
 
 </RelativeLayout>
