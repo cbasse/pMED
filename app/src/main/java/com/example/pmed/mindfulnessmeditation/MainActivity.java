@@ -24,8 +24,7 @@ public class MainActivity extends AppCompatActivity {
 
         if(v.getId() == R.id.button_user) {
 
-            //Intent i = new Intent(MainActivity.this, UserLogin.class);
-            Intent i = new Intent(MainActivity.this, Audio.class); // debugging for lincoln
+            Intent i = new Intent(MainActivity.this, UserLogin.class);
 
             startActivity(i);
         }
