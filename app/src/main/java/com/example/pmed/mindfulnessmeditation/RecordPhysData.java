@@ -20,6 +20,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.github.mikephil.charting.charts.BarChart;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Set;
@@ -270,6 +272,10 @@ public class RecordPhysData extends AppCompatActivity {
     public void onButtonClick(View view) {
         if (view.getId() == R.id.ButtonNext) {
             Intent i = new Intent(this, FormActivity.class);
+            startActivity(i);
+        }
+        if (view.getId() == R.id.button_test) {
+            Intent i = new Intent(RecordPhysData.this, BarChartActivityMultiDataset.class);
             startActivity(i);
         }
     }

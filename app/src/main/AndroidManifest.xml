@@ -48,6 +48,7 @@
         <activity android:name=".DatabaseHelper" />
         <activity android:name=".ListDataAdapter" />
 
+        <activity android:name=".BarChartActivityMultiDataset" />
         <activity android:name=".UpdateExperiment" />
         <activity android:name=".ConfirmExpParse" />
         <activity android:name=".Audio"></activity>

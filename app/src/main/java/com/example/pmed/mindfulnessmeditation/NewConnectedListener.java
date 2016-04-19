@@ -1,9 +1,13 @@
 package com.example.pmed.mindfulnessmeditation;
 
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import java.io.File;
+import java.io.FileOutputStream;
 
 import zephyr.android.BioHarnessBT.BTClient;
 import zephyr.android.BioHarnessBT.ConnectListenerImpl;
@@ -51,11 +55,29 @@ public class NewConnectedListener extends ConnectListenerImpl {
 
     }
     public void Connected(ConnectedEvent<BTClient> eventArgs) {
+        //mindful meditation stuff
+        /*
+        String fileLoc = Environment.getExternalStorageDirectory().getPath() + "/Experiments/__current__/prePhysio.txt";
+        File file = new File(fileLoc);
+        final FileOutputStream fos;
+        try {
+            fos = new FileOutputStream(fileLoc);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return;
+        }
+        */
+
+
+
         System.out.println(String.format("Connected to BioHarness %s.", eventArgs.getSource().getDevice().getName()));
 		/*Use this object to enable or disable the different Packet types*/
         RqPacketType.GP_ENABLE = true;
         RqPacketType.BREATHING_ENABLE = true;
         RqPacketType.LOGGING_ENABLE = true;
+        //RqPacketType.SUMMARY_ENABLE = true;
 
 
         //Creates a new ZephyrProtocol object and passes it the BTComms object]]
@@ -131,6 +153,19 @@ public class NewConnectedListener extends ConnectListenerImpl {
                         byte ROGStatus = GPInfo.GetROGStatus(DataArray);
                         System.out.println("ROG Status is "+ ROGStatus);
 
+
+                        // mindful meditation stuff
+                        /*
+                        try{
+                            String st = String.valueOf(HRate) + ", ";
+                            fos.write(st.getBytes());
+                        }
+                        catch (Exception e)
+                        {
+                            e.printStackTrace();
+                        }
+                        */
+
                         break;
                     case BREATHING_MSG_ID:
 					/*Do what you want. Printing Sequence Number for now*/
@@ -150,7 +185,12 @@ public class NewConnectedListener extends ConnectListenerImpl {
                         break;
                     case SUMMARY_MSG_ID:
 					/*Do what you want. Printing Sequence Number for now*/
-                        System.out.println("Summary Packet Sequence Number is "+SummaryInfoPacket.GetSeqNum(DataArray));
+                        System.out.println("Summary Packet Sequence Number is " + SummaryInfoPacket.GetSeqNum(DataArray));
+                        int hrv = SummaryInfoPacket.GetHearRateVariability(DataArray);
+
+
+
+
                         break;
 
                 }

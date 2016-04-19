@@ -16,6 +16,18 @@
         android:layout_height="150dp"
         android:src="@drawable/icon_audio"
         android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:onClick="onClickButton"
+        />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/image_audio"
+        android:layout_centerHorizontal="true"
+        android:visibility="gone"
+        android:text="Next"
+        android:id="@+id/button_audio_next"
+        />
 
 </RelativeLayout>
