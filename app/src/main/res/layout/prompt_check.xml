@@ -14,6 +14,6 @@
         android:layout_marginBottom="@dimen/promptQuestionMarginBottom"
         />
 
-    <!-- prompt_checkboxet programmatically inserted here from FormManager.checkbox() -->
+    <!-- prompt_checkboxet programmatically inserted here from FormView.checkbox() -->
 
 </LinearLayout>

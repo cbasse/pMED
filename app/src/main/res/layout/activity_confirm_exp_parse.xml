@@ -22,7 +22,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Parse"
+        android:text="Sync"
         android:id="@+id/ConfirmParseBtn"
         android:layout_below="@+id/ConfirmParsingText"
         android:layout_toLeftOf="@+id/ConfirmParsingText"
@@ -45,6 +45,17 @@
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/ConfirmParseBtn"
         />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/ErrorMessage"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/ConfirmFilesText"
+        />
+
+
 
 
 </RelativeLayout>

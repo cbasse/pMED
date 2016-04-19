@@ -24,25 +24,25 @@ public class StudyManifest {
     public String studyName;
     public Form baseline;
     public int days;
-    public int readingA;
     public Form formA;
+    public int readingA;
     public String soundclip;
-    public int readingB;
     public Form formB;
+    public int readingB;
     public Form formFinal = null;
 
     private XmlPullParser xpp;
 
-    public StudyManifest(String manifestFolder) {
+    public StudyManifest(File manifestFolder) throws Exception {
         try {
             //String fileContent = readXMLFile(formFile);
             XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
             factory.setNamespaceAware(true);
             xpp = factory.newPullParser();
 
-            File folder = new File(manifestFolder);
-            if (!folder.isDirectory()) throw new Exception("Items must be a folder containing Study documents");
-            File[] files = folder.listFiles();
+            //File folder = new File(manifestFolder);
+            if (!manifestFolder.isDirectory()) throw new Exception("Items must be a folder containing Study documents");
+            File[] files = manifestFolder.listFiles();
 
 
             xpp.setInput(new FileReader(findFile("manifest.xml", files)));
@@ -95,7 +95,7 @@ public class StudyManifest {
             else
                 System.out.println("Problem on line: " + xpp.getLineNumber());
             e.printStackTrace();
-            System.exit(0);
+            throw e;
         }
     }
 

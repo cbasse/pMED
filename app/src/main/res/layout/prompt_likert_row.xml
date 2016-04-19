@@ -27,7 +27,11 @@
 
         android:textColor="@color/formTextColor"
         android:textSize="@dimen/formTextSize"
-        android:background="#ffffff">
+
+        android:spinnerMode="dropdown"
+        android:dropDownSelector="@color/colorAccent"
+        android:layout_marginStart="100dp"
+        >
 
     </Spinner>
 

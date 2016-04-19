@@ -4,6 +4,8 @@
     android:layout_height="wrap_content"
     android:inputType="text"
     android:textColor="#000000"
-    android:paddingLeft="40dp">
+    android:paddingLeft="40dp"
+    android:imeOptions="actionDone"
+    android:id="@+id/optional_textbox">
 
 </EditText>

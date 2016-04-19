@@ -3,20 +3,29 @@ package com.example.pmed.mindfulnessmeditation;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.example.pmed.formparser.Form;
+import com.example.pmed.formparser.StudyManifest;
+
 import java.io.File;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by harri on 4/5/2016.
  * For uploading a file in admin view
  * Admin -> update experiment -> select a file -> CONFIRM PARSING PAGE
  */
+
+
 public class ConfirmExpParse extends AppCompatActivity {
 
     @Override
@@ -28,7 +37,7 @@ public class ConfirmExpParse extends AppCompatActivity {
         String fileName = bundle.getString("folderName");
 
         TextView txt = (TextView)findViewById(R.id.ConfirmFilesText);
-        File expDir = new File( Environment.getExternalStorageDirectory().getPath() + "/Experiments/" + fileName);
+        final File expDir = new File( Environment.getExternalStorageDirectory().getPath() + "/Experiments/" + fileName);
         List<File> folders = GetListFiles(expDir);
         int id = R.id.SelectFileText;
         for(File folder : folders) {
@@ -36,6 +45,33 @@ public class ConfirmExpParse extends AppCompatActivity {
             String name = folder.getName();
             txt.append(name + "\n");
         }
+
+        Button b = (Button) findViewById(R.id.ConfirmParseBtn);
+
+        b.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    TextView error = (TextView) findViewById(R.id.ErrorMessage);
+                    error.setText("Syncing...");
+                    StudyManifest manifest = new StudyManifest(expDir);
+
+                    //do something
+
+
+                    error.setText("Done!");
+
+
+                } catch (Exception e) {
+                    if (e.getMessage() != null) {
+                        TextView error = (TextView) findViewById(R.id.ErrorMessage);
+                        error.setText("File error: " + e.getMessage());
+                    }
+                }
+
+            }
+        });
+
     }
 
 
