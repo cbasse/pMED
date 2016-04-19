@@ -4,36 +4,52 @@
     tools:context="com.example.pmed.mindfulnessmeditation.UserLogin"
     android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="40dp"
-    android:background="#3a4f9c">
+    android:background="#3a4f9c"
+    android:weightSum="1"
+    android:gravity="center">
 
     <TextView
-        android:layout_width="100dp"
+        android:layout_width="30dp"
         android:layout_height="wrap_content"
         android:id="@+id/text_user_id"
-        android:text="ID"
+        android:text="Id"
         android:textSize="20dp"
         android:layout_marginTop="10dp"
         android:gravity="center"
-        android:textColor="#ffffffff"/>
+        android:textColor="#ffffffff"
+        android:layout_weight="0.15" />
 
     <TextView
-        android:layout_width="250dp"
+        android:layout_width="190dp"
         android:layout_height="wrap_content"
         android:id="@+id/text_user_name"
         android:text="Name"
         android:textSize="20dp"
         android:layout_marginTop="10dp"
         android:gravity="center"
-        android:textColor="#ffffffff"/>
+        android:textColor="#ffffffff"
+        android:layout_weight="0.30" />
 
     <TextView
-        android:layout_width="200dp"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:id="@+id/text_user_pass"
-        android:text="Password"
+        android:text="Exp #"
         android:textSize="20dp"
         android:layout_marginTop="10dp"
         android:gravity="center"
-        android:textColor="#ffffffff"/>
+        android:textColor="#ffffffff"
+        android:layout_weight="0.15"/>
+
+    <TextView
+        android:layout_width="137dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/text_user_progress"
+        android:text="Progress"
+        android:textSize="20dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:textColor="#ffffffff"
+        android:layout_weight="0.40" />
 
 </LinearLayout>

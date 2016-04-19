@@ -18,33 +18,92 @@
         android:id="@+id/text_current_users"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:textSize="20dp"
+        android:textSize="30dp"
         android:textColor="#ffffffff"/>
+
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:id="@+id/text_row"
+        android:layout_below="@id/text_current_users"
+        android:layout_marginTop="5dp">
+
+        <TextView
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/text_user_id"
+            android:text="Id"
+            android:textSize="20dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:textColor="#ffffffff"
+            android:layout_weight="0.15" />
+
+        <TextView
+            android:layout_width="190dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/text_user_name"
+            android:text="Name"
+            android:textSize="20dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:textColor="#ffffffff"
+            android:layout_weight="0.30" />
+
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/text_user_pass"
+            android:text="Exp #"
+            android:textSize="20dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:textColor="#ffffffff"
+            android:layout_weight="0.15"/>
+
+        <TextView
+            android:layout_width="137dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/text_user_progress"
+            android:text="Progress"
+            android:textSize="20dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:textColor="#ffffffff"
+            android:layout_weight="0.40" />
+</LinearLayout>
 
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/list_view"
         android:textColor="#ffffffff"
-        android:layout_below="@+id/text_current_users"
-        android:layout_above="@+id/button_add_user"/>
+        android:layout_below="@+id/text_row"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="55dp" />
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Add User"
         android:id="@+id/button_add_user"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="5dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:paddingBottom="20dp"
-        android:paddingTop="20dp"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
         android:textSize="20dp"
         android:typeface="normal"
         android:onClick="onClickButton"
-        android:background="#ffffff" />
+        android:background="#FFA401"
+        android:textColor="#ffffffff"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp" />
 
 
 </RelativeLayout>

@@ -8,6 +8,7 @@ package com.example.pmed.mindfulnessmeditation;
  */
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -40,6 +41,8 @@ public class UpdateExperiment extends AppCompatActivity {
                 name = name.substring(0, pos);
             }
             btn.setText(name);
+            //btn.setBackgroundColor(Color.rgb(255, 164, 1));
+            btn.setTextColor(Color.WHITE);
 
             RelativeLayout layout = (RelativeLayout)findViewById(R.id.activity_update_experiment_id);
             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);

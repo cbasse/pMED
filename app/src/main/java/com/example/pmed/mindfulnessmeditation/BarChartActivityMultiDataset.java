@@ -3,6 +3,7 @@ package com.example.pmed.mindfulnessmeditation;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,12 +28,15 @@ import com.example.pmed.graphmanager.DemoBase;
 import com.example.pmed.graphmanager.MyMarkerView;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.util.ArrayList;
 
 /**
  * Created by Jacky Sitzman on 4/13/2016.
  */
-public class BarChartActivityMultiDataset extends DemoBase implements OnChartValueSelectedListener {
+public class BarChartActivityMultiDataset extends DemoBase implements SeekBar.OnSeekBarChangeListener,OnChartValueSelectedListener {
 
     private BarChart mChart;
     private Typeface tf;
@@ -92,7 +96,7 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnChartVal
         mChart.getAxisRight().setEnabled(false);
     }
 
-    /*
+
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.bar, menu);
         return true;
@@ -169,18 +173,18 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnChartVal
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 
-        /*
-        tvX.setText("" + (mSeekBarX.getProgress() * 3));
-        tvY.setText("" + (mSeekBarY.getProgress()));
-
         ArrayList<String> xVals = new ArrayList<String>();
-        for (int i = 0; i < mSeekBarX.getProgress(); i++) {
-            xVals.add((i+1990) + "");
-        }
-
         ArrayList<BarEntry> yVals1 = new ArrayList<BarEntry>();
         ArrayList<BarEntry> yVals2 = new ArrayList<BarEntry>();
         ArrayList<BarEntry> yVals3 = new ArrayList<BarEntry>();
+
+/*      tvX.setText("" + (mSeekBarX.getProgress() * 3));
+        tvY.setText("" + (mSeekBarY.getProgress()));
+
+
+        for (int i = 0; i < mSeekBarX.getProgress(); i++) {
+            xVals.add((i+1990) + "");
+        }
 
         float mult = mSeekBarY.getProgress() * 1000f;
 
@@ -197,25 +201,41 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnChartVal
         for (int i = 0; i < mSeekBarX.getProgress(); i++) {
             float val = (float) (Math.random() * mult) + 3;
             yVals3.add(new BarEntry(val, i));
-        }*/
+        }
+*/
 
-        /*
         BarDataSet set1, set2, set3;
+
+        /*String frDirLoc = "Experiments";
+        File frDir = new File(Environment.getExternalStorageDirectory(), frDirLoc);
+        String frLoc = "PhysioHR_AVG.txt";
+        File fr = new File(frDir, frLoc);
+        int hr;
+
+        try{
+            BufferedReader br = new BufferedReader(new FileReader(fr));
+            String line = br.readLine();
+            hr = Integer.parseInt(line);
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            //return; // !!MIGHT NEED THIS!!
+        }*/
 
         if (mChart.getData() != null &&
                 mChart.getData().getDataSetCount() > 0) {
             set1 = (BarDataSet)mChart.getData().getDataSetByIndex(0);
             set2 = (BarDataSet)mChart.getData().getDataSetByIndex(1);
             set3 = (BarDataSet)mChart.getData().getDataSetByIndex(2);
-            set1.setYVals(yVals1);
-            set2.setYVals(yVals2);
-            set3.setYVals(yVals3);
+            //set1.setYVals(yVals1);
+            //set2.setYVals(yVals2);
+            //set3.setYVals(yVals3);
             mChart.notifyDataSetChanged();
         } else {
             // create 3 datasets with different types
             set1 = new BarDataSet(yVals1, "Company A");
-            set1.setColors(ColorTemplate.createColors(getApplicationContext(),
-                    ColorTemplate.FRESH_COLORS));
+            set1.setColors(ColorTemplate.VORDIPLOM_COLORS);
             set1.setColor(Color.rgb(104, 241, 175));
             set2 = new BarDataSet(yVals2, "Company B");
             set2.setColor(Color.rgb(164, 228, 251));
@@ -239,7 +259,8 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnChartVal
         }
     }
 
-*/
+
+
 
     public void onStartTrackingTouch(SeekBar seekBar) {
         // TODO Auto-generated method stub

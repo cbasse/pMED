@@ -18,24 +18,44 @@
         android:text="Confirm Parsing"
         android:id="@+id/ConfirmParsingText"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:textSize="30dp"
+        android:textColor="#ffffffff"
+        android:layout_marginTop="10dp" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Parse"
         android:id="@+id/ConfirmParseBtn"
+        android:background="#FFA401"
+        android:layout_marginTop="30dp"
+        android:paddingLeft="60dp"
+        android:paddingRight="60dp"
         android:layout_below="@+id/ConfirmParsingText"
-        android:layout_toLeftOf="@+id/ConfirmParsingText"
-        android:background="#ffffff" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="83dp"
+        android:layout_marginStart="83dp"
+        android:textColor="#ffffff"
+        android:textStyle="normal"
+        android:textSize="15dp" />
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Cancel"
         android:id="@+id/CancelParseBtn"
-        android:layout_below="@+id/ConfirmParsingText"
-        android:layout_toRightOf="@+id/ConfirmParsingText"
-        android:background="#ffffff" />
+        android:background="#FFA401"
+        android:paddingLeft="60dp"
+        android:paddingRight="60dp"
+        android:layout_above="@+id/ConfirmFilesText"
+        android:layout_toRightOf="@+id/ConfirmParseBtn"
+        android:layout_toEndOf="@+id/ConfirmParseBtn"
+        android:layout_marginLeft="60dp"
+        android:layout_marginStart="60dp"
+        android:textColor="#ffffff"
+        android:textStyle="normal"
+        android:textSize="15dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -45,7 +65,10 @@
         android:id="@+id/ConfirmFilesText"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/ConfirmParseBtn"
-        />
+        android:layout_marginTop="20dp"
+        android:textSize="20dp"
+        android:textColor="#ffffffff"
+        android:gravity="center_horizontal" />
 
 
 </RelativeLayout>

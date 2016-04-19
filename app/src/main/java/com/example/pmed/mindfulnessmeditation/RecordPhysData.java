@@ -275,7 +275,7 @@ public class RecordPhysData extends AppCompatActivity {
             startActivity(i);
         }
         if (view.getId() == R.id.button_test) {
-            Intent i = new Intent(RecordPhysData.this, BarChartActivityMultiDataset.class);
+            Intent i = new Intent(RecordPhysData.this, ListViewBarChartActivity.class);
             startActivity(i);
         }
     }
