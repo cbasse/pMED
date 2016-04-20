@@ -13,6 +13,8 @@ import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ActionMenuView;
@@ -25,10 +27,34 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UpdateExperiment extends AppCompatActivity {
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_home) {
+            Intent i = new Intent(UpdateExperiment.this, AdminHome.class);
+            //i.putExtra("Username", str);
+            startActivity(i);
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_experiment);
+
 
         File expDir = new File( Environment.getExternalStorageDirectory().getPath() + "/Experiments");
         List<File> folders = GetDirectories(expDir);

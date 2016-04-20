@@ -93,7 +93,6 @@ public class RecordPhysData extends AppCompatActivity {
                             }
                         }
 
-
                     }
 
                     //BhMacID = btDevice.getAddress();

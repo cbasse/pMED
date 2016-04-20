@@ -186,4 +186,19 @@
         android:textStyle="bold"
         android:layout_below="@id/icon_home"
         android:layout_marginTop="5dp"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="LOGOUT"
+        android:id="@+id/button_logout"
+        android:layout_marginBottom="2dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:textSize="18dp"
+        android:typeface="normal"
+        android:onClick="onClickButton"
+        android:background="#3a4f9c"
+        android:textColor="#FFA401"
+        android:textStyle="bold|normal" />
 </RelativeLayout>
