@@ -3,6 +3,8 @@ package com.example.pmed.mindfulnessmeditation;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,7 +23,7 @@ import zephyr.android.BioHarnessBT.ZephyrPacketEvent;
 import zephyr.android.BioHarnessBT.ZephyrPacketListener;
 import zephyr.android.BioHarnessBT.ZephyrProtocol;
 
-public class NewConnectedListener extends ConnectListenerImpl {
+public class NewConnectedListener extends ConnectListenerImpl implements Parcelable {
 
     private Handler _OldHandler;
     private Handler _aNewHandler;
@@ -71,12 +73,50 @@ public class NewConnectedListener extends ConnectListenerImpl {
     private File[][] files;
     private FileOutputStream[][] outputStreams;
 
+    public NewConnectedListener(Parcel in) {
+        super((Handler) in.readValue(ClassLoader.getSystemClassLoader()), null);
+        Handler handler = (Handler)in.readValue(ClassLoader.getSystemClassLoader());
 
+        _OldHandler = handler;
+        _aNewHandler = handler;
 
+        files = (File[][]) in.readValue(ClassLoader.getSystemClassLoader());
+        outputStreams = (FileOutputStream[][]) in.readValue(ClassLoader.getSystemClassLoader());
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    // write your object's data to the passed-in Parcel
+    @Override
+    public void writeToParcel(Parcel out, int flags) {
+        /*out.writeValue(_aNewHandler);
+        out.writeValue(_aNewHandler);
+        out.writeValue(files);
+        out.writeValue(outputStreams);*/
+    }
+
+    // this is used to regenerate your object. All Parcelables must have a CREATOR that implements these two methods
+    public static final Parcelable.Creator<NewConnectedListener> CREATOR = new Parcelable.Creator<NewConnectedListener>() {
+        public NewConnectedListener createFromParcel(Parcel in) {
+            return new NewConnectedListener(in);
+        }
+
+        public NewConnectedListener[] newArray(int size) {
+            return new NewConnectedListener[size];
+        }
+    };
+
+    public String toString() {
+        return toString();
+    }
 
 
 
     private PacketTypeRequest RqPacketType = new PacketTypeRequest();
+
     public NewConnectedListener(Handler handler,Handler _NewHandler) {
         super(handler, null);
         _OldHandler= handler;
