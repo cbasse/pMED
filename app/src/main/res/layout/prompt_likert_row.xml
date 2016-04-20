@@ -13,25 +13,25 @@
 
     <TextView
         android:id="@+id/likert_row_text"
-        android:layout_width="wrap_content"
+        android:layout_width="275dp"
         android:layout_height="wrap_content"
 
         android:textColor="@color/formTextColor"
-        android:textSize="@dimen/formTextSize"
-        />
+        android:textSize="20dp" />
 
     <Spinner
         android:id="@+id/likert_row_spinner"
-        android:layout_width="wrap_content"
+        android:layout_width="225dp"
         android:layout_height="wrap_content"
-
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="30dp"
         android:textColor="@color/formTextColor"
-        android:textSize="@dimen/formTextSize"
-
+        android:textSize="20dp"
+        android:textStyle="normal|bold"
         android:spinnerMode="dropdown"
         android:dropDownSelector="@color/colorAccent"
-        android:layout_marginStart="100dp"
-        >
+        android:gravity="center_horizontal"
+        android:textAlignment="center">
 
     </Spinner>
 
