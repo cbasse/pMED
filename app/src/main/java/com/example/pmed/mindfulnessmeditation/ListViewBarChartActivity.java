@@ -223,8 +223,8 @@ public class ListViewBarChartActivity extends DemoBase {
     public void onClickButton(View v) {
 
         if (v.getId() == R.id.button_logout) {
-            Intent i = new Intent(ListViewBarChartActivity.this, MainActivity.class);
-            startActivity(i);
+            setResult(1);
+            finish();
         }
     }
 }

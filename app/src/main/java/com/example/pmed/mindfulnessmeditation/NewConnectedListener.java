@@ -92,10 +92,10 @@ public class NewConnectedListener extends ConnectListenerImpl implements Parcela
     // write your object's data to the passed-in Parcel
     @Override
     public void writeToParcel(Parcel out, int flags) {
-        /*out.writeValue(_aNewHandler);
+        out.writeValue(_aNewHandler);
         out.writeValue(_aNewHandler);
         out.writeValue(files);
-        out.writeValue(outputStreams);*/
+        out.writeValue(outputStreams);
     }
 
     // this is used to regenerate your object. All Parcelables must have a CREATOR that implements these two methods

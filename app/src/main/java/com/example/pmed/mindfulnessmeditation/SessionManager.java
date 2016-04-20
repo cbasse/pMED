@@ -60,19 +60,39 @@ public class SessionManager extends Activity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Bundle bundle;
+
         if (requestCode == 0 && resultCode == 1) {
             FormResultsManager results = data.getParcelableExtra("com.example.pmed.FORM_RESULTS");
+
         } else if (requestCode == 1 && resultCode == 1) {
             formAResults = data.getParcelableExtra("com.example.pmed.FORM_RESULTS");
             Intent i = new Intent(this, RecordPhysData.class);
-            i.putExtra("com.example.pmed.PHYS_LISTENER", listener);
-            startActivityForResult(i,2);
+            //i.putExtra("com.example.pmed.PHYS_LISTENER", listener);
+            startActivityForResult(i, 2);
+
         } else if (requestCode == 2 && resultCode == 1) {
             Intent i = new Intent(this, Audio.class);
-            System.out.println(data.getParcelableExtra("com.example.PHYS_LISTENER"));
-            i.putExtra("com.example.pmed.PHYS_LISTENER", data.getParcelableExtra("com.example.pmed.PHYS_LISTENER"));
+            //System.out.println(data.getParcelableExtra("com.example.PHYS_LISTENER"));
+            //i.putExtra("com.example.pmed.PHYS_LISTENER", listener);
             startActivityForResult(i,3);
+
+        } else if (requestCode == 3 && resultCode == 1) {
+            Intent i = new Intent(this, FormActivity.class);
+            i.putExtra("com.example.pmed.FORM_RESULTS_B", formAResults);
+            i.putExtra("com.example.pmed.FORM_NAME", "TestStudy/bl_q.xml");
+            startActivityForResult(i,4);
+
+        } else if (requestCode == 4 && resultCode == 1) {
+            formAResults = data.getParcelableExtra("com.example.pmed.FORM_RESULTS_B");
+            Intent i = new Intent(this, RecordPhysData.class);
+            startActivityForResult(i, 5);
+
+        } else if (requestCode == 5 && resultCode == 1) {
+            Intent i = new Intent(this, ListViewBarChartActivity.class);
+            startActivityForResult(i, 6);
+
+        } else if (requestCode == 6 && resultCode == 1) {
+            finish();
         }
     }
     

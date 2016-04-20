@@ -58,7 +58,8 @@ public class Audio extends AppCompatActivity {
         }
         else if(v.getId() == R.id.button_audio_next)
         {
-            // hey caleb, you should totally change this, you know, if you feel like it and stuff
+            setResult(1,getIntent());
+            finish();
         }
 
     }
