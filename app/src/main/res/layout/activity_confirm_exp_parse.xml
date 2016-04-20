@@ -40,6 +40,7 @@
         android:textColor="#ffffff"
         android:textStyle="normal"
         android:textSize="15dp" />
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -55,7 +56,8 @@
         android:layout_marginStart="60dp"
         android:textColor="#ffffff"
         android:textStyle="normal"
-        android:textSize="15dp" />
+        android:textSize="15dp"
+        android:onClick="onClickButton" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -77,7 +79,11 @@
         android:id="@+id/ErrorMessage"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/ConfirmFilesText"
-        />
+        android:gravity="center_horizontal"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:textSize="20dp"
+        android:textStyle="bold|normal" />
 
 
 
