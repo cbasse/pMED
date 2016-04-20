@@ -93,14 +93,14 @@ public class RecordPhysData extends AppCompatActivity {
                             }
                         }
 
-
                     }
 
                     //BhMacID = btDevice.getAddress();
                     BluetoothDevice Device = adapter.getRemoteDevice(BhMacID);
                     String DeviceName = Device.getName();
                     _bt = new BTClient(adapter, BhMacID);
-                    _NConnListener = new NewConnectedListener(Newhandler,Newhandler);
+                    //_NConnListener = new NewConnectedListener(Newhandler,Newhandler);
+                    _NConnListener = getIntent().getParcelableExtra("com.example.pmed.PHYS_LISTENER"); //CALEB did this
                     _bt.addConnectedEventListener(_NConnListener);
 
 
@@ -144,8 +144,10 @@ public class RecordPhysData extends AppCompatActivity {
                         nextBtn.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                Intent i = new Intent(RecordPhysData.this, Audio.class);
-                                startActivity(i);
+                                //Intent i = new Intent(RecordPhysData.this, Audio.class);
+                                //startActivity(i);
+                                setResult(1, getIntent()); //CALEB did this
+                                finish(); //and this
                             }
                         });
 
@@ -225,7 +227,7 @@ public class RecordPhysData extends AppCompatActivity {
     }
 
 
-    final Handler Newhandler = new Handler(){
+    /*final Handler Newhandler = new Handler(){
         public void handleMessage(Message msg)
         {
 
@@ -261,7 +263,7 @@ public class RecordPhysData extends AppCompatActivity {
             }
         }
 
-    };
+    };*/
 
     public void NextActivity(View view)
     {
@@ -271,12 +273,16 @@ public class RecordPhysData extends AppCompatActivity {
 
     public void onButtonClick(View view) {
         if (view.getId() == R.id.ButtonNext) {
-            Intent i = new Intent(this, FormActivity.class);
-            startActivity(i);
+            //Intent i = new Intent(this, FormActivity.class);
+            setResult(1, getIntent());
+            finish();
+            //startActivity(i);
         }
         if (view.getId() == R.id.button_test) {
-            Intent i = new Intent(RecordPhysData.this, ListViewBarChartActivity.class);
-            startActivity(i);
+            //Intent i = new Intent(RecordPhysData.this, ListViewBarChartActivity.class);
+            setResult(1,getIntent());
+            finish();
+            //startActivity(i);
         }
     }
 }

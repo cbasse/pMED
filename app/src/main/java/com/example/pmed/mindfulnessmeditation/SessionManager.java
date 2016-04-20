@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 
 import com.example.pmed.formmanager.FormResultsManager;
@@ -17,7 +19,7 @@ public class SessionManager extends Activity {
     public final static int LAST_DAY = 2;
     public String userId;
     public FormResultsManager formAResults;
-
+    NewConnectedListener listener;
 
 
     @Override
@@ -25,12 +27,18 @@ public class SessionManager extends Activity {
         super.onCreate(savedInstanceState);
 
         this.userId = getIntent().getStringExtra("com.example.pmed.USER_ID");
+        final Handler Newhandler = new Handler(){
+            public void handleMessage(Message msg)
+            {
+            }
+        };
+        listener = new NewConnectedListener(Newhandler,Newhandler);
         runSession();
     }
     
     public void runSession() {
         //get info from database with user_id
-        int day = START_DAY;
+        int day = STANDARD_DAY;
         Intent i;
         switch (day) {
             case START_DAY:
@@ -52,12 +60,39 @@ public class SessionManager extends Activity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
         if (requestCode == 0 && resultCode == 1) {
             FormResultsManager results = data.getParcelableExtra("com.example.pmed.FORM_RESULTS");
-        } else if (requestCode == 1 && resultCode == 1) {
-            //FormResultsManager results = data.getParcelableExtra("com.example.pmed.FORM_RESULTS");
-            //Intent i = new Intent(this, RecordPhysData.class);
 
+        } else if (requestCode == 1 && resultCode == 1) {
+            formAResults = data.getParcelableExtra("com.example.pmed.FORM_RESULTS");
+            Intent i = new Intent(this, RecordPhysData.class);
+            //i.putExtra("com.example.pmed.PHYS_LISTENER", listener);
+            startActivityForResult(i, 2);
+
+        } else if (requestCode == 2 && resultCode == 1) {
+            Intent i = new Intent(this, Audio.class);
+            //System.out.println(data.getParcelableExtra("com.example.PHYS_LISTENER"));
+            //i.putExtra("com.example.pmed.PHYS_LISTENER", listener);
+            startActivityForResult(i,3);
+
+        } else if (requestCode == 3 && resultCode == 1) {
+            Intent i = new Intent(this, FormActivity.class);
+            i.putExtra("com.example.pmed.FORM_RESULTS_B", formAResults);
+            i.putExtra("com.example.pmed.FORM_NAME", "TestStudy/bl_q.xml");
+            startActivityForResult(i,4);
+
+        } else if (requestCode == 4 && resultCode == 1) {
+            formAResults = data.getParcelableExtra("com.example.pmed.FORM_RESULTS_B");
+            Intent i = new Intent(this, RecordPhysData.class);
+            startActivityForResult(i, 5);
+
+        } else if (requestCode == 5 && resultCode == 1) {
+            Intent i = new Intent(this, ListViewBarChartActivity.class);
+            startActivityForResult(i, 6);
+
+        } else if (requestCode == 6 && resultCode == 1) {
+            finish();
         }
     }
     
