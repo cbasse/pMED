@@ -5,9 +5,12 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 
 import zephyr.android.BioHarnessBT.BTClient;
 import zephyr.android.BioHarnessBT.ConnectListenerImpl;
@@ -45,6 +48,34 @@ public class NewConnectedListener extends ConnectListenerImpl {
     private AccelerometerPacketInfo AccInfoPacket = new AccelerometerPacketInfo();
     private SummaryPacketInfo SummaryInfoPacket = new SummaryPacketInfo();
 
+
+
+    // pmed Stuff
+    public enum ExperimentState {
+        Pre(0), During(1), Post(2);
+        
+        private final int value;
+        private ExperimentState(int value) { this.value = value; }
+        public int getValue() { return value; }
+    }
+    public ExperimentState experimentState;
+
+    public enum DataType {
+        HearRate(0), HRV(1);
+        
+        private final int value;
+        private DataType(int value) { this.value = value; }
+        public int getValue() { return value; }
+    }
+
+    private File[][] files;
+    private FileOutputStream[][] outputStreams;
+
+
+
+
+
+
     private PacketTypeRequest RqPacketType = new PacketTypeRequest();
     public NewConnectedListener(Handler handler,Handler _NewHandler) {
         super(handler, null);
@@ -53,25 +84,48 @@ public class NewConnectedListener extends ConnectListenerImpl {
 
         // TODO Auto-generated constructor stub
 
-    }
-    public void Connected(ConnectedEvent<BTClient> eventArgs) {
-        //mindful meditation stuff
-        /*
-        String fileLoc = Environment.getExternalStorageDirectory().getPath() + "/Experiments/__current__/prePhysio.txt";
-        File file = new File(fileLoc);
-        final FileOutputStream fos;
-        try {
-            fos = new FileOutputStream(fileLoc);
-        }
-        catch (Exception e)
+
+        // pmed Stuff
+        File dir = new File(Environment.getExternalStorageDirectory(), "Experiments");
+        if(!dir.exists())
         {
-            e.printStackTrace();
-            return;
+            dir.mkdirs();
         }
-        */
+
+        files = new File[ExperimentState.values().length][DataType.values().length];
+        outputStreams = new FileOutputStream[ExperimentState.values().length][DataType.values().length];
+
+        files[ExperimentState.Pre.getValue()][DataType.HearRate.getValue()] = new File(dir, "PhysioHRpre.txt");
+        files[ExperimentState.Pre.getValue()][DataType.HRV.getValue()] = new File(dir, "PhysioHRVpre.txt");
+        files[ExperimentState.During.getValue()][DataType.HearRate.getValue()] = new File(dir, "PhysioHRduring.txt");
+        files[ExperimentState.During.getValue()][DataType.HRV.getValue()] = new File(dir, "PhysioHRVduring.txt");
+        files[ExperimentState.Post.getValue()][DataType.HearRate.getValue()] = new File(dir, "PhysioHRpost.txt");
+        files[ExperimentState.Post.getValue()][DataType.HRV.getValue()] = new File(dir, "PhysioHRVpost.txt");
+
+        for (ExperimentState state : ExperimentState.values() )
+        {
+            for (DataType type : DataType.values() )
+            {
+                if(files[state.getValue()][type.getValue()].exists())
+                {
+                    files[state.getValue()][type.getValue()].delete();
+                }
+                try {
+                    files[state.getValue()][type.getValue()].createNewFile();
+                    outputStreams[ExperimentState.Pre.getValue()][DataType.HearRate.getValue()] = new FileOutputStream(files[state.getValue()][type.getValue()]);
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+    }
 
 
 
+    public void Connected(ConnectedEvent<BTClient> eventArgs) {
         System.out.println(String.format("Connected to BioHarness %s.", eventArgs.getSource().getDevice().getName()));
 		/*Use this object to enable or disable the different Packet types*/
         RqPacketType.GP_ENABLE = true;
@@ -100,12 +154,19 @@ public class NewConnectedListener extends ConnectListenerImpl {
 
                     case GP_MSG_ID:
 
-
-
-
-
                         //***************Displaying the Heart Rate********************************
                         int HRate =  GPInfo.GetHeartRate(DataArray);
+
+                        // mindful meditation stuff
+                        try{
+                            String st = String.valueOf(HRate) + ", ";
+                            outputStreams[experimentState.getValue()][DataType.HearRate.getValue()].write(st.getBytes());
+                        }
+                        catch (Exception e)
+                        {
+                            e.printStackTrace();
+                        }
+
                         Message text1 = _aNewHandler.obtainMessage(HEART_RATE);
                         Bundle b1 = new Bundle();
                         b1.putString("HeartRate", String.valueOf(HRate));
@@ -154,18 +215,6 @@ public class NewConnectedListener extends ConnectListenerImpl {
                         System.out.println("ROG Status is "+ ROGStatus);
 
 
-                        // mindful meditation stuff
-                        /*
-                        try{
-                            String st = String.valueOf(HRate) + ", ";
-                            fos.write(st.getBytes());
-                        }
-                        catch (Exception e)
-                        {
-                            e.printStackTrace();
-                        }
-                        */
-
                         break;
                     case BREATHING_MSG_ID:
 					/*Do what you want. Printing Sequence Number for now*/
@@ -188,8 +237,15 @@ public class NewConnectedListener extends ConnectListenerImpl {
                         System.out.println("Summary Packet Sequence Number is " + SummaryInfoPacket.GetSeqNum(DataArray));
                         int hrv = SummaryInfoPacket.GetHearRateVariability(DataArray);
 
-
-
+                        // mindful meditation stuff
+                        try{
+                            String st = String.valueOf(hrv) + ", ";
+                            outputStreams[experimentState.getValue()][DataType.HRV.getValue()].write(st.getBytes());
+                        }
+                        catch (Exception e)
+                        {
+                            e.printStackTrace();
+                        }
 
                         break;
 
@@ -197,4 +253,5 @@ public class NewConnectedListener extends ConnectListenerImpl {
             }
         });
     }
+
 }

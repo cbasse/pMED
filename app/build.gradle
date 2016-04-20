@@ -32,4 +32,6 @@ dependencies {
     compile files('libs/json_simple-1.1.jar')
     compile files('libs/dropbox-core-sdk-1.8.2.jar')
     compile files('libs/jackson-core-2.6.1.jar')
+
+    compile 'org.json:json:20141113'
 }

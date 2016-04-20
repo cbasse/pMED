@@ -69,6 +69,11 @@ public class ManageUserAccounts extends AppCompatActivity {
 
             } while(cursor.moveToNext()); //will return true if another row is avaiable
         }
+
+
+
+
+
     }
 
     public void onClickButton(View v) {
