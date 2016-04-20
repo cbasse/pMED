@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 
 
 import java.io.IOException;
@@ -35,6 +36,13 @@ public class Audio extends AppCompatActivity {
         mp.reset();
         try {
             mp.setDataSource(getApplicationContext(), audioUri);
+            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                public void onCompletion(MediaPlayer _mp) {
+                    final Button nextBtn = (Button) findViewById(R.id.button_audio_next);
+                    nextBtn.setVisibility(View.VISIBLE);
+                    finish();
+                }
+            });
             mp.prepare();
         }
         catch (IOException e)
@@ -47,6 +55,10 @@ public class Audio extends AppCompatActivity {
         if (v.getId() == R.id.image_audio) {
             mp.start();
             v.setEnabled(false);
+        }
+        else if(v.getId() == R.id.button_audio_next)
+        {
+            // hey caleb, you should totally change this, you know, if you feel like it and stuff
         }
 
     }
