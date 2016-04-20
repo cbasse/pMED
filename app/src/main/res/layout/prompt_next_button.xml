@@ -6,11 +6,13 @@
     android:paddingRight="50dp"
     android:paddingTop="20dp"
     android:paddingBottom="20dp"
-    android:background="#ffffff"
+    android:background="#FFA401"
     android:textStyle="bold|normal"
     android:textSize="20dp"
-    android:text="Done"
+    android:text="SUBMIT"
     android:layout_marginBottom="30dp"
-    android:layout_centerHorizontal="true">
+    android:layout_centerHorizontal="true"
+    android:textColor="#ffffff"
+    android:id="@+id/button_submit">
 
 </Button>
