@@ -27,7 +27,7 @@ public class Form
     private XmlPullParser xpp;
 
     public Form(File formFile)
-    {
+        throws Exception{
         try {
             //String fileContent = readXMLFile(formFile);
             XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
@@ -95,7 +95,7 @@ public class Form
                 System.out.println("Problem on line: " + xpp.getLineNumber());
             e.printStackTrace();
             System.out.println(formName);
-            System.exit(0);
+            throw new Exception("Problem in " + formFile.getName() + "\n" + e.getMessage());
         }
     }
 

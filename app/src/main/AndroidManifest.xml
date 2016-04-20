@@ -50,8 +50,11 @@
         <activity android:name=".BarChartActivityMultiDataset" />
         <activity android:name=".UpdateExperiment" />
         <activity android:name=".ConfirmExpParse" />
-        <activity android:name=".Audio"></activity>
-        <activity android:name=".ListViewBarChartActivity"></activity>
+        <activity android:name=".Audio"/>
+        <activity android:name=".SessionManager" />
+        <activity android:name=".ListViewBarChartActivity"/>
+
+
     </application>
 
 </manifest>

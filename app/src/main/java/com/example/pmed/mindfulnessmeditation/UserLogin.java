@@ -29,10 +29,14 @@ public class UserLogin extends AppCompatActivity {
             //String password = helper.globalPassword();
 
             if(pass.equals(password)) {
-                Intent i = new Intent(UserLogin.this, RecordPhysData.class);
+                //Intent i = new Intent(UserLogin.this, RecordPhysData.class);
                 //Intent i = new Intent(UserLogin.this, FormActivity.class);
-                //i.putExtra("Username",str);
+                //SessionManager session = new SessionManager("someUserId", this);
+                //session.runSession();
+                Intent i = new Intent(UserLogin.this, SessionManager.class);
+                i.putExtra("com.example.pmed.USER_ID", "someUserId");
                 startActivity(i);
+                //startActivity(i);
             }
             else {
                 //popup msg

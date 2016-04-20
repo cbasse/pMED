@@ -22,7 +22,7 @@
         android:layout_marginLeft="@dimen/promptOptionMarginLeft"
         >
 
-        <!-- prompt_radiobuttonml get programmatically inserted here from FormManager.multipleChoice() -->
+        <!-- prompt_radiobutton get programmatically inserted here from FormView.multipleChoice() -->
 
     </RadioGroup>
 
