@@ -65,7 +65,9 @@ public class ManageUserAccounts extends AppCompatActivity {
     private static final String TAG_ADMIN_PASS = "admin_password";
     private static final String TAG_GLOBAL_PASS = "global_user_password";
     private static final String TAG_IS_ADMIN = "is_admin";
+    private static final String TAG_USERS = "users";
     JSONArray users = null;
+    ArrayList<HashMap<String, String>> usersList;
 
 
 
@@ -80,11 +82,13 @@ public class ManageUserAccounts extends AppCompatActivity {
         listView.setAdapter(listDataAdapter);
 
 
+        usersList = new ArrayList<HashMap<String, String>>();
+        new LoadAllUsers().execute();
 
-        //users = new ArrayList<HashMap<String, String>>();
 
 
 
+        /*
         helper = new DatabaseHelper(getApplicationContext());
         sqLiteDatabase = helper.getReadableDatabase();
         cursor = helper.getInformation(sqLiteDatabase);
@@ -106,6 +110,7 @@ public class ManageUserAccounts extends AppCompatActivity {
 
             } while(cursor.moveToNext()); //will return true if another row is avaiable
         }
+        */
 
 
 
@@ -137,7 +142,6 @@ public class ManageUserAccounts extends AppCompatActivity {
 
             // Check your log cat for JSON reponse
             Log.d("All Products: ", json.toString());
-            /*
             try {
                 // Checking for SUCCESS TAG
                 int success = json.getInt(TAG_SUCCESS);
@@ -145,27 +149,32 @@ public class ManageUserAccounts extends AppCompatActivity {
                 if (success == 1) {
                     // products found
                     // Getting Array of Products
-                    products = json.getJSONArray(TAG_PRODUCTS);
+                    users = json.getJSONArray(TAG_USERS);
 
                     // looping through All Products
-                    for (int i = 0; i < products.length(); i++) {
-                        JSONObject c = products.getJSONObject(i);
+                    for (int i = 0; i < users.length(); i++) {
+                        JSONObject c = users.getJSONObject(i);
 
                         // Storing each json item in variable
-                        String id = c.getString(TAG_PID);
-                        String name = c.getString(TAG_NAME);
+                        String id = c.getString(TAG_ID);
+                        String uname = c.getString(TAG_USERNAME);
+                        String uPass = c.getString(TAG_GLOBAL_PASS);
+                        String uExpId = c.getString(TAG_EXP_ID);
 
                         // creating new HashMap
                         HashMap<String, String> map = new HashMap<String, String>();
 
                         // adding each child node to HashMap key => value
-                        map.put(TAG_PID, id);
-                        map.put(TAG_NAME, name);
+                        map.put(TAG_ID, id);
+                        map.put(TAG_USERNAME, uname);
+                        map.put(TAG_GLOBAL_PASS, uPass);
+                        map.put(TAG_EXP_ID, uExpId);
 
                         // adding HashList to ArrayList
-                        productsList.add(map);
+                        usersList.add(map);
                     }
                 } else {
+                    /*
                     // no products found
                     // Launch Add New product Activity
                     Intent i = new Intent(getApplicationContext(),
@@ -173,14 +182,35 @@ public class ManageUserAccounts extends AppCompatActivity {
                     // Closing all previous activities
                     i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(i);
+                    */
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
 
-            */
             return null;
         }
+
+
+        protected void onPostExecute(String file_url) {
+            // updating UI from Background Thread
+            runOnUiThread(new Runnable() {
+                public void run() {
+                    Log.w("USERRSS", "count is " + usersList.size());
+                    for (HashMap<String, String> user: usersList)
+                    {
+                        Log.w("USERRSS", user.get(TAG_ID).toString());
+                        Subjects s = new Subjects();
+                        s.setId(Integer.parseInt(user.get(TAG_ID).toString()));
+                        s.setUname(user.get(TAG_USERNAME).toString());
+                        s.setPass(user.get(TAG_GLOBAL_PASS).toString());
+                        listDataAdapter.add(s);
+                    }
+                }
+            });
+
+        }
+
 
     }
 
