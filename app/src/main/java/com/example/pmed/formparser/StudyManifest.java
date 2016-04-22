@@ -3,6 +3,13 @@ package com.example.pmed.formparser;
 /**
  * Created by calebbasse on 4/11/16.
  */
+import android.content.Intent;
+import android.os.AsyncTask;
+import android.util.Log;
+
+import com.example.pmed.mindfulnessmeditation.JSONParser;
+import com.example.pmed.mindfulnessmeditation.ManageUserAccounts;
+
 import java.io.IOException;
 import java.io.StringReader;
 
@@ -14,11 +21,17 @@ import java.io.FileReader;
 import java.io.FileNotFoundException;
 import java.lang.StringBuilder;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class StudyManifest {
     public String studyName;
@@ -30,6 +43,11 @@ public class StudyManifest {
     public Form formB;
     public int readingB;
     public Form formFinal = null;
+
+
+    JSONParser jsonParser = new JSONParser();
+    String url = "http://meagherlab.co/create_study.php";
+    String TAG_SUCCESS = "success";
 
     private XmlPullParser xpp;
 
@@ -76,6 +94,15 @@ public class StudyManifest {
                     formB = new Form(findFile(filename,files));
                 }
             }
+
+            /*
+
+                Lincolns code motha trucka
+
+            */
+            new CreateNewStudy().execute();
+
+
 
 
 
@@ -161,5 +188,125 @@ public class StudyManifest {
             xpp.next();
     }
 
+
+
+
+
+
+    class CreateNewStudy extends AsyncTask<String, String, String> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+
+        protected String doInBackground(String... args) {
+            Form[] forms = { baseline, formA, formB, formFinal };
+
+
+            // Building Parameters
+            List<NameValuePair> params = new ArrayList<NameValuePair>();
+
+            try
+            {
+                JSONObject jsonStudy = new JSONObject();
+
+                JSONArray jsonForms = new JSONArray();
+                for (Form form: forms)
+                {
+                    JSONObject jsonForm = new JSONObject();
+
+                    jsonForm.put("form_name", form.formName);
+                    jsonForm.put("form_desc", form.formDesc);
+
+                    JSONArray jsonQuestions = new JSONArray();
+                    for (Prompt prompt: form.prompts)
+                    {
+                        Question[] qs;
+                        if(prompt.promptType == "likert") // NEEED TO FIX THIS !!!!
+                        {
+                            qs = prompt.likertQuestions;
+                        }
+                        else
+                        {
+                            qs = new Question[] { prompt.question };
+                        }
+
+                        for (Question q: qs )
+                        {
+                            JSONObject jsonQuestion = new JSONObject();
+
+                            jsonQuestion.put("question_type", prompt.promptType);
+                            jsonQuestion.put("question_name", prompt.name);
+                            jsonQuestion.put("question_likert_description", prompt.likertDescription);
+                            jsonQuestion.put("question_text", q.getText());
+                            jsonQuestion.put("question_reverse", q.isReverse().toString());
+                            jsonQuestion.put("question_is_positive", q.isPositive().toString());
+
+                            JSONArray jsonAnswers = new JSONArray();
+                            for(Option op : prompt.options)
+                            {
+                                JSONObject jsonAnswer = new JSONObject();
+
+                                jsonAnswer.put("answer_choice", op.choice);
+                                jsonAnswer.put("answer_score", op.score);
+                                jsonAnswer.put("answer_is_text", op.textBox.toString());
+
+                                jsonAnswers.put(jsonAnswer);
+                            }
+                            jsonQuestion.put("question_answers", jsonAnswers);
+
+                            jsonQuestions.put(jsonQuestion);
+                        }
+                    }
+                    jsonForm.put("form_questions", jsonQuestions);
+
+                    jsonForms.put(jsonForm);
+                }
+
+                jsonStudy.put("study_forms", jsonForms);
+
+                params.add(new BasicNameValuePair("study", jsonStudy.toString()));
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+
+            // getting JSON Object
+            // Note that create product url accepts POST method
+            JSONObject json = jsonParser.makeHttpRequest(url,
+                    "POST", params);
+
+            // check log cat fro response
+            Log.d("Create Response", json.toString());
+
+            // check for success tag
+            try {
+                int success = json.getInt(TAG_SUCCESS);
+
+                if (success == 1) {
+                    // successfully created product
+
+                    /*
+                    Intent i = new Intent(AddUser.this, ManageUserAccounts.class);
+                    startActivity(i);
+
+                    // closing this screen
+                    finish();
+                    */
+
+                } else {
+                    // failed to create product
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+    }
 
 }

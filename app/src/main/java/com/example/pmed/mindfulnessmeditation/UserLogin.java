@@ -1,15 +1,33 @@
 package com.example.pmed.mindfulnessmeditation;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class UserLogin extends AppCompatActivity {
 
-    DatabaseHelper helper = new DatabaseHelper(this);
+    //DatabaseHelper helper = new DatabaseHelper(this);
+    String uname;
+    String pass;
+    JSONParser jsonParser = new JSONParser();
+    private static final String url = "http://meagherlab.co/authenticate_user.php";
+    private static final String TAG_SUCCESS = "success";
+    private static final String TAG_MESSAGE = "message";
+    private static final String TAG_USERNAME = "username";
+    private static final String TAG_PASSWORD = "password";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,13 +39,15 @@ public class UserLogin extends AppCompatActivity {
         if(v.getId() == R.id.button_user_login) {
 
             EditText a = (EditText)findViewById(R.id.TFuser_name);
-            String str = a.getText().toString();
+            uname = a.getText().toString();
             EditText b = (EditText)findViewById(R.id.TFuser_password);
-            String pass = b.getText().toString();
+            pass = b.getText().toString();
 
-            String password = helper.searchPass(str);
+            new JSONUserLogin().execute();
+            //String password = helper.searchPass(str);
             //String password = helper.globalPassword();
 
+            /*
             if(pass.equals(password)) {
                 //Intent i = new Intent(UserLogin.this, RecordPhysData.class);
                 //Intent i = new Intent(UserLogin.this, FormActivity.class);
@@ -43,6 +63,77 @@ public class UserLogin extends AppCompatActivity {
                 Toast temp = Toast.makeText(UserLogin.this, "Username and Password don't match", Toast.LENGTH_SHORT);
                 temp.show();
             }
+            */
         }
+    }
+
+
+    class JSONUserLogin extends AsyncTask<String, String, String> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+
+        protected String doInBackground(String... args) {
+
+            // Building Parameters
+            List<NameValuePair> params = new ArrayList<NameValuePair>();
+            params.add(new BasicNameValuePair("username", uname));
+            params.add(new BasicNameValuePair("user_password", pass));
+
+            // getting JSON Object
+            // Note that create product url accepts POST method
+            JSONObject json = jsonParser.makeHttpRequest(url,
+                    "POST", params);
+
+            // check log cat fro response
+            Log.d("Create Response", json.toString());
+
+            // check for success tag
+            try {
+                int success = json.getInt(TAG_SUCCESS);
+
+                if (success == 1) {
+
+                    Intent i = new Intent(UserLogin.this, SessionManager.class);
+                    i.putExtra("com.example.pmed.USER_ID", "someUserId");
+                    startActivity(i);
+
+                    // closing this screen
+                    finish();
+
+
+
+
+
+                } else if (success == 0){
+                    // successfully created product
+                    String message = json.getString(TAG_MESSAGE);
+
+                    Log.w("ADMINLOGIN", message);
+
+                    if(message.equals(TAG_PASSWORD))
+                    {
+                        // pass was wrong
+                        Toast temp = Toast.makeText(UserLogin.this, "Password error", Toast.LENGTH_SHORT);
+                        temp.show();
+                    }
+                    else
+                    {
+                        Toast temp = Toast.makeText(UserLogin.this, "Username error", Toast.LENGTH_SHORT);
+                        temp.show();
+                    }
+
+                    finish();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
     }
 }
