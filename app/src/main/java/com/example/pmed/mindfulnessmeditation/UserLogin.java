@@ -81,7 +81,7 @@ public class UserLogin extends AppCompatActivity {
             // Building Parameters
             List<NameValuePair> params = new ArrayList<NameValuePair>();
             params.add(new BasicNameValuePair("username", uname));
-            params.add(new BasicNameValuePair("user_password", pass));
+            params.add(new BasicNameValuePair("password", pass));
 
             // getting JSON Object
             // Note that create product url accepts POST method
