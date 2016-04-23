@@ -1,5 +1,6 @@
 package com.example.pmed.mindfulnessmeditation;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -40,6 +41,7 @@ public class BarChartActivityMultiDataset extends DemoBase implements SeekBar.On
 
     private BarChart mChart;
     private Typeface tf;
+    DatabaseHelper helper = new DatabaseHelper(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -222,6 +224,8 @@ public class BarChartActivityMultiDataset extends DemoBase implements SeekBar.On
             e.printStackTrace();
             //return; // !!MIGHT NEED THIS!!
         }*/
+
+        //String password = helper.getData1();
 
         if (mChart.getData() != null &&
                 mChart.getData().getDataSetCount() > 0) {

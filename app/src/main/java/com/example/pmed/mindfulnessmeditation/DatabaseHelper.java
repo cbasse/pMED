@@ -19,7 +19,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_ID = "id";
     private static final String COLUMN_UNAME = "uname";
     private static final String COLUMN_PASS = "pass";
-
+    private static final String COLUMN_1 = "data1";
+    private static final String COLUMN_2 = "data2";
+    private static final String COLUMN_3 = "data3";
 
     private SQLiteDatabase db;
 
@@ -74,6 +76,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return b;
     }
 
+
     /*public String globalPassword() {
         String globalPassword = "";
         String query = "select * from subjects where isAdmin = true";
@@ -85,6 +88,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return globalPassword;
     }*/
+
+    public Cursor getData1() {
+        Cursor cursor;
+        String[] projections = {COLUMN_1, COLUMN_2, COLUMN_3};
+        cursor = db.query(TABLE_NAME,projections,null,null,null,null,null);
+        return cursor;
+    }
 
     public Cursor getInformation(SQLiteDatabase db) {
         Cursor cursor;

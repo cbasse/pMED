@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.pmed.graphmanager.DemoBase;
 import com.github.mikephil.charting.animation.Easing;
@@ -34,7 +35,7 @@ import java.util.List;
 
 public class ListViewBarChartActivity extends DemoBase {
 
-    BarChart chart, chart1;
+    BarChart chart1, chart2, chart3, chart4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,9 +48,8 @@ public class ListViewBarChartActivity extends DemoBase {
 
         ArrayList<BarData> list = new ArrayList<BarData>();
 
-
         // 4 items
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 1; i++) {
             list.add(generateData(i + 1));
         }
 
@@ -75,49 +75,27 @@ public class ListViewBarChartActivity extends DemoBase {
 
             ViewHolder holder = null;
 
+
             if (convertView == null) {
 
                 holder = new ViewHolder();
 
                 convertView = LayoutInflater.from(getContext()).inflate(
                         R.layout.list_item_barchart, null);
-                holder.chart = (BarChart) convertView.findViewById(R.id.chart);
                 holder.chart1 = (BarChart) convertView.findViewById(R.id.chart1);
+                holder.chart2 = (BarChart) convertView.findViewById(R.id.chart2);
+                holder.chart3 = (BarChart) convertView.findViewById(R.id.chart3);
+                holder.chart4 = (BarChart) convertView.findViewById(R.id.chart4);
 
                 convertView.setTag(holder);
 
             } else {
                 holder = (ViewHolder) convertView.getTag();
             }
-
-            // apply styling
-            data.setValueTextColor(Color.BLACK);
-            holder.chart.setDescription("CHART 1");
-            holder.chart.setDescriptionPosition(data.getXValMaximumLength(),data.getYMin()); //HELP
-            holder.chart.setDrawGridBackground(false);
-
-            XAxis xAxis = holder.chart.getXAxis();
-            xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-            xAxis.setDrawGridLines(false);
-
-            YAxis leftAxis = holder.chart.getAxisLeft();
-            leftAxis.setLabelCount(5, false);
-            leftAxis.setSpaceTop(15f);
-
-            YAxis rightAxis = holder.chart.getAxisRight();
-            rightAxis.setLabelCount(5, false);
-            rightAxis.setSpaceTop(15f);
-
-            // set data
-            holder.chart.setData(data);
-
-            // do not forget to refresh the chart
-            //holder.chart.invalidate();
-            holder.chart.animateY(700, Easing.EasingOption.EaseInCubic);
-
+            //////////////////////CHART 1/////
             // apply styling
             //data1.setValueTextColor(Color.RED);
-            holder.chart1.setDescription("CHART 2");
+            holder.chart1.setDescription("");
             holder.chart1.setDrawGridBackground(false);
 
             XAxis xAxis1 = holder.chart1.getXAxis();
@@ -139,12 +117,89 @@ public class ListViewBarChartActivity extends DemoBase {
 //            holder.chart.invalidate();
             holder.chart1.animateY(700, Easing.EasingOption.EaseInCubic);
 
+            //////////////////////CHART 2/////
+            // apply styling
+            //data1.setValueTextColor(Color.RED);
+            holder.chart2.setDescription("");
+            holder.chart2.setDrawGridBackground(false);
+
+            XAxis xAxis2 = holder.chart2.getXAxis();
+            xAxis2.setPosition(XAxis.XAxisPosition.BOTTOM);
+            xAxis2.setDrawGridLines(false);
+
+            YAxis leftAxis2 = holder.chart2.getAxisLeft();
+            leftAxis2.setLabelCount(5, false);
+            leftAxis2.setSpaceTop(15f);
+
+            YAxis rightAxis2 = holder.chart2.getAxisRight();
+            rightAxis2.setLabelCount(5, false);
+            rightAxis2.setSpaceTop(15f);
+
+            // set data
+            holder.chart2.setData(data);
+
+            // do not forget to refresh the chart
+//            holder.chart.invalidate();
+            holder.chart2.animateY(700, Easing.EasingOption.EaseInCubic);
+
+
+            //////////////////////CHART 3/////
+            // apply styling
+            //data1.setValueTextColor(Color.RED);
+            holder.chart3.setDescription("");
+            holder.chart3.setDrawGridBackground(false);
+
+            XAxis xAxis3 = holder.chart3.getXAxis();
+            xAxis3.setPosition(XAxis.XAxisPosition.BOTTOM);
+            xAxis3.setDrawGridLines(false);
+
+            YAxis leftAxis3 = holder.chart3.getAxisLeft();
+            leftAxis3.setLabelCount(5, false);
+            leftAxis3.setSpaceTop(15f);
+
+            YAxis rightAxis3 = holder.chart3.getAxisRight();
+            rightAxis3.setLabelCount(5, false);
+            rightAxis3.setSpaceTop(15f);
+
+            // set data
+            holder.chart3.setData(data);
+
+            // do not forget to refresh the chart
+//            holder.chart.invalidate();
+            holder.chart3.animateY(700, Easing.EasingOption.EaseInCubic);
+
+            /////////////////////////CHART 4//
+            // apply styling
+            data.setValueTextColor(Color.BLACK);
+            holder.chart4.setDescription("");
+            //holder.chart.setDescriptionPosition(data.getXValMaximumLength(),data.getYMin()); //HELP
+            holder.chart4.setDrawGridBackground(false);
+
+            XAxis xAxis4 = holder.chart4.getXAxis();
+            xAxis4.setPosition(XAxis.XAxisPosition.BOTTOM);
+            xAxis4.setDrawGridLines(false);
+
+            YAxis leftAxis4 = holder.chart4.getAxisLeft();
+            leftAxis4.setLabelCount(5, false);
+            leftAxis4.setSpaceTop(15f);
+
+            YAxis rightAxis4 = holder.chart4.getAxisRight();
+            rightAxis4.setLabelCount(5, false);
+            rightAxis4.setSpaceTop(15f);
+
+            // set data
+            holder.chart4.setData(data);
+
+            // do not forget to refresh the chart
+            //holder.chart.invalidate();
+            holder.chart4.animateY(700, Easing.EasingOption.EaseInCubic);
+
             return convertView;
         }
 
         private class ViewHolder {
 
-            BarChart chart, chart1;
+            BarChart chart1, chart2, chart3, chart4;
         }
     }
 

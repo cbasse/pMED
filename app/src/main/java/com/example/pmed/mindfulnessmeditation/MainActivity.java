@@ -33,6 +33,12 @@ public class MainActivity extends AppCompatActivity {
             Intent i = new Intent(MainActivity.this, AdminLogin.class);
             startActivity(i);
         }
+
+        if(v.getId() == R.id.test) {
+
+            Intent i = new Intent(MainActivity.this, ListViewBarChartActivity.class);
+            startActivity(i);
+        }
     }
 
     public static void buttonEffect(View button){

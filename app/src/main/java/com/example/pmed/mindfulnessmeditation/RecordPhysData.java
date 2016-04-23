@@ -46,10 +46,8 @@ public class RecordPhysData extends AppCompatActivity {
     LinearLayout layout;
     LinearLayout.LayoutParams layoutParms;
 
-    TextView timerText;
-
     CountDownTimer timer;
-    TextView tiemrText;
+    TextView timerText;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -67,8 +65,9 @@ public class RecordPhysData extends AppCompatActivity {
         TextView tv = (TextView) findViewById(R.id.labelStatusMsg);
         String ErrorText  = "Not Connected to BioHarness";
         tv.setText(ErrorText);
-        final Button btnConnect = (Button) findViewById(R.id.ButtonConnect);
-        final ImageView imgWifi = (ImageView) findViewById(R.id.image_wifi);
+
+        final ImageView btnConnect = (ImageView) findViewById(R.id.ButtonConnect);
+        final ImageView imgBluetooth = (ImageView) findViewById(R.id.icon_bluetooth);
         final Button nextBtn = (Button) findViewById(R.id.ButtonNext);
         //btnConnect != null
         if (((MindfulnessMeditation)getApplication())._bt == null)
@@ -118,7 +117,7 @@ public class RecordPhysData extends AppCompatActivity {
                         //!!!!!!!!!!!!!CONECTED
 
                         final Button startBtn = (Button) findViewById(R.id.ButtonStart);
-                        imgWifi.setVisibility(View.GONE);
+                        imgBluetooth.setVisibility(View.GONE);
                         btnConnect.setVisibility(View.GONE);
                         startBtn.setVisibility(View.VISIBLE);
                         timerText = (TextView)findViewById(R.id.CountdownText);
@@ -175,7 +174,7 @@ public class RecordPhysData extends AppCompatActivity {
             //!!!!!!!!!!!!!CONECTED
 
             final Button startBtn = (Button) findViewById(R.id.ButtonStart);
-            imgWifi.setVisibility(View.GONE);
+            imgBluetooth.setVisibility(View.GONE);
             btnConnect.setVisibility(View.GONE);
             startBtn.setVisibility(View.VISIBLE);
             timerText = (TextView)findViewById(R.id.CountdownText);

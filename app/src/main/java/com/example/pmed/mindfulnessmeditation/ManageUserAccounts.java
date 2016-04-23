@@ -203,7 +203,7 @@ public class ManageUserAccounts extends AppCompatActivity {
                         Subjects s = new Subjects();
                         s.setId(Integer.parseInt(user.get(TAG_ID).toString()));
                         s.setUname(user.get(TAG_USERNAME).toString());
-                        s.setPass(user.get(TAG_GLOBAL_PASS).toString());
+                        s.setPass(user.get(TAG_EXP_ID).toString());
                         listDataAdapter.add(s);
                     }
                 }

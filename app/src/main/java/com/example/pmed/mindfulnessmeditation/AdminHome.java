@@ -3,6 +3,7 @@ package com.example.pmed.mindfulnessmeditation;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,6 +30,12 @@ public class AdminHome extends AppCompatActivity {
 
         if(v.getId() == R.id.icon_logout) {
             Intent i = new Intent(AdminHome.this, MainActivity.class);
+            startActivity(i);
+        }
+
+        if(v.getId() == R.id.icon_password) {
+            Log.w("admin-pass", "TEST 0!");
+            Intent i = new Intent(AdminHome.this, AdminChangePassword.class);
             startActivity(i);
         }
 
