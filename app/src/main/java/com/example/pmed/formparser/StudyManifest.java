@@ -3,6 +3,14 @@ package com.example.pmed.formparser;
 /**
  * Created by calebbasse on 4/11/16.
  */
+import android.content.Intent;
+import android.os.AsyncTask;
+import android.util.Log;
+
+import com.example.pmed.mindfulnessmeditation.AddUser;
+import com.example.pmed.mindfulnessmeditation.JSONParser;
+import com.example.pmed.mindfulnessmeditation.ManageUserAccounts;
+
 import java.io.IOException;
 import java.io.StringReader;
 
@@ -14,11 +22,16 @@ import java.io.FileReader;
 import java.io.FileNotFoundException;
 import java.lang.StringBuilder;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class StudyManifest {
     public String studyName;
@@ -30,6 +43,10 @@ public class StudyManifest {
     public Form formB;
     public int readingB;
     public Form formFinal = null;
+
+    JSONParser jsonParser = new JSONParser();
+    String url = "http://meagherlab.co/create_user.php";
+    String TAG_SUCCESS = "success";
 
     private XmlPullParser xpp;
 
@@ -89,6 +106,8 @@ public class StudyManifest {
             System.out.println("formFinal " + formFinal);
             System.out.println();
 
+            new StudyToDatabase().execute();
+
         } catch (Exception e) {
             if (e.getMessage() != null)
                 System.out.println(e.getMessage());
@@ -97,6 +116,48 @@ public class StudyManifest {
             e.printStackTrace();
             throw e;
         }
+    }
+
+    class StudyToDatabase extends AsyncTask<String, String, String> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+
+        protected String doInBackground(String... args) {
+
+            // Building Parameters
+            List<NameValuePair> params = new ArrayList<NameValuePair>();
+            params.add(new BasicNameValuePair("username", ""));
+            params.add(new BasicNameValuePair("global_user_password", ""));
+            params.add(new BasicNameValuePair("admin_password", ""));
+            params.add(new BasicNameValuePair("id", "0"));
+            params.add(new BasicNameValuePair("experiment_id", "0"));
+            params.add(new BasicNameValuePair("questionnaire_id", "0"));
+            params.add(new BasicNameValuePair("is_admin", "0"));
+
+            // getting JSON Object
+            // Note that create product url accepts POST method
+            Log.w("JSON", "Test1");
+            JSONObject json = jsonParser.makeHttpRequest(url,
+                    "POST", params);
+
+            // check log cat fro response
+            Log.d("Create Response", json.toString());
+
+            // check for success tag
+            try {
+                int success = json.getInt(TAG_SUCCESS);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
     }
 
     private String parseManifestName()

@@ -32,7 +32,9 @@ public class SessionManager extends Activity {
             {
             }
         };
-        listener = new NewConnectedListener(Newhandler,Newhandler);
+
+        ((MindfulnessMeditation)getApplication()).listener = new NewConnectedListener(Newhandler,Newhandler);
+        listener = ((MindfulnessMeditation)getApplication()).listener;
         runSession();
     }
     
@@ -67,13 +69,13 @@ public class SessionManager extends Activity {
         } else if (requestCode == 1 && resultCode == 1) {
             formAResults = data.getParcelableExtra("com.example.pmed.FORM_RESULTS");
             Intent i = new Intent(this, RecordPhysData.class);
-            //i.putExtra("com.example.pmed.PHYS_LISTENER", listener);
+            listener.experimentState = NewConnectedListener.ExperimentState.Pre;
+            System.out.println(listener.experimentState);
             startActivityForResult(i, 2);
 
         } else if (requestCode == 2 && resultCode == 1) {
             Intent i = new Intent(this, Audio.class);
-            //System.out.println(data.getParcelableExtra("com.example.PHYS_LISTENER"));
-            //i.putExtra("com.example.pmed.PHYS_LISTENER", listener);
+            listener.experimentState = NewConnectedListener.ExperimentState.During;
             startActivityForResult(i,3);
 
         } else if (requestCode == 3 && resultCode == 1) {
@@ -84,6 +86,7 @@ public class SessionManager extends Activity {
 
         } else if (requestCode == 4 && resultCode == 1) {
             formAResults = data.getParcelableExtra("com.example.pmed.FORM_RESULTS_B");
+            listener.experimentState = NewConnectedListener.ExperimentState.Post;
             Intent i = new Intent(this, RecordPhysData.class);
             startActivityForResult(i, 5);
 

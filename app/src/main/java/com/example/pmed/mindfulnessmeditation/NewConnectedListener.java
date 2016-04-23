@@ -23,7 +23,7 @@ import zephyr.android.BioHarnessBT.ZephyrPacketEvent;
 import zephyr.android.BioHarnessBT.ZephyrPacketListener;
 import zephyr.android.BioHarnessBT.ZephyrProtocol;
 
-public class NewConnectedListener extends ConnectListenerImpl implements Parcelable {
+public class NewConnectedListener extends ConnectListenerImpl {
 
     private Handler _OldHandler;
     private Handler _aNewHandler;
@@ -72,48 +72,6 @@ public class NewConnectedListener extends ConnectListenerImpl implements Parcela
 
     private File[][] files;
     private FileOutputStream[][] outputStreams;
-
-    public NewConnectedListener(Parcel in) {
-        super((Handler) in.readValue(ClassLoader.getSystemClassLoader()), null);
-        Handler handler = (Handler)in.readValue(ClassLoader.getSystemClassLoader());
-
-        _OldHandler = handler;
-        _aNewHandler = handler;
-
-        files = (File[][]) in.readValue(ClassLoader.getSystemClassLoader());
-        outputStreams = (FileOutputStream[][]) in.readValue(ClassLoader.getSystemClassLoader());
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    // write your object's data to the passed-in Parcel
-    @Override
-    public void writeToParcel(Parcel out, int flags) {
-        out.writeValue(_aNewHandler);
-        out.writeValue(_aNewHandler);
-        out.writeValue(files);
-        out.writeValue(outputStreams);
-    }
-
-    // this is used to regenerate your object. All Parcelables must have a CREATOR that implements these two methods
-    public static final Parcelable.Creator<NewConnectedListener> CREATOR = new Parcelable.Creator<NewConnectedListener>() {
-        public NewConnectedListener createFromParcel(Parcel in) {
-            return new NewConnectedListener(in);
-        }
-
-        public NewConnectedListener[] newArray(int size) {
-            return new NewConnectedListener[size];
-        }
-    };
-
-    public String toString() {
-        return toString();
-    }
-
-
 
     private PacketTypeRequest RqPacketType = new PacketTypeRequest();
 
@@ -200,6 +158,7 @@ public class NewConnectedListener extends ConnectListenerImpl implements Parcela
                         // mindful meditation stuff
                         try{
                             String st = String.valueOf(HRate) + ", ";
+                            System.out.println(experimentState.getValue());
                             outputStreams[experimentState.getValue()][DataType.HearRate.getValue()].write(st.getBytes());
                         }
                         catch (Exception e)
@@ -212,7 +171,7 @@ public class NewConnectedListener extends ConnectListenerImpl implements Parcela
                         b1.putString("HeartRate", String.valueOf(HRate));
                         text1.setData(b1);
                         _aNewHandler.sendMessage(text1);
-                        System.out.println("Heart Rate is "+ HRate);
+                        //System.out.println("Heart Rate is "+ HRate);
 
                         //***************Displaying the Respiration Rate********************************
                         double RespRate = GPInfo.GetRespirationRate(DataArray);
@@ -221,7 +180,7 @@ public class NewConnectedListener extends ConnectListenerImpl implements Parcela
                         b1.putString("RespirationRate", String.valueOf(RespRate));
                         text1.setData(b1);
                         _aNewHandler.sendMessage(text1);
-                        System.out.println("Respiration Rate is "+ RespRate);
+                        //System.out.println("Respiration Rate is "+ RespRate);
 
                         //***************Displaying the Skin Temperature*******************************
 
@@ -232,7 +191,7 @@ public class NewConnectedListener extends ConnectListenerImpl implements Parcela
                         b1.putString("SkinTemperature", String.valueOf(SkinTempDbl));
                         text1.setData(b1);
                         _aNewHandler.sendMessage(text1);
-                        System.out.println("Skin Temperature is "+ SkinTempDbl);
+                        //System.out.println("Skin Temperature is "+ SkinTempDbl);
 
                         //***************Displaying the Posture******************************************
 
@@ -241,7 +200,7 @@ public class NewConnectedListener extends ConnectListenerImpl implements Parcela
                         b1.putString("Posture", String.valueOf(PostureInt));
                         text1.setData(b1);
                         _aNewHandler.sendMessage(text1);
-                        System.out.println("Posture is "+ PostureInt);
+                        //System.out.println("Posture is "+ PostureInt);
                         //***************Displaying the Peak Acceleration******************************************
 
                         double PeakAccDbl = GPInfo.GetPeakAcceleration(DataArray);
@@ -249,10 +208,10 @@ public class NewConnectedListener extends ConnectListenerImpl implements Parcela
                         b1.putString("PeakAcceleration", String.valueOf(PeakAccDbl));
                         text1.setData(b1);
                         _aNewHandler.sendMessage(text1);
-                        System.out.println("Peak Acceleration is "+ PeakAccDbl);
+                        //System.out.println("Peak Acceleration is "+ PeakAccDbl);
 
                         byte ROGStatus = GPInfo.GetROGStatus(DataArray);
-                        System.out.println("ROG Status is "+ ROGStatus);
+                        //System.out.println("ROG Status is "+ ROGStatus);
 
 
                         break;

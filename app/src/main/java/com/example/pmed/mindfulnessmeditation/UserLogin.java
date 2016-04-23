@@ -28,14 +28,14 @@ public class UserLogin extends AppCompatActivity {
             String password = helper.searchPass(str);
             //String password = helper.globalPassword();
 
+            Intent i = new Intent(UserLogin.this, SessionManager.class);
+            i.putExtra("com.example.pmed.USER_ID", "someUserId");
+            startActivity(i);
+
             if(pass.equals(password)) {
-                //Intent i = new Intent(UserLogin.this, RecordPhysData.class);
-                //Intent i = new Intent(UserLogin.this, FormActivity.class);
-                //SessionManager session = new SessionManager("someUserId", this);
-                //session.runSession();
-                Intent i = new Intent(UserLogin.this, SessionManager.class);
-                i.putExtra("com.example.pmed.USER_ID", "someUserId");
-                startActivity(i);
+                //Intent i = new Intent(UserLogin.this, SessionManager.class);
+                //i.putExtra("com.example.pmed.USER_ID", "someUserId");
+                //startActivity(i);
                 //startActivity(i);
             }
             else {
@@ -45,4 +45,6 @@ public class UserLogin extends AppCompatActivity {
             }
         }
     }
+
+
 }

@@ -67,11 +67,11 @@ public class RecordPhysData extends AppCompatActivity {
         TextView tv = (TextView) findViewById(R.id.labelStatusMsg);
         String ErrorText  = "Not Connected to BioHarness";
         tv.setText(ErrorText);
-
         final Button btnConnect = (Button) findViewById(R.id.ButtonConnect);
         final ImageView imgWifi = (ImageView) findViewById(R.id.image_wifi);
         final Button nextBtn = (Button) findViewById(R.id.ButtonNext);
-        if (btnConnect != null)
+        //btnConnect != null
+        if (((MindfulnessMeditation)getApplication())._bt == null)
         {
             btnConnect.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
@@ -95,24 +95,25 @@ public class RecordPhysData extends AppCompatActivity {
 
                     }
 
-                    //BhMacID = btDevice.getAddress();
                     BluetoothDevice Device = adapter.getRemoteDevice(BhMacID);
                     String DeviceName = Device.getName();
-                    _bt = new BTClient(adapter, BhMacID);
+                    String ErrorText = "Connected to BioHarness "+ DeviceName;
+                    TextView tv = (TextView) findViewById(R.id.labelStatusMsg);
+                    tv.setText(ErrorText);
+                    ((MindfulnessMeditation)getApplication())._bt = new BTClient(adapter, BhMacID);
+                    _bt = ((MindfulnessMeditation)getApplication())._bt;
                     //_NConnListener = new NewConnectedListener(Newhandler,Newhandler);
-                    _NConnListener = getIntent().getParcelableExtra("com.example.pmed.PHYS_LISTENER"); //CALEB did this
+                    _NConnListener = ((MindfulnessMeditation)getApplication()).listener;
                     _bt.addConnectedEventListener(_NConnListener);
 
-
-                    if(_bt.IsConnected())
+                    if (_bt.IsConnected())
                     {
                         _bt.start();
-                        TextView tv = (TextView) findViewById(R.id.labelStatusMsg);
-                        String ErrorText  = "Connected to BioHarness "+DeviceName;
-                        tv.setText(ErrorText);
+                        //TextView tv = (TextView) findViewById(R.id.labelStatusMsg);
+                        //ErrorText  = "Connected to BioHarness "+ DeviceName;
+                        //tv.setText(ErrorText);
 
                         //Reset all the values to 0s
-
 
                         //!!!!!!!!!!!!!CONECTED
 
@@ -132,6 +133,7 @@ public class RecordPhysData extends AppCompatActivity {
                                 startBtn.setVisibility(View.GONE);
                                 timerText.setVisibility(View.GONE);
                                 nextBtn.setVisibility(View.VISIBLE);
+                                timeStampExperimentState(); //Caleb's method
                             }
                         };
                         startBtn.setOnClickListener(new View.OnClickListener() {
@@ -154,12 +156,66 @@ public class RecordPhysData extends AppCompatActivity {
                     }
                     else
                     {
-                        TextView tv = (TextView) findViewById(R.id.labelStatusMsg);
-                        String ErrorText  = "Unable to Connect";
+                        //TextView tv = (TextView) findViewById(R.id.labelStatusMsg);
+                        ErrorText  = "Unable to Connect";
                         tv.setText(ErrorText);
                     }
+
                 }
             });
+        } else if (((MindfulnessMeditation)getApplication())._bt.IsConnected())
+        {
+            //_bt.start();
+            //TextView tv = (TextView) findViewById(R.id.labelStatusMsg);
+            //ErrorText  = "Connected to BioHarness "+ DeviceName;
+            //tv.setText(ErrorText);
+
+            //Reset all the values to 0s
+
+            //!!!!!!!!!!!!!CONECTED
+
+            final Button startBtn = (Button) findViewById(R.id.ButtonStart);
+            imgWifi.setVisibility(View.GONE);
+            btnConnect.setVisibility(View.GONE);
+            startBtn.setVisibility(View.VISIBLE);
+            timerText = (TextView)findViewById(R.id.CountdownText);
+            timerText.setVisibility((View.VISIBLE));
+            timer = new CountDownTimer(300000, 1000){
+                public void onTick(long millisUntilFinished) {
+                    long minutes = TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished);
+                    long seconds = (TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) % 60);
+                    timerText.setText(minutes + ":" + String.format("%02d", seconds));
+                }
+                public void onFinish(){
+                    startBtn.setVisibility(View.GONE);
+                    timerText.setVisibility(View.GONE);
+                    nextBtn.setVisibility(View.VISIBLE);
+                    timeStampExperimentState(); //Caleb's method
+                }
+            };
+            startBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    timer.start();
+                    startBtn.setVisibility(View.GONE);
+                }
+            });
+            nextBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //Intent i = new Intent(RecordPhysData.this, Audio.class);
+                    //startActivity(i);
+                    setResult(1, getIntent()); //CALEB did this
+                    finish(); //and this
+                }
+            });
+
+        }
+        else
+        {
+            //TextView tv = (TextView) findViewById(R.id.labelStatusMsg);
+            ErrorText  = "Unable to Connect";
+            tv.setText(ErrorText);
         }
 
         /*Obtaining the handle to act on the DISCONNECT button*/
@@ -226,8 +282,32 @@ public class RecordPhysData extends AppCompatActivity {
         }
     }
 
+    /*listener.experimentState will be Pre, During, Post depending on what part of the
+      session the user is doing. */
+    private void timeStampExperimentState() {
+        System.out.println(((MindfulnessMeditation)getApplication()).listener.experimentState);
+        switch (((MindfulnessMeditation)getApplication()).listener.experimentState) {
+            case Pre:
+                //timestamp?
+                break;
+            case During:
+                //timestamp?
+                break;
+            case Post:
+                //timestamp?
+                /*This disconnects listener from acting on received messages*/
+                ((MindfulnessMeditation)getApplication())._bt.removeConnectedEventListener(((MindfulnessMeditation)getApplication()).listener);
+                /*Close the communication with the device & throw an exception if failure*/
+                ((MindfulnessMeditation)getApplication())._bt.Close();
+                break;
+            default:
+                break;
 
-    /*final Handler Newhandler = new Handler(){
+        }
+    }
+
+
+    final Handler Newhandler = new Handler(){
         public void handleMessage(Message msg)
         {
 
@@ -263,7 +343,7 @@ public class RecordPhysData extends AppCompatActivity {
             }
         }
 
-    };*/
+    };
 
     public void NextActivity(View view)
     {
@@ -283,6 +363,7 @@ public class RecordPhysData extends AppCompatActivity {
             setResult(1,getIntent());
             finish();
             //startActivity(i);
+            timeStampExperimentState();
         }
     }
 }

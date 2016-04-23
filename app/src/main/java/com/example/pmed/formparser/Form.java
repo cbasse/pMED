@@ -50,7 +50,7 @@ public class Form
             }
             prompts = temp_prompts.toArray(new Prompt[1]);
 
-            System.out.println("\n\nquestionnaire name: " + formName + "\n");
+            /*System.out.println("\n\nquestionnaire name: " + formName + "\n");
             for (int i = 0; i < prompts.length; i++)
             {
                 if (prompts[i].promptType == "likert")
@@ -85,7 +85,7 @@ public class Form
                     }
                 }
                 System.out.println();
-            }
+            }*/
 
 
         } catch (Exception e) {
