@@ -114,6 +114,7 @@ public class StudyManifest {
             */
             new CreateNewStudy().execute();
 
+            /*
             // uploading audio
             String url = "http://yourserver";
             File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath(),
@@ -134,6 +135,7 @@ public class StudyManifest {
             } catch (Exception e) {
                 // show error
             }
+            */
 
 
 
@@ -305,7 +307,7 @@ public class StudyManifest {
                     for (Prompt prompt: form.prompts)
                     {
                         Question[] qs;
-                        if(prompt.promptType == "likert") // NEEED TO FIX THIS !!!!
+                        if(prompt.promptType.equals("likert")) // MIGHT BE FIXED
                         {
                             qs = prompt.likertQuestions;
                         }
