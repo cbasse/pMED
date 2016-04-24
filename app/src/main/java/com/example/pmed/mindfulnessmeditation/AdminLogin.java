@@ -31,6 +31,7 @@ public class AdminLogin extends AppCompatActivity {
     private static final String TAG_MESSAGE = "message";
     private String username;
     private String password;
+    private String message;
 
 
 
@@ -102,7 +103,7 @@ public class AdminLogin extends AppCompatActivity {
 
                 } else if (success == 0){
                     // successfully created product
-                    String message = json.getString(TAG_MESSAGE);
+                    message = json.getString(TAG_MESSAGE);
 
                     Log.w("ADMINLOGIN", message);
 
@@ -118,13 +119,34 @@ public class AdminLogin extends AppCompatActivity {
                         temp.show();
                     }
 
-                    finish();
+                    //finish();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
 
             return null;
+        }
+
+        protected void onPostExecute(String file_url) {
+            // updating UI from Background Thread
+            runOnUiThread(new Runnable() {
+                public void run() {
+                    if(message.equals(TAG_PASSWORD))
+                    {
+                        // pass was wrong
+                        Toast temp = Toast.makeText(AdminLogin.this, "Password error", Toast.LENGTH_SHORT);
+                        temp.show();
+                    }
+                    else
+                    {
+                        Toast temp = Toast.makeText(AdminLogin.this, "Username error", Toast.LENGTH_SHORT);
+                        temp.show();
+                    }
+
+                }
+            });
+
         }
 
     }

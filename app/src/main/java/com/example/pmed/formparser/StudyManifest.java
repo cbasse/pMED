@@ -256,13 +256,17 @@ public class StudyManifest {
             {
                 JSONObject jsonStudy = new JSONObject();
 
+                jsonStudy.put("study_name", studyName);
+                jsonStudy.put("physio_duration", readingA);
+
                 JSONArray jsonForms = new JSONArray();
                 for (Form form: forms)
                 {
                     JSONObject jsonForm = new JSONObject();
 
-                    jsonForm.put("form_name", form.formName);
-                    jsonForm.put("form_desc", form.formDesc);
+                    // Do we need these?
+                    //jsonForm.put("form_name", form.formName);
+                    //jsonForm.put("form_desc", form.formDesc);
 
                     JSONArray jsonQuestions = new JSONArray();
                     for (Prompt prompt: form.prompts)
@@ -281,6 +285,7 @@ public class StudyManifest {
                         {
                             JSONObject jsonQuestion = new JSONObject();
 
+                            jsonQuestion.put("image_filename", "");
                             jsonQuestion.put("question_type", prompt.promptType);
                             jsonQuestion.put("question_name", prompt.name);
                             jsonQuestion.put("question_likert_description", prompt.likertDescription);
