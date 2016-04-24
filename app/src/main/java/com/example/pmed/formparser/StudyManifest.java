@@ -5,11 +5,13 @@ package com.example.pmed.formparser;
  */
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Environment;
 import android.util.Log;
 
 import com.example.pmed.mindfulnessmeditation.JSONParser;
 import com.example.pmed.mindfulnessmeditation.ManageUserAccounts;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.StringReader;
 
@@ -21,7 +23,12 @@ import java.io.FileReader;
 import java.io.FileNotFoundException;
 import java.lang.StringBuilder;
 
+import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.InputStreamEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -95,12 +102,38 @@ public class StudyManifest {
                 }
             }
 
+
+
+
+
+
             /*
 
                 Lincolns code motha trucka
 
             */
             new CreateNewStudy().execute();
+
+            // uploading audio
+            String url = "http://yourserver";
+            File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath(),
+                    "yourfile");
+            try {
+                HttpClient httpclient = new DefaultHttpClient();
+
+                HttpPost httppost = new HttpPost(url);
+
+                InputStreamEntity reqEntity = new InputStreamEntity(
+                        new FileInputStream(file), -1);
+                reqEntity.setContentType("binary/octet-stream");
+                reqEntity.setChunked(true); // Send in multiple parts if needed
+                httppost.setEntity(reqEntity);
+                HttpResponse response = httpclient.execute(httppost);
+                //Do something with response...
+
+            } catch (Exception e) {
+                // show error
+            }
 
 
 

@@ -25,6 +25,7 @@ public class UserLogin extends AppCompatActivity {
     String uname;
     String pass;
     String message;
+    Boolean isCorrect = false;
     JSONParser jsonParser = new JSONParser();
     private static final String url = "http://meagherlab.co/authenticate_user.php";
     private static final String TAG_SUCCESS = "success";
@@ -95,6 +96,7 @@ public class UserLogin extends AppCompatActivity {
 
                 if (success == 1) {
 
+                    isCorrect = true;
                     Intent i = new Intent(UserLogin.this, SessionManager.class);
                     i.putExtra("com.example.pmed.USER_ID", "someUserId");
                     startActivity(i);
@@ -107,6 +109,7 @@ public class UserLogin extends AppCompatActivity {
 
 
                 } else if (success == 0){
+                    isCorrect = false;
                     // successfully created product
                     message = json.getString(TAG_MESSAGE);
 
@@ -124,6 +127,10 @@ public class UserLogin extends AppCompatActivity {
             // updating UI from Background Thread
             runOnUiThread(new Runnable() {
                 public void run() {
+                    if(isCorrect)
+                    {
+                        return;
+                    }
                     if(message.equals(TAG_PASSWORD))
                     {
                         // pass was wrong
