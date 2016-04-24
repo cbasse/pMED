@@ -2,6 +2,7 @@ package com.example.pmed.mindfulnessmeditation;
 
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,6 +16,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class UserLogin extends AppCompatActivity {
@@ -22,6 +24,7 @@ public class UserLogin extends AppCompatActivity {
     //DatabaseHelper helper = new DatabaseHelper(this);
     String uname;
     String pass;
+    String message;
     JSONParser jsonParser = new JSONParser();
     private static final String url = "http://meagherlab.co/authenticate_user.php";
     private static final String TAG_SUCCESS = "success";
@@ -105,10 +108,22 @@ public class UserLogin extends AppCompatActivity {
 
                 } else if (success == 0){
                     // successfully created product
-                    String message = json.getString(TAG_MESSAGE);
+                    message = json.getString(TAG_MESSAGE);
 
-                    Log.w("ADMINLOGIN", message);
+                    //finish();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
 
+            return null;
+        }
+
+
+        protected void onPostExecute(String file_url) {
+            // updating UI from Background Thread
+            runOnUiThread(new Runnable() {
+                public void run() {
                     if(message.equals(TAG_PASSWORD))
                     {
                         // pass was wrong
@@ -121,14 +136,11 @@ public class UserLogin extends AppCompatActivity {
                         temp.show();
                     }
 
-                    finish();
                 }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+            });
 
-            return null;
         }
+
 
     }
 

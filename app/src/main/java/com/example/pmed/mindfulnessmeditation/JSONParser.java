@@ -25,6 +25,7 @@ import org.json.JSONObject;
 
 import android.util.Log;
 
+@SuppressWarnings("deprecation")
 public class JSONParser {
 
     static InputStream is = null;
