@@ -43,7 +43,7 @@ public class SessionManager extends Activity {
     
     public void runSession() {
         //get info from database with user_id
-        day = STANDARD_DAY;
+        day = LAST_DAY ;
         Intent i;
         switch (day) {
             case START_DAY:
@@ -59,7 +59,7 @@ public class SessionManager extends Activity {
             case LAST_DAY:
                 i = new Intent(this, FormActivity.class);
                 i.putExtra("com.example.pmed.FORM_NAME", "TestStudy/bl_q.xml");
-                startActivityForResult(i, 7);
+                startActivityForResult(i, 1);
                 break;
             default:
                 break;
