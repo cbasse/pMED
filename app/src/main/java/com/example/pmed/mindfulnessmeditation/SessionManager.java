@@ -19,7 +19,10 @@ public class SessionManager extends Activity {
     public final static int LAST_DAY = 2;
     public String userId;
     public FormResultsManager formAResults;
+    public FormResultsManager formBResults;
+    public FormResultsManager formCResults;
     NewConnectedListener listener;
+    public int day;
 
 
     @Override
@@ -40,7 +43,7 @@ public class SessionManager extends Activity {
     
     public void runSession() {
         //get info from database with user_id
-        int day = STANDARD_DAY;
+        day = STANDARD_DAY;
         Intent i;
         switch (day) {
             case START_DAY:
@@ -54,6 +57,9 @@ public class SessionManager extends Activity {
                 startActivityForResult(i, 1);
                 break;
             case LAST_DAY:
+                i = new Intent(this, FormActivity.class);
+                i.putExtra("com.example.pmed.FORM_NAME", "TestStudy/bl_q.xml");
+                startActivityForResult(i, 7);
                 break;
             default:
                 break;
@@ -80,24 +86,35 @@ public class SessionManager extends Activity {
 
         } else if (requestCode == 3 && resultCode == 1) {
             Intent i = new Intent(this, FormActivity.class);
-            i.putExtra("com.example.pmed.FORM_RESULTS_B", formAResults);
             i.putExtra("com.example.pmed.FORM_NAME", "TestStudy/bl_q.xml");
             startActivityForResult(i,4);
 
         } else if (requestCode == 4 && resultCode == 1) {
-            formAResults = data.getParcelableExtra("com.example.pmed.FORM_RESULTS_B");
+            formBResults = data.getParcelableExtra("com.example.pmed.FORM_RESULTS");
             listener.experimentState = NewConnectedListener.ExperimentState.Post;
             Intent i = new Intent(this, RecordPhysData.class);
             startActivityForResult(i, 5);
 
         } else if (requestCode == 5 && resultCode == 1) {
-            Intent i = new Intent(this, ListViewBarChartActivity.class);
-            startActivityForResult(i, 6);
+            if (day != LAST_DAY) {
+                Intent i = new Intent(this, ListViewBarChartActivity.class);
+                startActivityForResult(i, 6);
+            } else {
+                Intent i = new Intent(this, FormActivity.class);
+                i.putExtra("com.example.pmed.FORM_NAME", "TestStudy/bl_q.xml");
+                startActivityForResult(i, 6);
+            }
+
+        } else if (requestCode == 6 && resultCode == 1) {
+            if (day != LAST_DAY) {
+                finish();
+            } else {
+                Intent i = new Intent(this, ListViewBarChartActivity.class);
+                startActivityForResult(i, 7);
+            }
 
         } else if (requestCode == 6 && resultCode == 1) {
             finish();
         }
     }
-    
-    
 }
