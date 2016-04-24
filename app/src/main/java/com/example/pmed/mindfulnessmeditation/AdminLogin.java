@@ -22,6 +22,7 @@ import java.util.List;
 public class AdminLogin extends AppCompatActivity {
 
     JSONParser jsonParser = new JSONParser();
+    Boolean isCorrect = false;
     private static final String url = "http://meagherlab.co/authenticate_admin.php";
     private static final String TAG_SUCCESS = "success";
     private static final String TAG_USERNAME = "username";
@@ -90,6 +91,7 @@ public class AdminLogin extends AppCompatActivity {
 
                 if (success == 1) {
 
+                    isCorrect = true;
                     Intent i = new Intent(AdminLogin.this, AdminHome.class);
                     i.putExtra("AdminUsername",username);
                     startActivity(i);
@@ -102,22 +104,9 @@ public class AdminLogin extends AppCompatActivity {
 
 
                 } else if (success == 0){
+                    isCorrect = false;
                     // successfully created product
                     message = json.getString(TAG_MESSAGE);
-
-                    Log.w("ADMINLOGIN", message);
-
-                    if(message.equals(TAG_PASSWORD))
-                    {
-                        // pass was wrong
-                        Toast temp = Toast.makeText(AdminLogin.this, "Password error", Toast.LENGTH_SHORT);
-                        temp.show();
-                    }
-                    else
-                    {
-                        Toast temp = Toast.makeText(AdminLogin.this, "Username error", Toast.LENGTH_SHORT);
-                        temp.show();
-                    }
 
                     //finish();
                 }
@@ -132,6 +121,10 @@ public class AdminLogin extends AppCompatActivity {
             // updating UI from Background Thread
             runOnUiThread(new Runnable() {
                 public void run() {
+                    if(isCorrect)
+                    {
+                        return;
+                    }
                     if(message.equals(TAG_PASSWORD))
                     {
                         // pass was wrong
