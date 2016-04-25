@@ -299,10 +299,12 @@ public class RecordPhysData extends AppCompatActivity {
                 break;
             case Post:
                 //timestamp?
-                /*This disconnects listener from acting on received messages*/
-                ((MindfulnessMeditation)getApplication())._bt.removeConnectedEventListener(((MindfulnessMeditation)getApplication()).listener);
-                /*Close the communication with the device & throw an exception if failure*/
-                ((MindfulnessMeditation)getApplication())._bt.Close();
+                if (((MindfulnessMeditation)getApplication())._bt != null) {
+                    /*This disconnects listener from acting on received messages*/
+                    ((MindfulnessMeditation) getApplication())._bt.removeConnectedEventListener(((MindfulnessMeditation) getApplication()).listener);
+                    /*Close the communication with the device & throw an exception if failure*/
+                    ((MindfulnessMeditation) getApplication())._bt.Close();
+                }
                 break;
             default:
                 break;
