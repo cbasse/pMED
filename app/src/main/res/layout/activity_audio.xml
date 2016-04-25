@@ -10,6 +10,19 @@
     tools:context="com.example.pmed.mindfulnessmeditation.Audio"
     android:background="#3a4f9c">
 
+    <TextView
+        android:layout_width="400dp"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Listen carefully to the audio recording"
+        android:id="@+id/text_description"
+        android:layout_marginTop="60dp"
+        android:layout_centerHorizontal="true"
+        android:gravity="center_horizontal"
+        android:textSize="40dp"
+        android:textColor="#ffffffff"/>
+
+
 
     <ImageView
         android:id="@+id/image_audio"

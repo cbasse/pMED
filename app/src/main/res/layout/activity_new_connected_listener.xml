@@ -33,7 +33,7 @@
         android:visibility="visible"/>
 
     <TextView
-        android:id="@+id/connect"
+        android:id="@+id/text_connect"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Tap to Connect"
@@ -41,6 +41,7 @@
         android:textSize="25dp"
         android:layout_above="@id/ButtonConnect"
         android:layout_marginBottom="20dp"
+        android:visibility="visible"
         android:layout_centerHorizontal="true"></TextView>
 
     <Button android:text="Disconnect"
@@ -82,6 +83,19 @@
         android:layout_above="@+id/CountdownText"
         android:layout_marginBottom="30dp"
         android:layout_centerHorizontal="true"></Button>
+
+    <TextView
+        android:layout_width="500dp"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Heart rate is currently recording. During this time, please try to remain as still as possible"
+        android:id="@+id/text_description"
+        android:layout_marginTop="60dp"
+        android:layout_centerHorizontal="true"
+        android:gravity="center_horizontal"
+        android:textSize="30dp"
+        android:textColor="#ffffffff"
+        android:visibility="gone" />
 
     <TextView
         android:id = "@+id/CountdownText"
