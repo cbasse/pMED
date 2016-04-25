@@ -9,7 +9,7 @@
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <permission
@@ -54,11 +54,10 @@
         <activity android:name=".BarChartActivityMultiDataset" />
         <activity android:name=".UpdateExperiment" />
         <activity android:name=".ConfirmExpParse" />
-        <activity android:name=".Audio"/>
+        <activity android:name=".Audio" />
         <activity android:name=".SessionManager" />
-        <activity android:name=".ListViewBarChartActivity"/>
-
-
+        <activity android:name=".ListViewBarChartActivity" />
+        <activity android:name=".ChangeUserPassword"></activity>
     </application>
 
 </manifest>

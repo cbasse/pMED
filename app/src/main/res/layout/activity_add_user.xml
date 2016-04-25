@@ -153,7 +153,6 @@
         android:layout_below="@+id/TFpass2"
         android:background="#FFA401"
         android:textColor="#ffffff"
-        android:typeface="normal"
         android:textStyle="normal|bold"
         android:layout_alignRight="@+id/TFpass2"
         android:layout_alignEnd="@+id/TFpass2" />

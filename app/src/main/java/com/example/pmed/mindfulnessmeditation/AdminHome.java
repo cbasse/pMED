@@ -17,9 +17,13 @@ public class AdminHome extends AppCompatActivity {
     }
 
     public void onClickButton(View v) {
-
-        if(v.getId() == R.id.icon_participtants) {
+        if(v.getId() == R.id.icon_participants) {
             Intent i = new Intent(AdminHome.this, ManageUserAccounts.class);
+            startActivity(i);
+        }
+
+        if(v.getId() == R.id.icon_admin) {
+            Intent i = new Intent(AdminHome.this, ChangeUserPassword.class);
             startActivity(i);
         }
 

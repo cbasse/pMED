@@ -43,15 +43,16 @@
     </LinearLayout>
 
     <ImageView
-        android:id="@+id/icon_home"
+        android:id="@+id/icon_participants"
         android:layout_width="110dp"
         android:layout_height="110dp"
-        android:src="@drawable/icon_home"
+        android:src="@drawable/icon_participants"
         android:layout_marginTop="100dp"
         android:onClick="onClickButton"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:paddingLeft="5dp"
         android:layout_marginStart="66dp"
         android:layout_marginLeft="66dp" />
 
@@ -65,12 +66,12 @@
         android:layout_centerHorizontal="true" />
 
     <ImageView
-        android:id="@+id/icon_participtants"
+        android:id="@+id/icon_admin"
         android:layout_width="110dp"
         android:layout_height="110dp"
-        android:src="@drawable/icon_participants"
+        android:src="@drawable/icon_admin"
         android:onClick="onClickButton"
-        android:layout_alignTop="@+id/icon_home"
+        android:layout_alignTop="@+id/icon_participants"
         android:layout_centerHorizontal="true" />
 
     <ImageView
@@ -80,8 +81,8 @@
         android:src="@drawable/icon_export"
         android:onClick="onClickButton"
         android:layout_alignTop="@+id/icon_logout"
-        android:layout_alignLeft="@+id/icon_home"
-        android:layout_alignStart="@+id/icon_home" />
+        android:layout_alignLeft="@+id/icon_participants"
+        android:layout_alignStart="@+id/icon_participants" />
 
     <ImageView
         android:id="@+id/icon_update"
@@ -89,7 +90,7 @@
         android:layout_height="110dp"
         android:src="@drawable/icon_update"
         android:onClick="onClickButton"
-        android:layout_alignTop="@+id/icon_home"
+        android:layout_alignTop="@+id/icon_participants"
         android:layout_toRightOf="@+id/adminChangePassword"
         android:layout_toEndOf="@+id/adminChangePassword"
         android:layout_marginLeft="50dp"
@@ -107,10 +108,10 @@
         android:layout_marginTop="98dp" />
 
     <TextView
-        android:layout_width="120dp"
+        android:layout_width="135dp"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Change Password"
+        android:text="Change Admin Password"
         android:id="@+id/adminChangePassword"
         android:layout_below="@+id/icon_password"
         android:layout_centerHorizontal="true"
@@ -120,12 +121,12 @@
         android:layout_marginTop="5dp"/>
 
     <TextView
-        android:layout_width="120dp"
+        android:layout_width="135dp"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Manage User Accounts"
+        android:text="Update User Password"
         android:id="@+id/textView11"
-        android:layout_below="@+id/icon_participtants"
+        android:layout_below="@+id/icon_participants"
         android:layout_centerHorizontal="true"
         android:textSize="20dp"
         android:textStyle="bold"
@@ -174,17 +175,17 @@
         android:layout_marginTop="5dp"/>
 
     <TextView
-        android:layout_width="110dp"
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Admin Home"
+        android:text="Manage User Accounts"
         android:id="@+id/textView15"
         android:textSize="20dp"
         android:gravity="center"
-        android:layout_alignLeft="@+id/icon_home"
-        android:layout_alignStart="@+id/icon_home"
+        android:layout_alignLeft="@+id/icon_participants"
+        android:layout_alignStart="@+id/icon_participants"
         android:textStyle="bold"
-        android:layout_below="@id/icon_home"
+        android:layout_below="@id/icon_admin"
         android:layout_marginTop="5dp"/>
 
     <Button

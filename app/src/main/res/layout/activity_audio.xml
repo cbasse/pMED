@@ -10,6 +10,7 @@
     tools:context="com.example.pmed.mindfulnessmeditation.Audio"
     android:background="#3a4f9c">
 
+
     <ImageView
         android:id="@+id/image_audio"
         android:layout_width="150dp"
@@ -19,6 +20,17 @@
         android:layout_centerHorizontal="true"
         android:onClick="onClickButton"
         />
+
+    <TextView
+        android:id="@+id/connect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tap to Play"
+        android:textColor="#ffffff"
+        android:textSize="25dp"
+        android:layout_above="@id/image_audio"
+        android:layout_marginBottom="20dp"
+        android:layout_centerHorizontal="true"/>
 
     <Button
         android:layout_width="wrap_content"

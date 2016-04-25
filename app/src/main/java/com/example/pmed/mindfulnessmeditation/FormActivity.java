@@ -38,6 +38,11 @@ public class FormActivity extends AppCompatActivity {
     public FormResultsManager results;
 
     @Override
+    public void onBackPressed() {
+        //moveTaskToBack(true);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_form);
@@ -108,7 +113,7 @@ public class FormActivity extends AppCompatActivity {
             }
         });
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
     }
 
 

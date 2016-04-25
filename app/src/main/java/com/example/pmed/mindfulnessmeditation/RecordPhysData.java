@@ -50,6 +50,11 @@ public class RecordPhysData extends AppCompatActivity {
     TextView timerText;
 
     @Override
+    public void onBackPressed() {
+        //moveTaskToBack(true);
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_connected_listener);
