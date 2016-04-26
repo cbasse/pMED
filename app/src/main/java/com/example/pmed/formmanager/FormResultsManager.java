@@ -24,10 +24,10 @@ public class FormResultsManager implements Parcelable {
 
         for (Prompt p : form.prompts) {
             if (p.promptType.equals("mult")) {
-                results.put(p.name, "");
+                results.put(p.question.id, "");
                 for (Option op : p.options) {
                     if (op.textBox) {
-                        results.put(p.name + "_text", "");
+                        //results.put(p.name + "_text", "");
                         break;
                     }
                 }

@@ -21,6 +21,8 @@ public class SessionManager extends Activity {
     public final static int STANDARD_DAY = 1;
     public final static int LAST_DAY = 2;
     public String userId;
+    public String experimentId;
+    public String questionnaireId;
     public FormResultsManager formAResults;
     public FormResultsManager formBResults;
     public FormResultsManager formCResults;
@@ -33,7 +35,12 @@ public class SessionManager extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        this.userId = getIntent().getStringExtra("com.example.pmed.USER_ID");
+        Intent i = getIntent();
+        this.userId = i.getStringExtra("com.example.pmed.USER_ID");
+        this.experimentId = i.getStringExtra("com.example.pmed.EXPERIMENT_ID");
+        this.questionnaireId = i.getStringExtra("com.example.pmed.QUESTIONNAIRE_ID");
+
+
         final Handler Newhandler = new Handler(){
             public void handleMessage(Message msg)
             {
@@ -74,8 +81,13 @@ public class SessionManager extends Activity {
                 startActivityForResult(i, 1);
                 break;
             default:
+                i = new Intent(this, FormActivity.class);
                 break;
         }
+        i.putExtra("com.example.pmed.USER_ID", this.userId);
+        i.putExtra("com.example.pmed.EXPERIMENT_ID", this.experimentId);
+        i.putExtra("com.example.pmed.QUESTIONNAIRE_ID", this.questionnaireId);
+        startActivityForResult(i, 0);
     }
 
     @Override

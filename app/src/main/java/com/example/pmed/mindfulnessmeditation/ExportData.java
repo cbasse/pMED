@@ -1,17 +1,18 @@
 package com.example.pmed.mindfulnessmeditation;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.util.PrintWriterPrinter;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -19,17 +20,20 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import org.apache.http.HttpConnection;
-
-
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class AddUser extends AppCompatActivity {
+/**
+ * Created by harri on 4/26/2016.
+ */
+public class ExportData extends AppCompatActivity {
     String url_getExps = "http://meagherlab.co/read_all_experiments.php";
     private static final String TAG_EXPERIMENTS = "experiments";
     private static final String TAG_EXP_ID = "id";
@@ -44,8 +48,6 @@ public class AddUser extends AppCompatActivity {
     JSONParser jsonParser = new JSONParser();
     String url = "http://meagherlab.co/create_user.php";
     String TAG_SUCCESS = "success";
-    EditText uname;
-    String uname_str;
 
     /*
 
@@ -61,7 +63,7 @@ public class AddUser extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_user);
+        setContentView(R.layout.activity_export_data);
 
         expsList = new ArrayList<HashMap<String, String>>();
 
@@ -83,7 +85,7 @@ public class AddUser extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_home) {
-            Intent i = new Intent(AddUser.this, AdminHome.class);
+            Intent i = new Intent(ExportData.this, AdminHome.class);
             //i.putExtra("Username", str);
             startActivity(i);
         }
@@ -94,18 +96,13 @@ public class AddUser extends AppCompatActivity {
 
     public void onClickButton(View v) {
 
-        if(v.getId() == R.id.button_user_added) {
-            uname = (EditText)findViewById(R.id.TFuname);
+        if(v.getId() == R.id.button_export_data) {
 
-            uname_str = uname.getText().toString();
-
-
-
-            Spinner spinner = (Spinner)findViewById(R.id.TFExpNum);
+            Spinner spinner = (Spinner)findViewById(R.id.ExportExpNum);
             String selectedSpinner = spinner.getSelectedItem().toString();
             selectedExperimentId = selectedSpinner.substring(0, selectedSpinner.indexOf("'"));
 
-            new CreateNewUser().execute();
+            new GetExportData().execute();
 
             /*
             pass1 = (EditText)findViewById(R.id.TFpass1);
@@ -141,8 +138,40 @@ public class AddUser extends AppCompatActivity {
         }
     }
 
+    private void writeToSDFile(ArrayList<String> strings){
 
-    class CreateNewUser extends AsyncTask<String, String, String> {
+        // Find the root of the external storage.
+        // See http://developer.android.com/guide/topics/data/data-  storage.html#filesExternal
+
+        File root = android.os.Environment.getExternalStorageDirectory();
+
+        // See http://stackoverflow.com/questions/3551821/android-write-to-sd-card-folder
+
+        File dir = new File (root.getAbsolutePath() + "/ExportedData");
+        dir.mkdirs();
+        File file = new File(dir, "Experiment_" + selectedExperimentId + ".csv");
+
+        try {
+            FileOutputStream f = new FileOutputStream(file);
+            PrintWriter pw = new PrintWriter(f);
+
+            for(String line : strings)
+            {
+                pw.println(line);
+            }
+
+            pw.flush();
+            pw.close();
+            f.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    class GetExportData extends AsyncTask<String, String, String> {
 
         @Override
         protected void onPreExecute() {
@@ -154,8 +183,7 @@ public class AddUser extends AppCompatActivity {
 
             // Building Parameters
             List<NameValuePair> params = new ArrayList<NameValuePair>();
-            params.add(new BasicNameValuePair("username", uname_str));
-            params.add(new BasicNameValuePair("experiment_id", selectedExperimentId));
+            params.add(new BasicNameValuePair("id", selectedExperimentId));
 
             // getting JSON Object
             // Note that create product url accepts POST method
@@ -171,8 +199,42 @@ public class AddUser extends AppCompatActivity {
                 int success = json.getInt(TAG_SUCCESS);
 
                 if (success == 1) {
+                    ArrayList<String> lines = new ArrayList<String>();
+
+                    JSONArray headers = json.getJSONArray("question_headers");
+                    String qHeader = "User Id";
+                    for(int i = 0; i < headers.length(); i++)
+                    {
+                        JSONArray line = headers.getJSONArray(i);
+                        for(int j = 0; j < line.length(); j++)
+                        {
+                            qHeader = qHeader + ", " + line.getString(j);
+                        }
+                    }
+                    lines.add(qHeader);
+
+                    JSONArray users = json.getJSONArray("users");
+                    for(int i = 0; i < users.length(); i++)
+                    {
+                        JSONObject user = users.getJSONObject(i);
+
+                        String userLine = "";
+                        userLine = user.getString("user_id");
+                        JSONArray answers = user.getJSONArray("responses");
+                        for(int j = 0; j < answers.length(); j++)
+                        {
+                            userLine = userLine + ", " + answers.getString(j);
+                        }
+
+                        lines.add(userLine);
+                    }
+
+
+                    writeToSDFile(lines);
+
+
                     // successfully created product
-                    Intent i = new Intent(AddUser.this, ManageUserAccounts.class);
+                    Intent i = new Intent(ExportData.this, AdminHome.class);
                     startActivity(i);
 
                     // closing this screen
@@ -263,7 +325,7 @@ public class AddUser extends AppCompatActivity {
             runOnUiThread(new Runnable() {
                 public void run() {
 
-                    Spinner spinner = (Spinner) findViewById(R.id.TFExpNum);
+                    Spinner spinner = (Spinner) findViewById(R.id.ExportExpNum);
                     List<String> expList = new ArrayList<String>();
 
                     for(HashMap<String, String> exp : expsList)

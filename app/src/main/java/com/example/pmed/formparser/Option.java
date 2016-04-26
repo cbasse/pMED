@@ -6,6 +6,7 @@ public class Option {
     public String choice;
     public String score = "";
     public Boolean textBox = false;
+    public String id;
 
     public String toString() {
         return choice;

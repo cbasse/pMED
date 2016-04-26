@@ -87,6 +87,10 @@ public class ConfirmExpParse extends AppCompatActivity {
                     error.setText("Done!");
 
 
+                    Intent i = new Intent(ConfirmExpParse.this, AdminHome.class);
+                    startActivity(i);
+
+
                 } catch (Exception e) {
                     if (e.getMessage() != null) {
                         TextView error = (TextView) findViewById(R.id.ErrorMessage);

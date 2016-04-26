@@ -39,6 +39,7 @@
         <activity android:name=".ManageUserAccounts" />
         <activity android:name=".RecordPhysData" />
         <activity android:name=".AdminChangePassword" />
+        <activity android:name=".ExportData" />
         <activity
             android:name=".FormActivity"
             android:label="@string/title_activity_form"

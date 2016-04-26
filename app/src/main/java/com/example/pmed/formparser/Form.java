@@ -18,22 +18,27 @@ import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Form
 {
-    public Prompt[] prompts;
+    public ArrayList<Prompt> prompts;
     public String formName;
     public String formDesc;
     private XmlPullParser xpp;
 
+    public String questionnaireId;
+    public Form() { }
+
     public Form(File formFile)
         throws Exception{
         try {
+            prompts = new ArrayList<Prompt>();
             //String fileContent = readXMLFile(formFile);
             XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
             factory.setNamespaceAware(true);
             xpp = factory.newPullParser();
-            xpp.setInput( new FileReader (formFile));
+            xpp.setInput(new FileReader(formFile));
             xpp.next();
             //System.out.println(XmlPullParser.START_TAG + " " + XmlPullParser.END_TAG + " " + XmlPullParser.END_DOCUMENT + " " + XmlPullParser.START_DOCUMENT + XmlPullParser.TEXT);
 
@@ -48,7 +53,8 @@ public class Form
             {
                 temp_prompts.add(parsePrompt());
             }
-            prompts = temp_prompts.toArray(new Prompt[1]);
+            Prompt[] temp_prompts_holder = temp_prompts.toArray(new Prompt[1]);
+            prompts = new ArrayList<Prompt>(Arrays.asList(temp_prompts_holder));
 
             /*System.out.println("\n\nquestionnaire name: " + formName + "\n");
             for (int i = 0; i < prompts.length; i++)
