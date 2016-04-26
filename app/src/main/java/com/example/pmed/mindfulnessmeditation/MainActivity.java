@@ -41,9 +41,9 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if(v.getId() == R.id.test) {
-            //new AudioSync().execute(getFilesDir().getPath());
-            Intent i = new Intent(MainActivity.this, ListViewBarChartActivity.class);
-            startActivity(i);
+            new AudioSync().execute(getFilesDir().getPath());
+            //Intent i = new Intent(MainActivity.this, ListViewBarChartActivity.class);
+            //startActivity(i);
         }
     }
 
