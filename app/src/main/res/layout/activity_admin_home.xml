@@ -124,7 +124,7 @@
         android:layout_width="135dp"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Update User Password"
+        android:text="Change User Password"
         android:id="@+id/textView11"
         android:layout_below="@+id/icon_participants"
         android:layout_centerHorizontal="true"

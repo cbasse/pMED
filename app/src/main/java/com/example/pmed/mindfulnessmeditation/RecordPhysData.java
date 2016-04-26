@@ -48,6 +48,8 @@ public class RecordPhysData extends AppCompatActivity {
 
     CountDownTimer timer;
     TextView timerText;
+    TextView descText;
+    TextView connectText;
 
     @Override
     public void onBackPressed() {
@@ -125,15 +127,21 @@ public class RecordPhysData extends AppCompatActivity {
                         imgBluetooth.setVisibility(View.GONE);
                         btnConnect.setVisibility(View.GONE);
                         startBtn.setVisibility(View.VISIBLE);
+                        connectText = (TextView)findViewById(R.id.text_connect);
+                        connectText.setVisibility((View.GONE));
                         timerText = (TextView)findViewById(R.id.CountdownText);
                         timerText.setVisibility((View.VISIBLE));
+
                         timer = new CountDownTimer(300000, 1000){
                             public void onTick(long millisUntilFinished) {
+                                descText = (TextView)findViewById(R.id.text_description);
+                                descText.setVisibility((View.VISIBLE));
                                 long minutes = TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished);
                                 long seconds = (TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) % 60);
                                 timerText.setText(minutes + ":" + String.format("%02d", seconds));
                             }
                             public void onFinish(){
+                                descText.setVisibility((View.GONE));
                                 startBtn.setVisibility(View.GONE);
                                 timerText.setVisibility(View.GONE);
                                 nextBtn.setVisibility(View.VISIBLE);
@@ -182,15 +190,20 @@ public class RecordPhysData extends AppCompatActivity {
             imgBluetooth.setVisibility(View.GONE);
             btnConnect.setVisibility(View.GONE);
             startBtn.setVisibility(View.VISIBLE);
+            connectText = (TextView)findViewById(R.id.text_connect);
+            connectText.setVisibility((View.GONE));
             timerText = (TextView)findViewById(R.id.CountdownText);
             timerText.setVisibility((View.VISIBLE));
             timer = new CountDownTimer(300000, 1000){
                 public void onTick(long millisUntilFinished) {
+                    descText = (TextView)findViewById(R.id.text_description);
+                    descText.setVisibility((View.VISIBLE));
                     long minutes = TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished);
                     long seconds = (TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) % 60);
                     timerText.setText(minutes + ":" + String.format("%02d", seconds));
                 }
                 public void onFinish(){
+                    descText.setVisibility((View.GONE));
                     startBtn.setVisibility(View.GONE);
                     timerText.setVisibility(View.GONE);
                     nextBtn.setVisibility(View.VISIBLE);
