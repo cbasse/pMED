@@ -36,7 +36,8 @@ public class Audio extends AppCompatActivity {
         //String fileLoc = Environment.getExternalStorageDirectory().getPath() + "/Experiments/__current__/audio.mp3";
 
         // this is for testing
-        String fileLoc = "file:///sdcard/Experiments/__current__/Eminem - Despicable.mp3";
+        //String fileLoc = "file:///sdcard/Experiments/__current__/Eminem - Despicable.mp3";
+        String fileLoc = this.getFilesDir().getPath() + "/AudioInterventions/test";
         Uri audioUri = Uri.parse(fileLoc);
         mp.reset();
         try {

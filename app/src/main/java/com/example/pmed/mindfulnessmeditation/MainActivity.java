@@ -3,6 +3,7 @@ package com.example.pmed.mindfulnessmeditation;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.os.Environment;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,6 +12,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import com.example.pmed.formparser.AudioSync;
+
 public class MainActivity extends AppCompatActivity {
 
 
@@ -18,6 +21,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //don't change
+        AudioSync.tabletPath = getFilesDir() + "/AudioInterventions/";
     }
 
     public void onButtonClick(View v) {
@@ -35,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if(v.getId() == R.id.test) {
-
+            //new AudioSync().execute(getFilesDir().getPath());
             Intent i = new Intent(MainActivity.this, ListViewBarChartActivity.class);
             startActivity(i);
         }

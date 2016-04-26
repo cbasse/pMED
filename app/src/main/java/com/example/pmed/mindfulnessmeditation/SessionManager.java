@@ -9,6 +9,9 @@ import android.os.Message;
 import android.util.Log;
 
 import com.example.pmed.formmanager.FormResultsManager;
+import com.example.pmed.formparser.AudioSync;
+
+import java.io.File;
 
 /**
  * Created by calebbasse on 4/17/16.
@@ -36,6 +39,10 @@ public class SessionManager extends Activity {
             }
         };
 
+        AudioSync as = new AudioSync();
+        if (as.checkForAudioFileOnTablet("string")) {
+
+        }
         ((MindfulnessMeditation)getApplication()).listener = new NewConnectedListener(Newhandler,Newhandler);
         listener = ((MindfulnessMeditation)getApplication()).listener;
         runSession();

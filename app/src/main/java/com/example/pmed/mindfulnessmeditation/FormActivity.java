@@ -104,7 +104,7 @@ public class FormActivity extends AppCompatActivity {
 
                 results.setValue("likert_pos_affects", pos_affects.toString());
                 results.setValue("likert_neg_affects", neg_affects.toString());
-
+                System.out.println(results);
                 Intent i = new Intent();
                 i.putExtra("com.example.pmed.FORM_RESULTS", results);
                 setResult(1, i);
