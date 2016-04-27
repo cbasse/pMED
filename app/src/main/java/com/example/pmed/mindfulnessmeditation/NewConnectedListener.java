@@ -13,6 +13,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.OutputStream;
 
 import zephyr.android.BioHarnessBT.BTClient;
 import zephyr.android.BioHarnessBT.ConnectListenerImpl;
@@ -50,6 +51,7 @@ public class NewConnectedListener extends ConnectListenerImpl {
     private AccelerometerPacketInfo AccInfoPacket = new AccelerometerPacketInfo();
     private SummaryPacketInfo SummaryInfoPacket = new SummaryPacketInfo();
 
+    public String directoryPath;
 
 
     // pmed Stuff
@@ -87,21 +89,23 @@ public class NewConnectedListener extends ConnectListenerImpl {
 
 
         // pmed Stuff
-        /*File dir = new File(Environment.getExternalStorageDirectory(), "BioHarness");
+        File dir = new File(Environment.getExternalStorageDirectory(), "BioHarness");
         if(!dir.exists())
         {
-            dir.mkdir();
-        }*/
+            dir.mkdirs();
+        }
+
+        this.directoryPath = dir.getAbsolutePath();
 
         files = new File[ExperimentState.values().length][DataType.values().length];
         outputStreams = new FileOutputStream[ExperimentState.values().length][DataType.values().length];
 
-        files[ExperimentState.Pre.getValue()][DataType.HearRate.getValue()] = new File(directory, "PhysioHRpre.txt");
-        files[ExperimentState.Pre.getValue()][DataType.HRV.getValue()] = new File(directory, "PhysioHRVpre.txt");
-        files[ExperimentState.During.getValue()][DataType.HearRate.getValue()] = new File(directory, "PhysioHRduring.txt");
-        files[ExperimentState.During.getValue()][DataType.HRV.getValue()] = new File(directory, "PhysioHRVduring.txt");
-        files[ExperimentState.Post.getValue()][DataType.HearRate.getValue()] = new File(directory, "PhysioHRpost.txt");
-        files[ExperimentState.Post.getValue()][DataType.HRV.getValue()] = new File(directory, "PhysioHRVpost.txt");
+        files[ExperimentState.Pre.getValue()][DataType.HearRate.getValue()] = new File(dir, "PhysioHRpre.txt");
+        files[ExperimentState.Pre.getValue()][DataType.HRV.getValue()] = new File(dir, "PhysioHRVpre.txt");
+        files[ExperimentState.During.getValue()][DataType.HearRate.getValue()] = new File(dir, "PhysioHRduring.txt");
+        files[ExperimentState.During.getValue()][DataType.HRV.getValue()] = new File(dir, "PhysioHRVduring.txt");
+        files[ExperimentState.Post.getValue()][DataType.HearRate.getValue()] = new File(dir, "PhysioHRpost.txt");
+        files[ExperimentState.Post.getValue()][DataType.HRV.getValue()] = new File(dir, "PhysioHRVpost.txt");
 
         for (ExperimentState state : ExperimentState.values() )
         {
@@ -166,7 +170,7 @@ public class NewConnectedListener extends ConnectListenerImpl {
                         // mindful meditation stuff
                         try{
                             String st = String.valueOf(HRate) + " , ";
-                            System.out.println(experimentState.getValue());
+                            System.out.println("exp state " + experimentState.getValue());
                             outputStreams[experimentState.getValue()][DataType.HearRate.getValue()].write(st.getBytes());
                         }
                         catch (Exception e)
@@ -253,7 +257,6 @@ public class NewConnectedListener extends ConnectListenerImpl {
                         {
                             e.printStackTrace();
                         }
-
                         break;
 
                 }

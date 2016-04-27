@@ -244,6 +244,7 @@ public class StudyManifest {
                 params.add(new BasicNameValuePair("physio_duration", Integer.toString(readingA)));
                 Log.w("create study", "test 4");
                 params.add(new BasicNameValuePair("intervention_filename", audioFileName));
+                params.add(new BasicNameValuePair("number_of_days", Integer.toString(days)));
                 Log.w("create study", "test 5");
 
                 //jsonStudy.put("name", studyName);

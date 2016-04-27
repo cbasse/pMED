@@ -61,6 +61,8 @@ public class FormActivity extends AppCompatActivity {
     JSONParser jsonParser = new JSONParser();
     String TAG_SUCCESS = "success";
     Integer reqCode;
+    JSONParser jsParser = new JSONParser();
+    String resultId;
     // ^^^^^^^^^^^^^^^^^^
 
     @Override
@@ -87,7 +89,14 @@ public class FormActivity extends AppCompatActivity {
 
         try {
             //form = new Form(new File(formsDirectoryPath + "/" + formName));
-            BuildFormFromDatabase();
+            if(getIntent().getStringExtra("com.example.pmed.UPDATE_FORM").equals("true"))
+            {
+                Update();
+            }
+            else
+            {
+                BuildFormFromDatabase();
+            }
         } catch (Exception e) {
             System.out.println(e.getMessage());
             System.out.println(e.getStackTrace());
@@ -397,6 +406,11 @@ public class FormActivity extends AppCompatActivity {
         new RetrieveForm().execute();
     }
 
+    private void Update()
+    {
+        new UpdateQuestionnaireNumber().execute();
+    }
+
     class RetrieveForm extends AsyncTask<String, String, String>
     {
         @Override
@@ -638,6 +652,8 @@ public class FormActivity extends AppCompatActivity {
                 if (success == 1) {
                     // successfully created product
 
+                    resultId = json.getString("questionnaire_result_id");
+
                 } else {
                     // failed to create product
                 }
@@ -659,6 +675,7 @@ public class FormActivity extends AppCompatActivity {
                     Intent i = new Intent();
 
                     i.putExtra("com.example.pmed.FORM_RESULTS", results);
+                    i.putExtra("com.example.pmed.RESULT_ID", resultId);
                     if (getParent() == null) {
                         setResult(1, i);
                     } else {
@@ -676,4 +693,64 @@ public class FormActivity extends AppCompatActivity {
 
 
     }
+
+
+    class UpdateQuestionnaireNumber extends AsyncTask<String, String, String> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+
+        protected String doInBackground(String... args) {
+            // Building Parameters
+            List<NameValuePair> params = new ArrayList<NameValuePair>();
+
+            params.add(new BasicNameValuePair("id", userId));
+            // getting JSON string from URL
+            JSONObject json = jsParser.makeHttpRequest("http://meagherlab.co/read_questionnaire_id_for_user.php", "GET", params);
+
+            // Check your log cat for JSON reponse
+            Log.d("All Products: ", json.toString());
+            try {
+                // Checking for SUCCESS TAG
+                int success = json.getInt("success");
+
+                if (success == 1) {
+
+                    questionnaireId = json.getString("questionnaire_id");
+
+                } else {
+                    /*
+                    // no products found
+                    // Launch Add New product Activity
+                    Intent i = new Intent(getApplicationContext(),
+                            NewProductActivity.class);
+                    // Closing all previous activities
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(i);
+                    */
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+
+        protected void onPostExecute(String file_url) {
+            // updating UI from Background Thread
+            runOnUiThread(new Runnable() {
+                public void run() {
+                    BuildFormFromDatabase();
+                }
+            });
+
+        }
+
+
+    }
+
 }

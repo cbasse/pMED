@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.media.Image;
+import android.os.AsyncTask;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Message;
@@ -22,8 +23,21 @@ import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
@@ -53,6 +67,11 @@ public class RecordPhysData extends AppCompatActivity {
 
     Integer physioDuration;
 
+    Boolean isPre;
+    String resultId;
+    String dir;
+    public String dirPath;
+
     @Override
     public void onBackPressed() {
         //moveTaskToBack(true);
@@ -71,6 +90,9 @@ public class RecordPhysData extends AppCompatActivity {
         this.getApplicationContext().registerReceiver(new BTBondReceiver(), filter2);
 
 
+        this.resultId = getIntent().getStringExtra("com.example.pmed.RESULT_ID");
+        this.isPre = (getIntent().getStringExtra("com.example.pmed.IS_PRE").equals("true"));
+        this.dir = getIntent().getStringExtra("com.example.pmed.DIRECTORY");
         this.physioDuration = Integer.parseInt(getIntent().getStringExtra("com.example.pmed.PHYSIO_DURATION"));
 
         //Obtaining the handle to act on the CONNECT button
@@ -115,6 +137,7 @@ public class RecordPhysData extends AppCompatActivity {
                     _bt = ((MindfulnessMeditation)getApplication())._bt;
                     //_NConnListener = new NewConnectedListener(Newhandler,Newhandler);
                     _NConnListener = ((MindfulnessMeditation)getApplication()).listener;
+                    dirPath = _NConnListener.directoryPath;
 
                     _bt.addConnectedEventListener(_NConnListener);
 
@@ -171,8 +194,10 @@ public class RecordPhysData extends AppCompatActivity {
                             public void onClick(View v) {
                                 //Intent i = new Intent(RecordPhysData.this, Audio.class);
                                 //startActivity(i);
-                                setResult(1, getIntent()); //CALEB did this
-                                finish(); //and this
+
+                                new PostPhysioResults().execute();
+                                //setResult(1, getIntent()); //CALEB did this
+                                //finish(); //and this
                             }
                         });
 
@@ -196,6 +221,8 @@ public class RecordPhysData extends AppCompatActivity {
             //Reset all the values to 0s
 
             //!!!!!!!!!!!!!CONECTED
+            _NConnListener = ((MindfulnessMeditation)getApplication()).listener;
+            dirPath = _NConnListener.directoryPath;
 
             final Button startBtn = (Button) findViewById(R.id.ButtonStart);
             imgBluetooth.setVisibility(View.GONE);
@@ -205,20 +232,23 @@ public class RecordPhysData extends AppCompatActivity {
             connectText.setVisibility((View.GONE));
             timerText = (TextView)findViewById(R.id.CountdownText);
             timerText.setVisibility((View.VISIBLE));
-            timer = new CountDownTimer(physioDuration*100, 1000){
+            Integer min = physioDuration / 60;
+            Integer sec = physioDuration - (min * 60);
+            timerText.setText(min + ":" + String.format("%02d", sec));
+            timer = new CountDownTimer(physioDuration *1000, 1000){
                 public void onTick(long millisUntilFinished) {
                     descText = (TextView)findViewById(R.id.text_description);
                     descText.setVisibility((View.VISIBLE));
                     long minutes = TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished);
                     long seconds = (TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) % 60);
                     timerText.setText(minutes + ":" + String.format("%02d", seconds));
-                    Log.w("test", "test baby");
                 }
                 public void onFinish(){
                     descText.setVisibility((View.GONE));
                     startBtn.setVisibility(View.GONE);
                     timerText.setVisibility(View.GONE);
                     nextBtn.setVisibility(View.VISIBLE);
+                    //_NConnListener.transmitData = false;
                     timeStampExperimentState(); //Caleb's method
                 }
             };
@@ -226,6 +256,7 @@ public class RecordPhysData extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     timer.start();
+                    //_NConnListener.transmitData = true;
                     startBtn.setVisibility(View.GONE);
                 }
             });
@@ -234,8 +265,11 @@ public class RecordPhysData extends AppCompatActivity {
                 public void onClick(View v) {
                     //Intent i = new Intent(RecordPhysData.this, Audio.class);
                     //startActivity(i);
-                    setResult(1, getIntent()); //CALEB did this
-                    finish(); //and this
+
+
+                    //setResult(1, getIntent()); //CALEB did this
+                    //finish(); //and this
+                    new PostPhysioResults().execute();
                 }
             });
 
@@ -397,4 +431,125 @@ public class RecordPhysData extends AppCompatActivity {
             timeStampExperimentState();
         }
     }
+
+
+    private int getAvgFromFile(File f) {
+        try {
+            String fileText = "0";
+            String line;
+            // FileReader reads text files in the default encoding.
+            FileReader fileReader =
+                    new FileReader(f);
+
+            // Always wrap FileReader in BufferedReader.
+            BufferedReader bufferedReader =
+                    new BufferedReader(fileReader);
+
+            while((line = bufferedReader.readLine()) != null) {
+                System.out.println(line);
+                fileText += line;
+            }
+
+            // Always close files.
+            bufferedReader.close();
+
+            String[] valueStrings = fileText.split("\\s*,\\s*");
+
+            int accum = 0;
+            for (String val : valueStrings) {
+                accum += Integer.parseInt(val);
+            }
+            return accum/(valueStrings.length+1);
+        }
+        catch(FileNotFoundException ex) {
+            System.out.println(
+                    "Unable to open file '" +
+                            f + "'");
+            System.exit(1);
+        }
+        catch(IOException ex) {
+            System.out.println(
+                    "Error reading file '"
+                            + f + "'");
+            // Or we could just do this:
+            // ex.printStackTrace();
+            System.exit(1);
+        }
+        return 0;
+    }
+
+
+    class PostPhysioResults extends AsyncTask<String, String, String>
+    {
+        JSONParser jsonParser = new JSONParser();
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        protected String doInBackground(String... args) {
+            Log.w("physio", "about to post data");
+            // Building Parameters
+            String url = "http://meagherlab.co/update_physio_for_questionnaire_result.php";
+            List<NameValuePair> params = new ArrayList<NameValuePair>();
+
+            int avgHR = 1;
+            int avgHRV = 1;
+            if(isPre)
+            {
+                avgHR = getAvgFromFile(new File(dirPath +  "/PhysioHRpre.txt"));
+                avgHRV = getAvgFromFile(new File(dirPath +  "/PhysioHRVpre.txt"));
+            }
+            else
+            {
+                avgHR = getAvgFromFile(new File(dirPath +  "/PhysioHRpost.txt"));
+                avgHRV = getAvgFromFile(new File(dirPath +  "/PhysioHRVpost.txt"));
+            }
+
+
+            params.add(new BasicNameValuePair("id", resultId));
+            params.add(new BasicNameValuePair("heart_rate", Integer.toString(avgHR)));
+            params.add(new BasicNameValuePair("heart_rate_variability", Integer.toString(avgHRV)));
+
+            JSONObject json = jsonParser.makeHttpRequest(url, "POST", params);
+
+            // check log cat fro response
+            Log.d("Create Response", json.toString());
+
+            // check for success tag
+            try {
+                int success = json.getInt("success");
+
+                if (success == 1) {
+                    Log.w("PHYSIO", "upload physio success!");
+
+                } else {
+                    Log.w("PHYSIO", "upload physio failed");
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+
+        protected void onPostExecute(String file_url) {
+            // updating UI from Background Thread
+            runOnUiThread(new Runnable() {
+                public void run() {
+
+                    setResult(1, getIntent()); //CALEB did this
+                    finish(); //and this
+
+                }
+            });
+
+        }
+
+
+    }
+
+
 }

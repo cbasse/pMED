@@ -6,9 +6,11 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.Typeface;
+import android.os.AsyncTask;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,16 +32,35 @@ import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Utils;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class ListViewBarChartActivity extends DemoBase {
 
     BarChart chart1, chart2, chart3, chart4;
+    String userId;
+
+    final String TAG_SECTION = "section";
+    final String TAG_POSITIVE = "positive";
+    final String TAG_NEGATIVE = "negative";
+    final String TAG_HEART_RATE = "heart_rate";
+    final String TAG_HRV = "heart_rate_variability";
+    HashMap<String, HashMap<String, HashMap<String, String>>> values;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Log.w("charts","made it to charts");
+        this.userId = getIntent().getStringExtra("com.example.pmed.USER_ID");
+
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_listview_chart);
@@ -281,5 +302,96 @@ public class ListViewBarChartActivity extends DemoBase {
             setResult(1);
             finish();
         }
+    }
+
+
+    class GetData extends AsyncTask<String, String, String> {
+
+        JSONParser jsParser = new JSONParser();
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+
+        protected String doInBackground(String... args) {
+            // Building Parameters
+            List<NameValuePair> params = new ArrayList<NameValuePair>();
+
+            params.add(new BasicNameValuePair("id", userId));
+            // getting JSON string from URL
+            JSONObject json = jsParser.makeHttpRequest("http://meagherlab.co/read_results_for_user.php", "GET", params);
+
+            // Check your log cat for JSON reponse
+            Log.d("All Products: ", json.toString());
+            try {
+                // Checking for SUCCESS TAG
+                int success = json.getInt("success");
+
+                if (success == 1) {
+                    values = new HashMap<String,HashMap<String, HashMap<String,String>>>();
+
+                    JSONArray results = json.getJSONArray("results");
+
+                    for(int i =0; i < results.length(); i++)
+                    {
+                        JSONObject result = results.getJSONObject(i);
+
+                        String day = result.getString("day");
+
+                        JSONObject res = result.getJSONObject("results");
+
+                        String section = res.getString(TAG_SECTION); // either A or B
+                        String pos = res.getString(TAG_POSITIVE);
+                        String neg = res.getString(TAG_NEGATIVE);
+                        String hr = res.getString(TAG_HEART_RATE);
+                        String hrv = res.getString(TAG_HRV);
+
+                        HashMap<String, String> inner = new HashMap<String, String>();
+                        inner.put(TAG_POSITIVE, pos);
+                        inner.put(TAG_NEGATIVE, neg);
+                        inner.put(TAG_HEART_RATE, hr);
+                        inner.put(TAG_HRV, hrv);
+
+                        if(values.get(day) == null)
+                        {
+                            values.put(day, new HashMap<String, HashMap<String, String>>());
+                        }
+                        values.get(day).put(section, inner);
+
+
+                    }
+
+                } else {
+                    /*
+                    // no products found
+                    // Launch Add New product Activity
+                    Intent i = new Intent(getApplicationContext(),
+                            NewProductActivity.class);
+                    // Closing all previous activities
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(i);
+                    */
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+
+        protected void onPostExecute(String file_url) {
+            // updating UI from Background Thread
+            runOnUiThread(new Runnable() {
+                public void run() {
+                    //BuildFormFromDatabase();
+                }
+            });
+
+        }
+
+
     }
 }
