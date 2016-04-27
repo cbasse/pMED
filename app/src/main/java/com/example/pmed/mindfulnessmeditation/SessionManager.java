@@ -28,6 +28,7 @@ public class SessionManager extends Activity {
     public String userId;
     public String experimentId;
     public String questionnaireId;
+    public String physioDuration;
     public FormResultsManager formAResults;
     public FormResultsManager formBResults;
     public FormResultsManager formCResults;
@@ -46,6 +47,7 @@ public class SessionManager extends Activity {
         this.userId = i.getStringExtra("com.example.pmed.USER_ID");
         this.experimentId = i.getStringExtra("com.example.pmed.EXPERIMENT_ID");
         this.questionnaireId = i.getStringExtra("com.example.pmed.QUESTIONNAIRE_ID");
+        this.physioDuration = i.getStringExtra("com.example.pmed.PHYSIO_DURATION");
         Log.w("ses man", "q id is " + this.questionnaireId);
 
 
@@ -143,6 +145,7 @@ public class SessionManager extends Activity {
         } else if (requestCode == 1 && resultCode == 1) {
             formAResults = data.getParcelableExtra("com.example.pmed.FORM_RESULTS");
             Intent i = new Intent(this, RecordPhysData.class);
+            i.putExtra("com.example.pmed.PHYSIO_DURATION", this.physioDuration);
             listener.experimentState = NewConnectedListener.ExperimentState.Pre;
             System.out.println(listener.experimentState);
             startActivityForResult(i, 2);

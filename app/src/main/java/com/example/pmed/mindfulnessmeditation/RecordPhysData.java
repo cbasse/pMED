@@ -51,6 +51,8 @@ public class RecordPhysData extends AppCompatActivity {
     TextView descText;
     TextView connectText;
 
+    Integer physioDuration;
+
     @Override
     public void onBackPressed() {
         //moveTaskToBack(true);
@@ -67,6 +69,9 @@ public class RecordPhysData extends AppCompatActivity {
         // Registering the BTBondReceiver in the application that the status of the receiver has changed to Paired
         IntentFilter filter2 = new IntentFilter("android.bluetooth.device.action.BOND_STATE_CHANGED");
         this.getApplicationContext().registerReceiver(new BTBondReceiver(), filter2);
+
+
+        this.physioDuration = Integer.parseInt(getIntent().getStringExtra("com.example.pmed.PHYSIO_DURATION"));
 
         //Obtaining the handle to act on the CONNECT button
         TextView tv = (TextView) findViewById(R.id.labelStatusMsg);
@@ -132,7 +137,10 @@ public class RecordPhysData extends AppCompatActivity {
                         timerText = (TextView)findViewById(R.id.CountdownText);
                         timerText.setVisibility((View.VISIBLE));
 
-                        timer = new CountDownTimer(300000, 1000){
+                        Integer min = physioDuration / 60;
+                        Integer sec = physioDuration - (min * 60);
+                        timerText.setText(min + ":" + String.format("%02d", sec));
+                        timer = new CountDownTimer(physioDuration *1000, 1000){
                             public void onTick(long millisUntilFinished) {
                                 descText = (TextView)findViewById(R.id.text_description);
                                 descText.setVisibility((View.VISIBLE));
@@ -196,13 +204,14 @@ public class RecordPhysData extends AppCompatActivity {
             connectText.setVisibility((View.GONE));
             timerText = (TextView)findViewById(R.id.CountdownText);
             timerText.setVisibility((View.VISIBLE));
-            timer = new CountDownTimer(300000, 1000){
+            timer = new CountDownTimer(physioDuration*100, 1000){
                 public void onTick(long millisUntilFinished) {
                     descText = (TextView)findViewById(R.id.text_description);
                     descText.setVisibility((View.VISIBLE));
                     long minutes = TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished);
                     long seconds = (TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) % 60);
                     timerText.setText(minutes + ":" + String.format("%02d", seconds));
+                    Log.w("test", "test baby");
                 }
                 public void onFinish(){
                     descText.setVisibility((View.GONE));

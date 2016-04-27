@@ -111,7 +111,7 @@ public class UserLogin extends AppCompatActivity {
                     i.putExtra("com.example.pmed.USER_ID", uId);
                     i.putExtra("com.example.pmed.EXPERIMENT_ID", eId);
                     i.putExtra("com.example.pmed.QUESTIONNAIRE_ID", qId);
-                    i.putExtra("com.example.pmed.PHYSIO_DURATIon", pDur);
+                    i.putExtra("com.example.pmed.PHYSIO_DURATION", pDur);
                     i.putExtra("com.example.pmed.FILENAME", fName);
                     i.putExtra("com.example.pmed.QUESTIONNAIRE_TYPE", qType);
 
@@ -121,9 +121,6 @@ public class UserLogin extends AppCompatActivity {
 
                     // closing this screen
                     finish();
-
-
-
 
 
                 } else if (success == 0){
