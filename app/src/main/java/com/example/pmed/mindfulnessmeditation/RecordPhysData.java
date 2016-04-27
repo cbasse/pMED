@@ -115,6 +115,7 @@ public class RecordPhysData extends AppCompatActivity {
                     _bt = ((MindfulnessMeditation)getApplication())._bt;
                     //_NConnListener = new NewConnectedListener(Newhandler,Newhandler);
                     _NConnListener = ((MindfulnessMeditation)getApplication()).listener;
+
                     _bt.addConnectedEventListener(_NConnListener);
 
                     if (_bt.IsConnected())
