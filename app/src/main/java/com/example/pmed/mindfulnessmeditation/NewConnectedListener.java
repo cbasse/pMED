@@ -164,7 +164,7 @@ public class NewConnectedListener extends ConnectListenerImpl {
 
                         // mindful meditation stuff
                         try{
-                            String st = String.valueOf(HRate) + ", ";
+                            String st = String.valueOf(HRate) + " , ";
                             System.out.println(experimentState.getValue());
                             outputStreams[experimentState.getValue()][DataType.HearRate.getValue()].write(st.getBytes());
                         }

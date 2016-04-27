@@ -12,7 +12,11 @@ import android.util.Log;
 import com.example.pmed.formmanager.FormResultsManager;
 import com.example.pmed.formparser.AudioSync;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 
 /**
  * Created by calebbasse on 4/17/16.
@@ -60,6 +64,7 @@ public class SessionManager extends Activity {
         //((MindfulnessMeditation)getApplication()).listener = new NewConnectedListener(Newhandler,Newhandler);
         listener = ((MindfulnessMeditation)getApplication()).listener;
         listener.directory = new File(Environment.getExternalStorageDirectory().getPath() + "/BioHarness/" + "DirName");
+        System.out.println(getAvgFromFile(new File(listener.directory, "PhysioHRpre.txt")));
         listener.directory.mkdir();
         listener = new NewConnectedListener(Newhandler,Newhandler);
 
@@ -99,7 +104,7 @@ public class SessionManager extends Activity {
         i.putExtra("com.example.pmed.USER_ID", this.userId);
         i.putExtra("com.example.pmed.EXPERIMENT_ID", this.experimentId);
         i.putExtra("com.example.pmed.QUESTIONNAIRE_ID", this.questionnaireId);
-        startActivityForResult(i, 0);
+        //startActivityForResult(i, 0);
     }
 
     @Override
@@ -134,6 +139,10 @@ public class SessionManager extends Activity {
 
         } else if (requestCode == 5 && resultCode == 1) {
             if (day != LAST_DAY) {
+
+                int avgPreHR = getAvgFromFile(new File(listener.directory, "PhysioHRpre.txt"));
+
+
                 Intent i = new Intent(this, ListViewBarChartActivity.class);
                 startActivityForResult(i, 6);
             } else {
@@ -150,8 +159,55 @@ public class SessionManager extends Activity {
                 startActivityForResult(i, 7);
             }
 
-        } else if (requestCode == 6 && resultCode == 1) {
+        } else if (requestCode == 7 && resultCode == 1) {
+
             finish();
+
         }
+    }
+
+    private int getAvgFromFile(File f) {
+        try {
+            String fileText = "0";
+            String line;
+            // FileReader reads text files in the default encoding.
+            FileReader fileReader =
+                    new FileReader(f);
+
+            // Always wrap FileReader in BufferedReader.
+            BufferedReader bufferedReader =
+                    new BufferedReader(fileReader);
+
+            while((line = bufferedReader.readLine()) != null) {
+                System.out.println(line);
+                fileText += line;
+            }
+
+            // Always close files.
+            bufferedReader.close();
+
+            String[] valueStrings = fileText.split("\\s*,\\s*");
+
+            int accum = 0;
+            for (String val : valueStrings) {
+                accum += Integer.parseInt(val);
+            }
+            return accum/(valueStrings.length+1);
+        }
+        catch(FileNotFoundException ex) {
+            System.out.println(
+                    "Unable to open file '" +
+                            f + "'");
+            System.exit(1);
+        }
+        catch(IOException ex) {
+            System.out.println(
+                    "Error reading file '"
+                            + f + "'");
+            // Or we could just do this:
+            // ex.printStackTrace();
+            System.exit(1);
+        }
+        return 0;
     }
 }
