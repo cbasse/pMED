@@ -49,7 +49,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         //values.put(COLUMN_ID, s.getId()); //subject id number
         values.put(COLUMN_UNAME, s.getUname());
-        values.put(COLUMN_PASS, s.getPass());
+        values.put(COLUMN_PASS, s.getExperimentName());
 
         db.insert(TABLE_NAME, null, values);
         db.close();

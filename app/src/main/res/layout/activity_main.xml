@@ -104,6 +104,7 @@
         android:id="@+id/test"
         android:onClick="onButtonClick"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:visibility="invisible"/>
 
 </RelativeLayout>

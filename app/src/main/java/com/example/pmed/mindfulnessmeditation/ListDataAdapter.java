@@ -28,7 +28,7 @@ public class ListDataAdapter extends ArrayAdapter {
     }
 
     static class LayoutHandler {
-        TextView COLUMN_ID, COLUMN_UNAME, COLUMN_PASS;
+        TextView COLUMN_ID, COLUMN_UNAME, COLUMN_PASS, COLUMN_PROGRESS;
     }
 
     public void add(Object object) {
@@ -55,6 +55,7 @@ public class ListDataAdapter extends ArrayAdapter {
             layoutHandler.COLUMN_ID = (TextView)row.findViewById(R.id.text_user_id);
             layoutHandler.COLUMN_UNAME = (TextView)row.findViewById(R.id.text_user_name);
             layoutHandler.COLUMN_PASS = (TextView)row.findViewById(R.id.text_user_pass);
+            layoutHandler.COLUMN_PROGRESS = (TextView)row.findViewById(R.id.text_user_progress);
             row.setTag(layoutHandler);
 
         }
@@ -64,7 +65,8 @@ public class ListDataAdapter extends ArrayAdapter {
         Subjects s = (Subjects)this.getItem(position);
         layoutHandler.COLUMN_ID.setText((s.getId()).toString());
         layoutHandler.COLUMN_UNAME.setText(s.getUname());
-        layoutHandler.COLUMN_PASS.setText(s.getPass());
+        layoutHandler.COLUMN_PASS.setText(s.getExperimentName());
+        layoutHandler.COLUMN_PROGRESS.setText(s.getProgress());
 
         return row;
     }

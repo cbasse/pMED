@@ -43,6 +43,11 @@ public class AdminHome extends AppCompatActivity {
             startActivity(i);
         }
 
+        if(v.getId() == R.id.icon_export){
+            Intent i = new Intent(AdminHome.this, ExportData.class);
+            startActivity(i);
+        }
+
     }
 
 }

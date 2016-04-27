@@ -13,6 +13,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.OutputStream;
 
 import zephyr.android.BioHarnessBT.BTClient;
 import zephyr.android.BioHarnessBT.ConnectListenerImpl;
@@ -50,6 +51,7 @@ public class NewConnectedListener extends ConnectListenerImpl {
     private AccelerometerPacketInfo AccInfoPacket = new AccelerometerPacketInfo();
     private SummaryPacketInfo SummaryInfoPacket = new SummaryPacketInfo();
 
+    public String directoryPath;
 
 
     // pmed Stuff
@@ -61,6 +63,9 @@ public class NewConnectedListener extends ConnectListenerImpl {
         public int getValue() { return value; }
     }
     public ExperimentState experimentState;
+
+    public boolean transmitData = false;
+    public static File directory;
 
     public enum DataType {
         HearRate(0), HRV(1);
@@ -84,11 +89,13 @@ public class NewConnectedListener extends ConnectListenerImpl {
 
 
         // pmed Stuff
-        File dir = new File(Environment.getExternalStorageDirectory(), "Experiments");
+        File dir = new File(Environment.getExternalStorageDirectory(), "BioHarness");
         if(!dir.exists())
         {
             dir.mkdirs();
         }
+
+        this.directoryPath = dir.getAbsolutePath();
 
         files = new File[ExperimentState.values().length][DataType.values().length];
         outputStreams = new FileOutputStream[ExperimentState.values().length][DataType.values().length];
@@ -110,7 +117,9 @@ public class NewConnectedListener extends ConnectListenerImpl {
                 }
                 try {
                     files[state.getValue()][type.getValue()].createNewFile();
-                    outputStreams[ExperimentState.Pre.getValue()][DataType.HearRate.getValue()] = new FileOutputStream(files[state.getValue()][type.getValue()]);
+                    //outputStreams[ExperimentState.Pre.getValue()][DataType.HearRate.getValue()] = new FileOutputStream(files[state.getValue()][type.getValue()]);
+                    System.out.println("hhhhrrrr");
+                    outputStreams[state.getValue()][type.getValue()] = new FileOutputStream(files[state.getValue()][type.getValue()]);
                 }
                 catch (Exception e)
                 {
@@ -129,7 +138,7 @@ public class NewConnectedListener extends ConnectListenerImpl {
         RqPacketType.GP_ENABLE = true;
         RqPacketType.BREATHING_ENABLE = true;
         RqPacketType.LOGGING_ENABLE = true;
-        //RqPacketType.SUMMARY_ENABLE = true;
+        RqPacketType.SUMMARY_ENABLE = true;
 
 
         //Creates a new ZephyrProtocol object and passes it the BTComms object]]
@@ -137,6 +146,9 @@ public class NewConnectedListener extends ConnectListenerImpl {
         //ZephyrProtocol _protocol = new ZephyrProtocol(eventArgs.getSource().getComms(), );
         _protocol.addZephyrPacketEventListener(new ZephyrPacketListener() {
             public void ReceivedPacket(ZephyrPacketEvent eventArgs) {
+
+                if (!transmitData)
+                    return;
                 ZephyrPacketArgs msg = eventArgs.getPacket();
                 byte CRCFailStatus;
                 byte RcvdBytes;
@@ -157,8 +169,8 @@ public class NewConnectedListener extends ConnectListenerImpl {
 
                         // mindful meditation stuff
                         try{
-                            String st = String.valueOf(HRate) + ", ";
-                            System.out.println(experimentState.getValue());
+                            String st = String.valueOf(HRate) + " , ";
+                            System.out.println("exp state " + experimentState.getValue());
                             outputStreams[experimentState.getValue()][DataType.HearRate.getValue()].write(st.getBytes());
                         }
                         catch (Exception e)
@@ -245,7 +257,6 @@ public class NewConnectedListener extends ConnectListenerImpl {
                         {
                             e.printStackTrace();
                         }
-
                         break;
 
                 }

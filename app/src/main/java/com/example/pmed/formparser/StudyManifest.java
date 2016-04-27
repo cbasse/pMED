@@ -8,6 +8,8 @@ import android.os.AsyncTask;
 import android.os.Environment;
 import android.util.Log;
 
+import com.example.pmed.mindfulnessmeditation.AdminHome;
+import com.example.pmed.mindfulnessmeditation.ConfirmExpParse;
 import com.example.pmed.mindfulnessmeditation.JSONParser;
 import com.example.pmed.mindfulnessmeditation.ManageUserAccounts;
 
@@ -38,6 +40,7 @@ import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class StudyManifest {
@@ -46,14 +49,15 @@ public class StudyManifest {
     public int days;
     public Form formA;
     public int readingA;
-    public String soundclip;
+    public File soundclip;
     public Form formB;
     public int readingB;
     public Form formFinal = null;
+    public String audioFileName;
 
 
     JSONParser jsonParser = new JSONParser();
-    String url = "http://meagherlab.co/create_study.php";
+    String url = "http://meagherlab.co/upload_form.php";
     String TAG_SUCCESS = "success";
 
     private XmlPullParser xpp;
@@ -88,7 +92,8 @@ public class StudyManifest {
             filename = parseTag("questionnaire-a", false);
             formA = new Form(findFile(filename, files));
 
-            soundclip = parseTag("soundclip", false);
+            filename = parseTag("soundclip", false);
+            soundclip = findFile(filename, files);
 
             filename = parseTag("questionnaire-b", false);
             formB = new Form(findFile(filename, files));
@@ -106,6 +111,13 @@ public class StudyManifest {
 
 
 
+            audioFileName = soundclip.getName();
+            /*
+
+                Calebs code motha trucka
+
+            */
+            new AudioSync().execute("upload", soundclip.getPath(), audioFileName);
 
             /*
 
@@ -114,29 +126,6 @@ public class StudyManifest {
             */
             new CreateNewStudy().execute();
 
-            /*
-            // uploading audio
-            String url = "http://yourserver";
-            File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath(),
-                    "yourfile");
-            try {
-                HttpClient httpclient = new DefaultHttpClient();
-
-                HttpPost httppost = new HttpPost(url);
-
-                InputStreamEntity reqEntity = new InputStreamEntity(
-                        new FileInputStream(file), -1);
-                reqEntity.setContentType("binary/octet-stream");
-                reqEntity.setChunked(true); // Send in multiple parts if needed
-                httppost.setEntity(reqEntity);
-                HttpResponse response = httpclient.execute(httppost);
-                //Do something with response...
-
-            } catch (Exception e) {
-                // show error
-            }
-            */
-            // for audio upload ^^^^^^
 
 
 
@@ -152,7 +141,6 @@ public class StudyManifest {
             System.out.println("formFinal " + formFinal);
             System.out.println();
 
-            new StudyToDatabase().execute();
 
         } catch (Exception e) {
             if (e.getMessage() != null)
@@ -162,48 +150,6 @@ public class StudyManifest {
             e.printStackTrace();
             throw e;
         }
-    }
-
-    class StudyToDatabase extends AsyncTask<String, String, String> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-
-        protected String doInBackground(String... args) {
-
-            // Building Parameters
-            List<NameValuePair> params = new ArrayList<NameValuePair>();
-            params.add(new BasicNameValuePair("username", ""));
-            params.add(new BasicNameValuePair("global_user_password", ""));
-            params.add(new BasicNameValuePair("admin_password", ""));
-            params.add(new BasicNameValuePair("id", "0"));
-            params.add(new BasicNameValuePair("experiment_id", "0"));
-            params.add(new BasicNameValuePair("questionnaire_id", "0"));
-            params.add(new BasicNameValuePair("is_admin", "0"));
-
-            // getting JSON Object
-            // Note that create product url accepts POST method
-            Log.w("JSON", "Test1");
-            JSONObject json = jsonParser.makeHttpRequest(url,
-                    "POST", params);
-
-            // check log cat fro response
-            Log.d("Create Response", json.toString());
-
-            // check for success tag
-            try {
-                int success = json.getInt(TAG_SUCCESS);
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-            return null;
-        }
-
     }
 
     private String parseManifestName()
@@ -280,20 +226,30 @@ public class StudyManifest {
             super.onPreExecute();
         }
 
-
         protected String doInBackground(String... args) {
             Form[] forms = { baseline, formA, formB, formFinal };
 
 
             // Building Parameters
             List<NameValuePair> params = new ArrayList<NameValuePair>();
+            Log.w("create study", "test 1");
 
             try
             {
                 JSONObject jsonStudy = new JSONObject();
 
-                jsonStudy.put("study_name", studyName);
-                jsonStudy.put("physio_duration", readingA);
+                Log.w("create study", "test 2");
+                params.add(new BasicNameValuePair("name", studyName));
+                Log.w("create study", "test 3");
+                params.add(new BasicNameValuePair("physio_duration", Integer.toString(readingA)));
+                Log.w("create study", "test 4");
+                params.add(new BasicNameValuePair("intervention_filename", audioFileName));
+                params.add(new BasicNameValuePair("number_of_days", Integer.toString(days)));
+                Log.w("create study", "test 5");
+
+                //jsonStudy.put("name", studyName);
+                //jsonStudy.put("physio_duration", readingA);
+                //jsonStudy.put("intervention_filename", "");
 
                 JSONArray jsonForms = new JSONArray();
                 for (Form form: forms)
@@ -305,54 +261,76 @@ public class StudyManifest {
                     //jsonForm.put("form_desc", form.formDesc);
 
                     JSONArray jsonQuestions = new JSONArray();
+                    Log.w("create study", "test 5.00001");
+                    if (form == null)
+                    {
+                        Log.w("create study", "form is null");
+                        continue;
+                    }
+                    Log.w("create study", form.formName);
                     for (Prompt prompt: form.prompts)
                     {
-                        Question[] qs;
+                        Log.w("create study", "test 5.00002");
+                        ArrayList<Question> qs;
                         if(prompt.promptType.equals("likert")) // MIGHT BE FIXED
                         {
                             qs = prompt.likertQuestions;
+                            Log.w("create study", "test 5.00003");
                         }
                         else
                         {
-                            qs = new Question[] { prompt.question };
+                            qs = new ArrayList<Question>(Arrays.asList(prompt.question));
+                            Log.w("create study", "test 5.000035");
                         }
 
+                        Log.w("create study", "test 6");
                         for (Question q: qs )
                         {
                             JSONObject jsonQuestion = new JSONObject();
 
-                            jsonQuestion.put("image_filename", "");
+                            jsonQuestion.put("image_filename", "the_word_blank");
                             jsonQuestion.put("question_type", prompt.promptType);
                             jsonQuestion.put("question_name", prompt.name);
-                            jsonQuestion.put("question_likert_description", prompt.likertDescription);
-                            jsonQuestion.put("question_text", q.getText());
-                            jsonQuestion.put("question_reverse", q.isReverse().toString());
-                            jsonQuestion.put("question_is_positive", q.isPositive().toString());
+                            jsonQuestion.put("likert_description", prompt.likertDescription);
+                            jsonQuestion.put("text", q.getText());
+                            jsonQuestion.put("is_reversed", q.isReverse().toString());
+                            jsonQuestion.put("is_positive", q.isPositive().toString());
 
-                            JSONArray jsonAnswers = new JSONArray();
-                            for(Option op : prompt.options)
+
+                            if(!prompt.promptType.equals("short"))
                             {
-                                JSONObject jsonAnswer = new JSONObject();
+                                JSONArray jsonAnswers = new JSONArray();
+                                for(Option op : prompt.options)
+                                {
+                                    JSONObject jsonAnswer = new JSONObject();
 
-                                jsonAnswer.put("answer_choice", op.choice);
-                                jsonAnswer.put("answer_score", op.score);
-                                jsonAnswer.put("answer_is_text", op.textBox.toString());
+                                    jsonAnswer.put("text", op.choice);
+                                    jsonAnswer.put("score", op.score);
+                                    jsonAnswer.put("is_text", op.textBox.toString());
 
-                                jsonAnswers.put(jsonAnswer);
+                                    jsonAnswers.put(jsonAnswer);
+                                }
+                                jsonQuestion.put("answer_choices", jsonAnswers);
                             }
-                            jsonQuestion.put("question_answers", jsonAnswers);
+                            else
+                            {
+                                //jsonQuestions.put(jsonQuestion);
+                            }
 
                             jsonQuestions.put(jsonQuestion);
                         }
                     }
-                    jsonForm.put("form_questions", jsonQuestions);
+                    jsonForm.put("questions", jsonQuestions);
 
                     jsonForms.put(jsonForm);
                 }
 
-                jsonStudy.put("study_forms", jsonForms);
+                //jsonStudy.put("questionnaires", jsonForms);
 
-                params.add(new BasicNameValuePair("study", jsonStudy.toString()));
+
+                String fixed = jsonForms.toString().replaceAll("'", "*");
+                params.add(new BasicNameValuePair("questionnaires", fixed));
+                //params.add(new BasicNameValuePair("study", jsonStudy.toString()));
             }
             catch (Exception e)
             {
