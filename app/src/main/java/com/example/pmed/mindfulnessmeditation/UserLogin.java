@@ -99,6 +99,9 @@ public class UserLogin extends AppCompatActivity {
                     String qId = json.getString("questionnaire_id");
                     String eId = json.getString("experiment_id");
                     String uId = json.getString("id");
+                    String pDur = json.getString("physio_duration");
+                    String fName = json.getString("intervention_filename");
+                    String qType = json.getString("questionnaire_type");
 
                     isCorrect = true;
                     Intent i = new Intent(UserLogin.this, SessionManager.class);
@@ -106,6 +109,9 @@ public class UserLogin extends AppCompatActivity {
                     i.putExtra("com.example.pmed.USER_ID", uId);
                     i.putExtra("com.example.pmed.EXPERIMENT_ID", eId);
                     i.putExtra("com.example.pmed.QUESTIONNAIRE_ID", qId);
+                    i.putExtra("com.example.pmed.PHYSIO_DURATIon", pDur);
+                    i.putExtra("com.example.pmed.FILENAME", fName);
+                    i.putExtra("com.example.pmed.QUESTIONNAIRE_TYPE", qType);
 
                     startActivity(i);
 

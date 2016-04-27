@@ -39,9 +39,11 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class FormActivity extends AppCompatActivity {
     public Form form;
@@ -126,7 +128,7 @@ public class FormActivity extends AppCompatActivity {
                                         actionId == EditorInfo.IME_ACTION_DONE ||
                                         event.getAction() == KeyEvent.ACTION_DOWN &&
                                                 event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
-                                    results.setValue(p.name + "_text", v.getText().toString());
+                                    results.setValue(p.question.id, results.getValue(p.question.id) + v.getText().toString());
                                 }
                                 return false; // pass on to other listeners.
                             }
@@ -140,7 +142,14 @@ public class FormActivity extends AppCompatActivity {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 form.prompts.get(promptIndex).answerText = Integer.toString(checkedId);
 
-                results.setValue(p.name, Integer.toString(checkedId));
+
+
+                //results.setValue(p.name, Integer.toString(checkedId));
+                results.setValue(p.question.id, p.options.get(checkedId - 1).choice);
+
+
+
+
                 if (form.prompts.get(promptIndex).options.get(checkedId - 1).textBox == true) {
                     EditText optional = (EditText) group.getChildAt(checkedId);
                     optional.setFocusableInTouchMode(true);
@@ -151,7 +160,7 @@ public class FormActivity extends AppCompatActivity {
                             et.setText("");
                             et.setFocusable(false);
                             et.clearFocus();
-                            results.setValue(p.name + "_text", "");
+                            //results.setValue(p.name + "_text", "");
                         }
                     }
                 }
@@ -188,7 +197,20 @@ public class FormActivity extends AppCompatActivity {
                                     ViewGroup checkParent = (ViewGroup) v.getParent();
                                     for (int i = 0; i < checkParent.getChildCount(); i++) {
                                         if (checkParent.getChildAt(i).getId() == v.getId())
-                                            results.setValue(p.name + "_" + p.options.get(checkParent.getChildAt(i-1).getId()-1).choice + "_text", v.getText().toString());
+                                        {
+                                            String answer = results.getValue(p.question.id);
+                                            if(answer.length() > 1)
+                                            {
+                                                answer = answer + " : ";
+                                            }
+
+                                            answer = answer + p.options.get(checkParent.getChildAt(i-1).getId()-1).choice;
+
+                                            if(v.getText().toString().length() > 1)
+                                            {
+                                                results.setValue(p.question.id, answer + ":text = " + v.getText().toString());
+                                            }
+                                        }
                                     }
                                 }
                                 return false; // pass on to other listeners.
@@ -200,11 +222,23 @@ public class FormActivity extends AppCompatActivity {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     int checkId = buttonView.getId();
-                    String key = p.name + "_" + p.options.get(checkId-1).choice;
+                    //String key = p.name + "_" + p.options.get(checkId-1).choice;
+                    String key = p.question.id;
+                    String answer = results.getValue(key);
                     if (isChecked)
-                        results.setValue(key, "1");
+                    {
+                        if(answer.length() > 1)
+                        {
+                            answer = answer + " : ";
+                        }
+                        answer = answer + p.options.get(checkId-1).choice;
+                    }
                     else
-                        results.setValue(key, "");
+                    {
+                        answer = answer.replace(p.options.get(checkId-1).choice, "");
+                    }
+                    results.setValue(key, answer);
+
                     ViewGroup parent = (ViewGroup)buttonView.getParent();
 
                     if (form.prompts.get(promptIndex).options.get(checkId - 1).textBox == true && isChecked) {
@@ -217,7 +251,8 @@ public class FormActivity extends AppCompatActivity {
                                 et.setText("");
                                 et.setFocusable(false);
                                 et.clearFocus();
-                                results.setValue(p.name + "_" + p.options.get(parent.getChildAt(i-1).getId()-1).choice + "_text", "");
+                                //results.setValue(p.name + "_" + p.options.get(parent.getChildAt(i-1).getId()-1).choice + "_text", "");
+                                results.setValue(key, answer.split(":text = ")[0] );
                             }
                         }
                     }
@@ -242,7 +277,7 @@ public class FormActivity extends AppCompatActivity {
                                 actionId == EditorInfo.IME_ACTION_DONE ||
                                 event.getAction() == KeyEvent.ACTION_DOWN &&
                                         event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
-                            results.setValue(form.prompts.get(promptIndex).name, v.getText().toString());
+                            results.setValue(form.prompts.get(promptIndex).question.id, v.getText().toString());
                         }
                         return false; // pass on to other listeners.
                     }
@@ -291,7 +326,17 @@ public class FormActivity extends AppCompatActivity {
                             }
                         }
                     }
-                    results.setValue(key, score);
+
+                    results.setValue(p.likertQuestions.get(qIndex).id, adapter.getItem(pos).choice);
+
+                    if(p.likertQuestions.get(qIndex).isPositive())
+                    {
+                        results.setValue("likert_pos_affects", Integer.toString(Integer.parseInt(results.getValue("likert_pos_affects")) + Integer.parseInt(score))); //NEED TO FIX
+                    }
+                    else if(!p.likertQuestions.get(qIndex).isPositive())
+                    {
+                        results.setValue("likert_pos_affects", Integer.toString(Integer.parseInt(results.getValue("likert_pos_affects")) + Integer.parseInt(score))); //NEED TO FIX
+                    }
                 }
 
                 @Override
@@ -303,6 +348,31 @@ public class FormActivity extends AppCompatActivity {
         }
 
         vg.addView(likertGroup);
+    }
+
+    public ArrayList<String> SortIds()
+    {
+        ArrayList<Integer> sorted = new ArrayList<Integer>();
+
+        for(Map.Entry<String, String> entry : results.results.entrySet())
+        {
+            if(entry.getKey() == "likert_pos_affects" || entry.getKey() == "likert_neg_affects")
+            {
+                continue;
+            }
+
+            sorted.add(Integer.parseInt(entry.getKey()));
+        }
+
+        Collections.sort(sorted);
+
+        ArrayList<String> answer = new ArrayList<>();
+        for(int i = 0; i < sorted.size(); i++)
+        {
+            answer.add(Integer.toString(sorted.get(i)));
+        }
+
+        return answer;
     }
 
 
@@ -346,6 +416,7 @@ public class FormActivity extends AppCompatActivity {
                     likert.options = new ArrayList<Option>();
                     likert.likertQuestions = new ArrayList<Question>();
                     likert.promptType = "likert";
+                    Boolean addedLikert = false;
                     // looping through All Products
                     for (int i = 0; i < JQs.length(); i++) {
 
@@ -403,14 +474,14 @@ public class FormActivity extends AppCompatActivity {
                             }
                         }
 
-                        if(!type.equals("likert"))
+                        if(!type.equals("likert") || !addedLikert)
                         {
                             form.prompts.add(prompt);
+                            if(type.equals("likert"))
+                            {
+                                addedLikert = true;
+                            }
                         }
-                    }
-                    if(likert.options.size() > 0)
-                    {
-                        form.prompts.add(likert);
                     }
 
                 } else {
@@ -467,6 +538,7 @@ public class FormActivity extends AppCompatActivity {
                             Intent data = getIntent();
                             Integer pos_affects = 0;
                             Integer neg_affects = 0;
+                            /*
                             for (Prompt p : form.prompts) {
                                 if (p.promptType.equals("likert")) {
                                     for (Question q : p.likertQuestions) {
@@ -479,14 +551,11 @@ public class FormActivity extends AppCompatActivity {
                                     }
                                 }
                             }
+                            */
 
-                            results.setValue("likert_pos_affects", pos_affects.toString());
-                            results.setValue("likert_neg_affects", neg_affects.toString());
-                            System.out.println(results);
-
-
-                            results.setValue("likert_pos_affects", pos_affects.toString());
-                            results.setValue("likert_neg_affects", neg_affects.toString());
+                            //results.setValue("likert_pos_affects", pos_affects.toString());
+                            //results.setValue("likert_neg_affects", neg_affects.toString());
+                            //System.out.println(results);
 
 
                             for(Map.Entry<String, String> entry : results.results.entrySet())
@@ -521,15 +590,17 @@ public class FormActivity extends AppCompatActivity {
 
             try {
                 params.add(new BasicNameValuePair("user_id", userId));
-                params.add(new BasicNameValuePair("positive", Integer.toString(pos_affects)));
-                params.add(new BasicNameValuePair("negative", Integer.toString(neg_affects)));
+                params.add(new BasicNameValuePair("positive", results.results.get("likert_pos_affects")));
+                params.add(new BasicNameValuePair("negative", results.results.get("likert_neg_affects")));
 
                 JSONArray responses = new JSONArray();
-                for(Map.Entry<String, String> entry : results.results.entrySet())
+                ArrayList<String> sortedIds = SortIds();
+                for(int i = 0; i < sortedIds.size(); i++)
                 {
                     JSONObject response = new JSONObject();
-                    response.put("question_id", entry.getKey());
-                    response.put("response", entry.getValue());
+                    response.put("question_id", sortedIds.get(i));
+                    response.put("text", results.results.get(sortedIds.get(i)));
+                    response.put("score", "");
                     responses.put(response);
                 }
 

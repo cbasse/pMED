@@ -34,7 +34,7 @@
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:id="@+id/text_user_pass"
-        android:text="Exp #"
+        android:text="Exp Name"
         android:textSize="20dp"
         android:layout_marginTop="10dp"
         android:gravity="center"

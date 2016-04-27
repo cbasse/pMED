@@ -23,6 +23,18 @@ public class FormResultsManager implements Parcelable {
         results.put("form_name", form.formName);
 
         for (Prompt p : form.prompts) {
+            if(p.promptType.equals("likert"))
+            {
+                for(Question q : p.likertQuestions)
+                {
+                    results.put(q.id, "");
+                }
+            }
+            else
+            {
+                results.put(p.question.id, "");
+            }
+            /*
             if (p.promptType.equals("mult")) {
                 results.put(p.question.id, "");
                 for (Option op : p.options) {
@@ -45,10 +57,11 @@ public class FormResultsManager implements Parcelable {
                     results.put(p.name + "_" + q.getText(), "");
                 }
             }
+            */
         }
 
-        results.put("likert_pos_affects", "");
-        results.put("likert_neg_affects", "");
+        results.put("likert_pos_affects", "0");
+        results.put("likert_neg_affects", "0");
 
     }
 

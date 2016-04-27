@@ -46,7 +46,7 @@ public class ExportData extends AppCompatActivity {
 
 
     JSONParser jsonParser = new JSONParser();
-    String url = "http://meagherlab.co/create_user.php";
+    String url = "http://meagherlab.co/build_response_csv.php";
     String TAG_SUCCESS = "success";
 
     /*
@@ -147,9 +147,9 @@ public class ExportData extends AppCompatActivity {
 
         // See http://stackoverflow.com/questions/3551821/android-write-to-sd-card-folder
 
-        File dir = new File (root.getAbsolutePath() + "/ExportedData");
+        File dir = new File (root.getAbsolutePath() + "/Experiments");
         dir.mkdirs();
-        File file = new File(dir, "Experiment_" + selectedExperimentId + ".csv");
+        File file = new File(dir, "Experiment_" + selectedExperimentId + "_data" + ".csv");
 
         try {
             FileOutputStream f = new FileOutputStream(file);
@@ -187,9 +187,8 @@ public class ExportData extends AppCompatActivity {
 
             // getting JSON Object
             // Note that create product url accepts POST method
-            Log.w("JSON", "Test1");
-            JSONObject json = jsonParser.makeHttpRequest(url,
-                    "POST", params);
+            Log.w("JSON", "the exp id is " + selectedExperimentId);
+            JSONObject json = jsonParser.makeHttpRequest("http://meagherlab.co/build_response_csv.php","GET", params);
 
             // check log cat fro response
             Log.d("Create Response", json.toString());
@@ -199,17 +198,21 @@ public class ExportData extends AppCompatActivity {
                 int success = json.getInt(TAG_SUCCESS);
 
                 if (success == 1) {
+                    Log.w("build csv", "starting to build da csv");
                     ArrayList<String> lines = new ArrayList<String>();
 
                     JSONArray headers = json.getJSONArray("question_headers");
                     String qHeader = "User Id";
                     for(int i = 0; i < headers.length(); i++)
                     {
+                        qHeader = qHeader + ", " + headers.getString(i);
+                        /*
                         JSONArray line = headers.getJSONArray(i);
                         for(int j = 0; j < line.length(); j++)
                         {
                             qHeader = qHeader + ", " + line.getString(j);
                         }
+                        */
                     }
                     lines.add(qHeader);
 

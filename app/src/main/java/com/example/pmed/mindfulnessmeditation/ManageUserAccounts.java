@@ -66,6 +66,8 @@ public class ManageUserAccounts extends AppCompatActivity {
     private static final String TAG_GLOBAL_PASS = "global_user_password";
     private static final String TAG_IS_ADMIN = "is_admin";
     private static final String TAG_USERS = "users";
+    private static final String TAG_EXP_NAME = "experiment_name";
+    private static final String TAG_USER_PROGRESS = "progress";
     JSONArray users = null;
     ArrayList<HashMap<String, String>> usersList;
 
@@ -158,8 +160,9 @@ public class ManageUserAccounts extends AppCompatActivity {
                         // Storing each json item in variable
                         String id = c.getString(TAG_ID);
                         String uname = c.getString(TAG_USERNAME);
-                        String uPass = c.getString(TAG_GLOBAL_PASS);
-                        String uExpId = c.getString(TAG_EXP_ID);
+                        String expName = c.getString(TAG_EXP_NAME);
+                        String uProgress = c.getString(TAG_USER_PROGRESS);
+
 
                         // creating new HashMap
                         HashMap<String, String> map = new HashMap<String, String>();
@@ -167,8 +170,8 @@ public class ManageUserAccounts extends AppCompatActivity {
                         // adding each child node to HashMap key => value
                         map.put(TAG_ID, id);
                         map.put(TAG_USERNAME, uname);
-                        map.put(TAG_GLOBAL_PASS, uPass);
-                        map.put(TAG_EXP_ID, uExpId);
+                        map.put(TAG_EXP_NAME, expName);
+                        map.put(TAG_USER_PROGRESS, uProgress);
 
                         // adding HashList to ArrayList
                         usersList.add(map);
@@ -203,7 +206,8 @@ public class ManageUserAccounts extends AppCompatActivity {
                         Subjects s = new Subjects();
                         s.setId(Integer.parseInt(user.get(TAG_ID).toString()));
                         s.setUname(user.get(TAG_USERNAME).toString());
-                        s.setPass(user.get(TAG_EXP_ID).toString());
+                        s.setExperimentName(user.get(TAG_EXP_NAME).toString());
+                        s.setProgress(user.get(TAG_USER_PROGRESS).toString());
                         listDataAdapter.add(s);
                     }
                 }
