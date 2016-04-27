@@ -256,8 +256,9 @@ public class ListViewBarChartActivity extends DemoBase {
             set1 = new LineDataSet(yVals1, "DataSet 1");
 */
 
+
         //****pre and post bars****//
-        BarDataSet a = new BarDataSet(yVals1, "Pre");
+       BarDataSet a = new BarDataSet(yVals1, "Pre");
         a.setBarSpacePercent(20f);
         a.setBarShadowColor(Color.rgb(203, 203, 203));
         a.setColor(Color.rgb(58, 79, 156));
@@ -360,8 +361,6 @@ public class ListViewBarChartActivity extends DemoBase {
                             values.put(day, new HashMap<String, HashMap<String, String>>());
                         }
                         values.get(day).put(section, inner);
-
-
                     }
 
                 } else {
@@ -390,6 +389,9 @@ public class ListViewBarChartActivity extends DemoBase {
                     //BuildFormFromDatabase();
                 }
             });
+
+            //values.get("1").get("pre").get(TAG_HEART_RATE);
+            //values.get("1").get("pre").get(TAG_HEART_RATE);
 
         }
 
