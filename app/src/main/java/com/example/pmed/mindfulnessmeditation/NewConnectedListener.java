@@ -62,6 +62,9 @@ public class NewConnectedListener extends ConnectListenerImpl {
     }
     public ExperimentState experimentState;
 
+    public boolean transmitData = false;
+    public static File directory;
+
     public enum DataType {
         HearRate(0), HRV(1);
         
@@ -84,21 +87,21 @@ public class NewConnectedListener extends ConnectListenerImpl {
 
 
         // pmed Stuff
-        File dir = new File(Environment.getExternalStorageDirectory(), "Experiments");
+        /*File dir = new File(Environment.getExternalStorageDirectory(), "BioHarness");
         if(!dir.exists())
         {
-            dir.mkdirs();
-        }
+            dir.mkdir();
+        }*/
 
         files = new File[ExperimentState.values().length][DataType.values().length];
         outputStreams = new FileOutputStream[ExperimentState.values().length][DataType.values().length];
 
-        files[ExperimentState.Pre.getValue()][DataType.HearRate.getValue()] = new File(dir, "PhysioHRpre.txt");
-        files[ExperimentState.Pre.getValue()][DataType.HRV.getValue()] = new File(dir, "PhysioHRVpre.txt");
-        files[ExperimentState.During.getValue()][DataType.HearRate.getValue()] = new File(dir, "PhysioHRduring.txt");
-        files[ExperimentState.During.getValue()][DataType.HRV.getValue()] = new File(dir, "PhysioHRVduring.txt");
-        files[ExperimentState.Post.getValue()][DataType.HearRate.getValue()] = new File(dir, "PhysioHRpost.txt");
-        files[ExperimentState.Post.getValue()][DataType.HRV.getValue()] = new File(dir, "PhysioHRVpost.txt");
+        files[ExperimentState.Pre.getValue()][DataType.HearRate.getValue()] = new File(directory, "PhysioHRpre.txt");
+        files[ExperimentState.Pre.getValue()][DataType.HRV.getValue()] = new File(directory, "PhysioHRVpre.txt");
+        files[ExperimentState.During.getValue()][DataType.HearRate.getValue()] = new File(directory, "PhysioHRduring.txt");
+        files[ExperimentState.During.getValue()][DataType.HRV.getValue()] = new File(directory, "PhysioHRVduring.txt");
+        files[ExperimentState.Post.getValue()][DataType.HearRate.getValue()] = new File(directory, "PhysioHRpost.txt");
+        files[ExperimentState.Post.getValue()][DataType.HRV.getValue()] = new File(directory, "PhysioHRVpost.txt");
 
         for (ExperimentState state : ExperimentState.values() )
         {
@@ -110,7 +113,8 @@ public class NewConnectedListener extends ConnectListenerImpl {
                 }
                 try {
                     files[state.getValue()][type.getValue()].createNewFile();
-                    outputStreams[ExperimentState.Pre.getValue()][DataType.HearRate.getValue()] = new FileOutputStream(files[state.getValue()][type.getValue()]);
+                    //outputStreams[ExperimentState.Pre.getValue()][DataType.HearRate.getValue()] = new FileOutputStream(files[state.getValue()][type.getValue()]);
+                    outputStreams[state.getValue()][type.getValue()] = new FileOutputStream(files[state.getValue()][type.getValue()]);
                 }
                 catch (Exception e)
                 {
@@ -129,7 +133,7 @@ public class NewConnectedListener extends ConnectListenerImpl {
         RqPacketType.GP_ENABLE = true;
         RqPacketType.BREATHING_ENABLE = true;
         RqPacketType.LOGGING_ENABLE = true;
-        //RqPacketType.SUMMARY_ENABLE = true;
+        RqPacketType.SUMMARY_ENABLE = true;
 
 
         //Creates a new ZephyrProtocol object and passes it the BTComms object]]
@@ -137,6 +141,9 @@ public class NewConnectedListener extends ConnectListenerImpl {
         //ZephyrProtocol _protocol = new ZephyrProtocol(eventArgs.getSource().getComms(), );
         _protocol.addZephyrPacketEventListener(new ZephyrPacketListener() {
             public void ReceivedPacket(ZephyrPacketEvent eventArgs) {
+
+                if (!transmitData)
+                    return;
                 ZephyrPacketArgs msg = eventArgs.getPacket();
                 byte CRCFailStatus;
                 byte RcvdBytes;

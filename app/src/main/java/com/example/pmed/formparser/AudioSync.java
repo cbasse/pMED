@@ -34,7 +34,7 @@ public class AudioSync extends AsyncTask<String, Void, Void> {
     protected Void doInBackground(String... params) {
         connnectingwithFTP("ftp.meagherlab.co", "audio@meagherlab.co", "pancakes");
         if (params[0].equals("download")) {
-            downloadSingleFile("/" + params[1],new File(params[2]));
+            downloadSingleFile("/" + params[1],new File(tabletPath + params[2]));
         } else if (params[0].equals("upload")) {
             uploadSingleFile(new File(params[1]), "/" + params[2]);
 

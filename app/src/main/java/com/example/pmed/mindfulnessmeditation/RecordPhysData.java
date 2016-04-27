@@ -145,6 +145,7 @@ public class RecordPhysData extends AppCompatActivity {
                                 startBtn.setVisibility(View.GONE);
                                 timerText.setVisibility(View.GONE);
                                 nextBtn.setVisibility(View.VISIBLE);
+                                _NConnListener.transmitData = false;
                                 timeStampExperimentState(); //Caleb's method
                             }
                         };
@@ -152,6 +153,7 @@ public class RecordPhysData extends AppCompatActivity {
                             @Override
                             public void onClick(View v) {
                                 timer.start();
+                                _NConnListener.transmitData = true;
                                 startBtn.setVisibility(View.GONE);
                             }
                         });

@@ -16,6 +16,7 @@ import java.io.IOException;
 public class Audio extends AppCompatActivity {
 
     MediaPlayer mp = new MediaPlayer();
+    NewConnectedListener _NConnListener;
 
     @Override
     public void onBackPressed() {
@@ -26,7 +27,7 @@ public class Audio extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_audio);
-
+        _NConnListener = ((MindfulnessMeditation)getApplication()).listener;
 
         // Use this code to pass the file location in by a string
         //Bundle bundle = getIntent().getExtras();
@@ -47,7 +48,8 @@ public class Audio extends AppCompatActivity {
                 public void onCompletion(MediaPlayer _mp) {
                     final Button nextBtn = (Button) findViewById(R.id.button_audio_next);
                     nextBtn.setVisibility(View.VISIBLE);
-                    finish();
+                    _NConnListener.transmitData = false;
+
                 }
             });
             mp.prepare();
@@ -62,6 +64,7 @@ public class Audio extends AppCompatActivity {
         if (v.getId() == R.id.image_audio) {
             mp.start();
             v.setEnabled(false);
+            _NConnListener.transmitData = true;
         }
         else if(v.getId() == R.id.button_audio_next)
         {

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -48,15 +49,21 @@ public class SessionManager extends Activity {
         };
 
         AudioSync as = new AudioSync();
-        soundclipPath = AudioSync.tabletPath + "somefile";
+        soundclipPath = "somefile";
         if (!as.checkForAudioFileOnTablet(soundclipPath)) {
             System.out.println("GET THE FILE");
+            System.out.println(soundclipPath);
             as.execute("download", "/" + "NAMEONSERVER", soundclipPath);
         }
 
 
-        ((MindfulnessMeditation)getApplication()).listener = new NewConnectedListener(Newhandler,Newhandler);
+        //((MindfulnessMeditation)getApplication()).listener = new NewConnectedListener(Newhandler,Newhandler);
         listener = ((MindfulnessMeditation)getApplication()).listener;
+        listener.directory = new File(Environment.getExternalStorageDirectory().getPath() + "/BioHarness/" + "DirName");
+        listener.directory.mkdir();
+        listener = new NewConnectedListener(Newhandler,Newhandler);
+
+
         runSession();
     }
     
@@ -79,6 +86,11 @@ public class SessionManager extends Activity {
                 i = new Intent(this, FormActivity.class);
                 i.putExtra("com.example.pmed.FORM_NAME", "TestStudy/bl_q.xml");
                 startActivityForResult(i, 1);
+
+                //i = new Intent(this, RecordPhysData.class);
+                //listener.experimentState = NewConnectedListener.ExperimentState.Pre;
+                //System.out.println(listener.experimentState);
+                //startActivityForResult(i, 2);
                 break;
             default:
                 i = new Intent(this, FormActivity.class);
