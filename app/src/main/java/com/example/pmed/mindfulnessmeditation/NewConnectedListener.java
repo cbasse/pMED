@@ -114,6 +114,7 @@ public class NewConnectedListener extends ConnectListenerImpl {
                 try {
                     files[state.getValue()][type.getValue()].createNewFile();
                     //outputStreams[ExperimentState.Pre.getValue()][DataType.HearRate.getValue()] = new FileOutputStream(files[state.getValue()][type.getValue()]);
+                    System.out.println("hhhhrrrr");
                     outputStreams[state.getValue()][type.getValue()] = new FileOutputStream(files[state.getValue()][type.getValue()]);
                 }
                 catch (Exception e)

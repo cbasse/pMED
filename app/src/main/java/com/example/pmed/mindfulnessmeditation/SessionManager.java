@@ -60,7 +60,7 @@ public class SessionManager extends Activity {
         };
 
         AudioSync as = new AudioSync();
-        soundclipPath = "somefile";
+        soundclipPath = AudioSync.tabletPath + "somefile";
         if (!as.checkForAudioFileOnTablet(soundclipPath)) {
             System.out.println("GET THE FILE");
             System.out.println(soundclipPath);
@@ -68,13 +68,13 @@ public class SessionManager extends Activity {
         }
 
 
-        ((MindfulnessMeditation)getApplication()).listener = new NewConnectedListener(Newhandler,Newhandler);
-        listener = ((MindfulnessMeditation)getApplication()).listener;
-        //listener = ((MindfulnessMeditation)getApplication()).listener;
-        listener.directory = new File(Environment.getExternalStorageDirectory().getPath() + "/BioHarness/" + "DirName");
-        //System.out.println(getAvgFromFile(new File(listener.directory, "PhysioHRpre.txt")));
-        listener.directory.mkdir();
 
+        ((MindfulnessMeditation)getApplication()).listener.directory = new File(Environment.getExternalStorageDirectory().getPath() + "/BioHarness/" + "DirName");
+        System.out.println(((MindfulnessMeditation)getApplication()).listener.directory.getPath());
+        ((MindfulnessMeditation)getApplication()).listener = new NewConnectedListener(Newhandler,Newhandler);
+        ((MindfulnessMeditation)getApplication()).listener.directory.mkdir();
+
+        listener = ((MindfulnessMeditation)getApplication()).listener;
 
         runSession();
     }
