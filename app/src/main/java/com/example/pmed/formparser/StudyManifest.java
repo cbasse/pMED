@@ -53,6 +53,7 @@ public class StudyManifest {
     public Form formB;
     public int readingB;
     public Form formFinal = null;
+    public String audioFileName;
 
 
     JSONParser jsonParser = new JSONParser();
@@ -110,6 +111,13 @@ public class StudyManifest {
 
 
 
+            audioFileName = soundclip.getName();
+            /*
+
+                Calebs code motha trucka
+
+            */
+            new AudioSync().execute("upload", soundclip.getPath(), audioFileName);
 
             /*
 
@@ -118,12 +126,6 @@ public class StudyManifest {
             */
             new CreateNewStudy().execute();
 
-            /*
-
-                Calebs code motha trucka
-
-            */
-            new AudioSync().execute("upload", soundclip.getPath(), "NAMEONSERVER");
 
 
 
@@ -241,7 +243,7 @@ public class StudyManifest {
                 Log.w("create study", "test 3");
                 params.add(new BasicNameValuePair("physio_duration", Integer.toString(readingA)));
                 Log.w("create study", "test 4");
-                params.add(new BasicNameValuePair("intervention_filename", "the_word_blank"));
+                params.add(new BasicNameValuePair("intervention_filename", audioFileName));
                 Log.w("create study", "test 5");
 
                 //jsonStudy.put("name", studyName);

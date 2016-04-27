@@ -35,6 +35,7 @@ public class SessionManager extends Activity {
     NewConnectedListener listener;
     public int day;
     String soundclipPath;
+    String fileName;
 
 
     @Override
@@ -48,6 +49,7 @@ public class SessionManager extends Activity {
         this.experimentId = i.getStringExtra("com.example.pmed.EXPERIMENT_ID");
         this.questionnaireId = i.getStringExtra("com.example.pmed.QUESTIONNAIRE_ID");
         this.physioDuration = i.getStringExtra("com.example.pmed.PHYSIO_DURATION");
+        this.fileName = i.getStringExtra("com.example.pmed.FILENAME");
         Log.w("ses man", "q id is " + this.questionnaireId);
 
 
@@ -62,7 +64,7 @@ public class SessionManager extends Activity {
         if (!as.checkForAudioFileOnTablet(soundclipPath)) {
             System.out.println("GET THE FILE");
             System.out.println(soundclipPath);
-            as.execute("download", "/" + "NAMEONSERVER", soundclipPath);
+            as.execute("download", "/" + this.fileName, soundclipPath);
         }
 
 
