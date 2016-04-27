@@ -66,6 +66,7 @@ public class ListViewBarChartActivity extends DemoBase {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_listview_chart);
 
+        /*
         ListView lv = (ListView) findViewById(R.id.listView1);
 
         ArrayList<BarData> list = new ArrayList<BarData>();
@@ -77,6 +78,8 @@ public class ListViewBarChartActivity extends DemoBase {
 
         ChartDataAdapter cda = new ChartDataAdapter(getApplicationContext(), list);
         lv.setAdapter(cda);
+        */
+        new GetData().execute();
     }
 
     private class ChartDataAdapter extends ArrayAdapter<BarData> {
@@ -361,7 +364,6 @@ public class ListViewBarChartActivity extends DemoBase {
                         }
                         values.get(day).put(section, inner);
 
-
                     }
 
                 } else {
@@ -388,6 +390,77 @@ public class ListViewBarChartActivity extends DemoBase {
             runOnUiThread(new Runnable() {
                 public void run() {
                     //BuildFormFromDatabase();
+
+                    ListView lv = (ListView) findViewById(R.id.listView1);
+
+                    ArrayList<BarData> list = new ArrayList<BarData>();
+
+
+
+
+
+
+
+
+                    ArrayList<BarEntry> yVals1 = new ArrayList<BarEntry>();
+                    ArrayList<BarEntry> yVals2 = new ArrayList<BarEntry>();
+
+                    //generates the # of days of data on the charts
+                    for(int i = 1; i < values.size() + 1; i++)
+                    {
+                        HashMap<String, HashMap<String, String>> day = values.get(Integer.toString(i));
+
+                        HashMap<String, String> pre = day.get("Pre");
+                        String preHR = pre.get(TAG_HEART_RATE);
+                        yVals1.add(new BarEntry(Integer.parseInt(preHR), i));
+
+                        HashMap<String, String> post = day.get("Post");
+                        String postHR = post.get(TAG_HEART_RATE);
+                        yVals2.add(new BarEntry(Integer.parseInt(postHR), i));
+                    }
+
+/*
+        LineDataSet set1, set2;
+
+        if (mChart.getData() != null &&
+                mChart.getData().getDataSetCount() > 0) {
+            set1 = (LineDataSet)mChart.getData().getDataSetByIndex(0);
+            set2 = (LineDataSet)mChart.getData().getDataSetByIndex(1);
+            set1.setYVals(yVals1);
+            set2.setYVals(yVals2);
+            mChart.notifyDataSetChanged();
+        } else {
+            // create a dataset and give it a type
+            set1 = new LineDataSet(yVals1, "DataSet 1");
+*/
+
+                    //****pre and post bars****//
+                    BarDataSet a = new BarDataSet(yVals1, "Pre");
+                    a.setBarSpacePercent(20f);
+                    a.setBarShadowColor(Color.rgb(203, 203, 203));
+                    a.setColor(Color.rgb(58, 79, 156));
+
+
+                    BarDataSet d = new BarDataSet(yVals2, "Post");
+                    d.setBarSpacePercent(20f);
+                    d.setBarShadowColor(Color.rgb(203, 203, 203));
+                    d.setColor(Color.rgb(255, 164, 1));
+
+
+                    ArrayList<IBarDataSet> sets = new ArrayList<IBarDataSet>();
+                    sets.add(a);
+                    sets.add(d);
+
+                    //returns the days
+                    BarData cd = new BarData(getDays(), sets);
+
+                    list.add(cd);
+
+
+                    ChartDataAdapter cda = new ChartDataAdapter(getApplicationContext(), list);
+                    lv.setAdapter(cda);
+
+
                 }
             });
 
