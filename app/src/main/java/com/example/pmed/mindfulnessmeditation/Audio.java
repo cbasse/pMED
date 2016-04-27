@@ -37,7 +37,8 @@ public class Audio extends AppCompatActivity {
 
         // this is for testing
         //String fileLoc = "file:///sdcard/Experiments/__current__/Eminem - Despicable.mp3";
-        String fileLoc = this.getFilesDir().getPath() + "/AudioInterventions/test";
+        String fileLoc = getIntent().getStringExtra("com.example.pmed.SOUNDCLIP_PATH");
+        System.out.println(fileLoc);
         Uri audioUri = Uri.parse(fileLoc);
         mp.reset();
         try {

@@ -28,6 +28,7 @@ public class SessionManager extends Activity {
     public FormResultsManager formCResults;
     NewConnectedListener listener;
     public int day;
+    String soundclipPath;
 
 
     @Override
@@ -47,9 +48,13 @@ public class SessionManager extends Activity {
         };
 
         AudioSync as = new AudioSync();
-        if (as.checkForAudioFileOnTablet("string")) {
-
+        soundclipPath = AudioSync.tabletPath + "somefile";
+        if (!as.checkForAudioFileOnTablet(soundclipPath)) {
+            System.out.println("GET THE FILE");
+            as.execute("download", "/" + "NAMEONSERVER", soundclipPath);
         }
+
+
         ((MindfulnessMeditation)getApplication()).listener = new NewConnectedListener(Newhandler,Newhandler);
         listener = ((MindfulnessMeditation)getApplication()).listener;
         runSession();
@@ -100,6 +105,7 @@ public class SessionManager extends Activity {
 
         } else if (requestCode == 2 && resultCode == 1) {
             Intent i = new Intent(this, Audio.class);
+            i.putExtra("com.example.pmed.SOUNDCLIP_PATH", soundclipPath);
             listener.experimentState = NewConnectedListener.ExperimentState.During;
             startActivityForResult(i,3);
 

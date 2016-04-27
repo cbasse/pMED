@@ -29,23 +29,23 @@ import java.net.UnknownHostException;
  */
 public class AudioSync extends AsyncTask<String, Void, Void> {
     public static String tabletPath;
-
+    private FTPClient mFtpClient;
     @Override
     protected Void doInBackground(String... params) {
-        connnectingwithFTP("ftp.meagherlab.co", "audio@meagherlab.co", "pancakes", params[0]);
+        connnectingwithFTP("ftp.meagherlab.co", "audio@meagherlab.co", "pancakes");
+        if (params[0].equals("download")) {
+            downloadSingleFile("/" + params[1],new File(params[2]));
+        } else if (params[0].equals("upload")) {
+            uploadSingleFile(new File(params[1]), "/" + params[2]);
+
+        }
         return null;
     }
 
-    /**
-     *
-     * @param ip
-     * @param userName
-     * @param pass
-     */
-    private void connnectingwithFTP(String ip, String userName, String pass, String path) {
+    private void connnectingwithFTP(String ip, String userName, String pass) {
         boolean status = false;
         try {
-            FTPClient mFtpClient = new FTPClient();
+            mFtpClient = new FTPClient();
             //mFtpClient.setConnectTimeout(10 * 1000);
             mFtpClient.connect(InetAddress.getByName(ip));
             status = mFtpClient.login(userName, pass);
@@ -58,11 +58,6 @@ public class AudioSync extends AsyncTask<String, Void, Void> {
                 if (!f.exists()) {
                     f.mkdir();
                 }
-                //f = new File(path + "/AudioInterventions/" + "test");
-                //f.createNewFile();
-                f = new File(Environment.getExternalStorageDirectory().getPath() + "/Experiments/TestStudy/pt2.mp3");
-                uploadSingleFile(mFtpClient, f, "/hellocaleb.mp3");
-
             }
         } catch (SocketException e) {
             e.printStackTrace();
@@ -73,23 +68,14 @@ public class AudioSync extends AsyncTask<String, Void, Void> {
         }
     }
 
-    /**
-     * @param ftpClient FTPclient object
-     * @param remoteFilePath  FTP server file path
-     * @param downloadFile   local file path where you want to save after download
-     * @return status of downloaded file
-     */
-    public boolean downloadSingleFile(FTPClient ftpClient,
-                                      String remoteFilePath, File downloadFile) {
-        //File parentDir = downloadFile.getParentFile();
-       // if (!parentDir.exists())
-        //    parentDir.mkdir();
+    public boolean downloadSingleFile(String remoteFilePath, File downloadFile) {
         OutputStream outputStream = null;
         try {
+            downloadFile.createNewFile();
             outputStream = new BufferedOutputStream(new FileOutputStream(
                     downloadFile));
-            ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
-            return ftpClient.retrieveFile(remoteFilePath, outputStream);
+            mFtpClient.setFileType(FTP.BINARY_FILE_TYPE);
+            return mFtpClient.retrieveFile(remoteFilePath, outputStream);
         } catch (Exception ex) {
             ex.printStackTrace();
         } finally {
@@ -104,21 +90,21 @@ public class AudioSync extends AsyncTask<String, Void, Void> {
         return false;
     }
 
-    /**
-     *
-     * @param ftpClient FTPclient object
-     * @param downloadFile local file which need to be uploaded.
-     */
-    public void uploadSingleFile(FTPClient ftpClient, File downloadFile,String serverFileName) {
+    public void uploadSingleFile(File uploadFile,String serverFileName) {
         try {
-            FileInputStream srcFileStream = new FileInputStream(downloadFile);
-            boolean status = ftpClient.storeFile(serverFileName,
+            FileInputStream srcFileStream = new FileInputStream(uploadFile);
+            boolean status = mFtpClient.storeFile(serverFileName,
                     srcFileStream);
             Log.e("Status", String.valueOf(status));
             srcFileStream.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    protected void onPostExecute(Void v) {
+        System.out.println("done downloading!");
     }
 
     public boolean checkForAudioFileOnTablet(String filename) {

@@ -49,7 +49,7 @@ public class StudyManifest {
     public int days;
     public Form formA;
     public int readingA;
-    public String soundclip;
+    public File soundclip;
     public Form formB;
     public int readingB;
     public Form formFinal = null;
@@ -91,7 +91,8 @@ public class StudyManifest {
             filename = parseTag("questionnaire-a", false);
             formA = new Form(findFile(filename, files));
 
-            soundclip = parseTag("soundclip", false);
+            filename = parseTag("soundclip", false);
+            soundclip = findFile(filename, files);
 
             filename = parseTag("questionnaire-b", false);
             formB = new Form(findFile(filename, files));
@@ -118,28 +119,11 @@ public class StudyManifest {
             new CreateNewStudy().execute();
 
             /*
-            // uploading audio
-            String url = "http://yourserver";
-            File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath(),
-                    "yourfile");
-            try {
-                HttpClient httpclient = new DefaultHttpClient();
 
-                HttpPost httppost = new HttpPost(url);
+                Calebs code motha trucka
 
-                InputStreamEntity reqEntity = new InputStreamEntity(
-                        new FileInputStream(file), -1);
-                reqEntity.setContentType("binary/octet-stream");
-                reqEntity.setChunked(true); // Send in multiple parts if needed
-                httppost.setEntity(reqEntity);
-                HttpResponse response = httpclient.execute(httppost);
-                //Do something with response...
-
-            } catch (Exception e) {
-                // show error
-            }
             */
-            // for audio upload ^^^^^^
+            new AudioSync().execute("upload", soundclip.getPath(), "NAMEONSERVER");
 
 
 
