@@ -103,6 +103,8 @@ public class UserLogin extends AppCompatActivity {
                     String fName = json.getString("intervention_filename");
                     String qType = json.getString("questionnaire_type");
 
+                    Log.w("stuff", "questionnaire id is " + qId);
+
                     isCorrect = true;
                     Intent i = new Intent(UserLogin.this, SessionManager.class);
 

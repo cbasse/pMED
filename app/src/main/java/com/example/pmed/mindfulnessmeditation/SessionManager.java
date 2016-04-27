@@ -38,12 +38,15 @@ public class SessionManager extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.w("sessionmanager", "test 0000");
+
         super.onCreate(savedInstanceState);
 
         Intent i = getIntent();
         this.userId = i.getStringExtra("com.example.pmed.USER_ID");
         this.experimentId = i.getStringExtra("com.example.pmed.EXPERIMENT_ID");
         this.questionnaireId = i.getStringExtra("com.example.pmed.QUESTIONNAIRE_ID");
+        Log.w("ses man", "q id is " + this.questionnaireId);
 
 
         final Handler Newhandler = new Handler(){
@@ -74,22 +77,38 @@ public class SessionManager extends Activity {
     
     public void runSession() {
         //get info from database with user_id
+        Log.w("sessionmanager", "test 1");
         day = LAST_DAY ;
         Intent i;
         switch (day) {
             case START_DAY:
                 i = new Intent(this, FormActivity.class);
                 i.putExtra("com.example.pmed.FORM_NAME", "TestStudy/bl_q.xml");
+                i.putExtra("com.example.pmed.REQUEST_CODE", "0");
+                i.putExtra("com.example.pmed.USER_ID", this.userId);
+                i.putExtra("com.example.pmed.EXPERIMENT_ID", this.experimentId);
+                i.putExtra("com.example.pmed.QUESTIONNAIRE_ID", this.questionnaireId);
+                i.putExtra("com.example.pmed.REQUEST_CODE", "0");
                 startActivityForResult(i, 0);
                 break;
             case STANDARD_DAY:
                 i = new Intent(this, FormActivity.class);
                 i.putExtra("com.example.pmed.FORM_NAME", "TestStudy/bl_q.xml");
+                i.putExtra("com.example.pmed.REQUEST_CODE", "1");
+                i.putExtra("com.example.pmed.USER_ID", this.userId);
+                i.putExtra("com.example.pmed.EXPERIMENT_ID", this.experimentId);
+                i.putExtra("com.example.pmed.QUESTIONNAIRE_ID", this.questionnaireId);
+                i.putExtra("com.example.pmed.REQUEST_CODE", "0");
                 startActivityForResult(i, 1);
                 break;
             case LAST_DAY:
                 i = new Intent(this, FormActivity.class);
                 i.putExtra("com.example.pmed.FORM_NAME", "TestStudy/bl_q.xml");
+                i.putExtra("com.example.pmed.REQUEST_CODE", "1");
+                i.putExtra("com.example.pmed.USER_ID", this.userId);
+                i.putExtra("com.example.pmed.EXPERIMENT_ID", this.experimentId);
+                i.putExtra("com.example.pmed.QUESTIONNAIRE_ID", this.questionnaireId);
+                i.putExtra("com.example.pmed.REQUEST_CODE", "0");
                 startActivityForResult(i, 1);
 
                 //i = new Intent(this, RecordPhysData.class);
@@ -101,14 +120,22 @@ public class SessionManager extends Activity {
                 i = new Intent(this, FormActivity.class);
                 break;
         }
+        Log.w("sessionmanager", "test 2");
         i.putExtra("com.example.pmed.USER_ID", this.userId);
         i.putExtra("com.example.pmed.EXPERIMENT_ID", this.experimentId);
         i.putExtra("com.example.pmed.QUESTIONNAIRE_ID", this.questionnaireId);
+        i.putExtra("com.example.pmed.REQUEST_CODE", "0");
         //startActivityForResult(i, 0);
+
+        Log.w("sessionmanager", "test 3");
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+
+        Log.w("sessionmanager", "test 4!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+
 
         if (requestCode == 0 && resultCode == 1) {
             FormResultsManager results = data.getParcelableExtra("com.example.pmed.FORM_RESULTS");
