@@ -109,7 +109,7 @@ public class AudioSync extends AsyncTask<String, Void, Void> {
 
     public boolean checkForAudioFileOnTablet(String filename) {
         if (new File(tabletPath + filename).exists()) {
-            return true;
+            return false;
         } else {
             return false;
         }
