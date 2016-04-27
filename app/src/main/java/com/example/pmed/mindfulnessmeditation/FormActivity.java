@@ -60,6 +60,7 @@ public class FormActivity extends AppCompatActivity {
     Integer neg_affects;
     JSONParser jsonParser = new JSONParser();
     String TAG_SUCCESS = "success";
+    Integer reqCode;
     // ^^^^^^^^^^^^^^^^^^
 
     @Override
@@ -82,6 +83,7 @@ public class FormActivity extends AppCompatActivity {
         this.userId = intent.getStringExtra("com.example.pmed.USER_ID");
         this.experimentId = intent.getStringExtra("com.example.pmed.EXPERIMENT_ID");
         this.questionnaireId = intent.getStringExtra("com.example.pmed.QUESTIONNAIRE_ID");
+        this.reqCode = Integer.parseInt(intent.getStringExtra("com.example.pmed.REQUEST_CODE"));
 
         try {
             //form = new Form(new File(formsDirectoryPath + "/" + formName));
@@ -356,12 +358,10 @@ public class FormActivity extends AppCompatActivity {
 
         for(Map.Entry<String, String> entry : results.results.entrySet())
         {
-            if(entry.getKey() == "likert_pos_affects" || entry.getKey() == "likert_neg_affects")
+            if(isInteger(entry.getKey()))
             {
-                continue;
+                sorted.add(Integer.parseInt(entry.getKey()));
             }
-
-            sorted.add(Integer.parseInt(entry.getKey()));
         }
 
         Collections.sort(sorted);
@@ -373,6 +373,18 @@ public class FormActivity extends AppCompatActivity {
         }
 
         return answer;
+    }
+
+    public static boolean isInteger(String s) {
+        try {
+            Integer.parseInt(s);
+        } catch(NumberFormatException e) {
+            return false;
+        } catch(NullPointerException e) {
+            return false;
+        }
+        // only got here if we didn't return false
+        return true;
     }
 
 
@@ -394,6 +406,7 @@ public class FormActivity extends AppCompatActivity {
 
 
         protected String doInBackground(String... args) {
+            Log.w("get questionnaire", "id is " + questionnaireId);
             // Building Parameters
             String url = "http://meagherlab.co/read_questions_and_answer_choices_for_questionnaire.php";
             List<NameValuePair> params = new ArrayList<NameValuePair>();
@@ -625,13 +638,6 @@ public class FormActivity extends AppCompatActivity {
                 if (success == 1) {
                     // successfully created product
 
-
-                    Intent i = new Intent();
-                    i.putExtra("com.example.pmed.FORM_RESULTS", results);
-                    setResult(1, i);
-                    finish();
-
-
                 } else {
                     // failed to create product
                 }
@@ -641,6 +647,33 @@ public class FormActivity extends AppCompatActivity {
 
             return null;
         }
+
+
+        protected void onPostExecute(String file_url) {
+            // updating UI from Background Thread
+            runOnUiThread(new Runnable() {
+                public void run() {
+
+                    Log.w("on post exec", "post execute");
+
+                    Intent i = new Intent();
+
+                    i.putExtra("com.example.pmed.FORM_RESULTS", results);
+                    if (getParent() == null) {
+                        setResult(1, i);
+                    } else {
+                        getParent().setResult(1, i);
+                    }
+                    finish();
+
+                    //setResult(1, i);
+                    //finish();
+
+                }
+            });
+
+        }
+
 
     }
 }

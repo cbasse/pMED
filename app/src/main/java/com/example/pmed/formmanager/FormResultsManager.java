@@ -75,7 +75,7 @@ public class FormResultsManager implements Parcelable {
         if (results.containsKey(key))
             results.put(key,value);
         else
-            throw new NullPointerException("key: " + key + "does not exist.");
+            throw new NullPointerException("key: " + key + " does not exist.");
     }
 
     public String getValue(String key) {
