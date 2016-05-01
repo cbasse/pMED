@@ -126,15 +126,5 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"></Button>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Test Button"
-        android:id="@+id/button_test"
-        android:layout_above="@+id/labelStatusMsg"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="119dp"
-        android:onClick="onButtonClick"/>
-
 
 </RelativeLayout>

@@ -396,13 +396,6 @@ public class ListViewBarChartActivity extends DemoBase {
 
                     ArrayList<BarData> list = new ArrayList<BarData>();
 
-
-
-
-
-
-
-
                     ArrayList<BarEntry> yVals1 = new ArrayList<BarEntry>();
                     ArrayList<BarEntry> yVals2 = new ArrayList<BarEntry>();
 
@@ -414,10 +407,12 @@ public class ListViewBarChartActivity extends DemoBase {
                         HashMap<String, String> pre = day.get("Pre");
                         String preHR = pre.get(TAG_HEART_RATE);
                         yVals1.add(new BarEntry(Integer.parseInt(preHR), i));
+                        //yVals1.add(new BarEntry((int) (Math.random() * 70) + 30, i, i));
 
                         HashMap<String, String> post = day.get("Post");
                         String postHR = post.get(TAG_HEART_RATE);
                         yVals2.add(new BarEntry(Integer.parseInt(postHR), i));
+                        //yVals2.add(new BarEntry((int) (Math.random() * 70) + 30, i, i));
                     }
 
 /*

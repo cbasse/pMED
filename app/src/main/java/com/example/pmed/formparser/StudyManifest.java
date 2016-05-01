@@ -351,6 +351,7 @@ public class StudyManifest {
 
                 if (success == 1) {
                     // successfully created product
+                    Log.w("parse", "SUCCEEED!!!!");
 
                     /*
                     Intent i = new Intent(AddUser.this, ManageUserAccounts.class);
@@ -362,6 +363,7 @@ public class StudyManifest {
 
                 } else {
                     // failed to create product
+                    Log.w("parse", "failed!!!!");
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

@@ -423,13 +423,7 @@ public class RecordPhysData extends AppCompatActivity {
             finish();
             //startActivity(i);
         }
-        if (view.getId() == R.id.button_test) {
-            //Intent i = new Intent(RecordPhysData.this, ListViewBarChartActivity.class);
-            setResult(1,getIntent());
-            finish();
-            //startActivity(i);
-            timeStampExperimentState();
-        }
+
     }
 
 
