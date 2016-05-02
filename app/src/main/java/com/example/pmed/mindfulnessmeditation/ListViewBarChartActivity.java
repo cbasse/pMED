@@ -53,6 +53,7 @@ public class ListViewBarChartActivity extends DemoBase {
     final String TAG_NEGATIVE = "negative";
     final String TAG_HEART_RATE = "heart_rate";
     final String TAG_HRV = "heart_rate_variability";
+    Integer numOfDays;
     HashMap<String, HashMap<String, HashMap<String, String>>> values;
 
     @Override
@@ -283,13 +284,10 @@ public class ListViewBarChartActivity extends DemoBase {
         return new BarData();
     }
 
-    private ArrayList<String> getDays(JSONObject number_of_days) {
-
-        String numString = number_of_days.toString();
-        int num = Integer.parseInt(numString);
+    private ArrayList<String> getDays(Integer number_of_days) {
 
         ArrayList<String> m = new ArrayList<String>();
-        for(int i = 1; i <= num; i++) {
+        for(int i = 1; i <= number_of_days; i++) {
             m.add("Day" + Integer.toString(i));
         }
 
@@ -330,6 +328,9 @@ public class ListViewBarChartActivity extends DemoBase {
                 int success = json.getInt("success");
 
                 if (success == 1) {
+                    numOfDays = Integer.parseInt(json.getString("number_of_days"));
+
+
                     values = new HashMap<String,HashMap<String, HashMap<String,String>>>();
 
                     JSONArray results = json.getJSONArray("results");
@@ -403,12 +404,12 @@ public class ListViewBarChartActivity extends DemoBase {
 
                         HashMap<String, String> pre = day.get("Pre");
                         String preHR = pre.get(TAG_POSITIVE);
-                        yVals1.add(new BarEntry(Integer.parseInt(preHR), i));
+                        yVals1.add(new BarEntry(Integer.parseInt(preHR), i-1));
                         //yVals1.add(new BarEntry((int) (Math.random() * 70) + 30, i, i));
 
                         HashMap<String, String> post = day.get("Post");
                         String postHR = post.get(TAG_POSITIVE);
-                        yVals2.add(new BarEntry(Integer.parseInt(postHR), i));
+                        yVals2.add(new BarEntry(Integer.parseInt(postHR), i-1));
                         //yVals2.add(new BarEntry((int) (Math.random() * 70) + 30, i, i));
                     }
 
@@ -444,6 +445,7 @@ public class ListViewBarChartActivity extends DemoBase {
                     sets.add(a);
                     sets.add(d);
 
+                    /*
                     //returns the days
                     List<NameValuePair> params = new ArrayList<NameValuePair>();
                     params.add(new BasicNameValuePair("id", userId));
@@ -454,7 +456,9 @@ public class ListViewBarChartActivity extends DemoBase {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    BarData cd = new BarData(getDays(number_of_days), sets);
+                    */
+
+                    BarData cd = new BarData(getDays(numOfDays), sets);
                     list.add(cd);
 
 
