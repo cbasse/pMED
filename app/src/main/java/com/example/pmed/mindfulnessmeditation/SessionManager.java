@@ -77,12 +77,14 @@ public class SessionManager extends Activity {
         };
 
         AudioSync as = new AudioSync();
-        soundclipPath = AudioSync.tabletPath + this.fileName;
-        if (!as.checkForAudioFileOnTablet(soundclipPath)) {
+        soundclipPath = AudioSync.tabletPath;
+        if (!as.checkForAudioFileOnTablet(this.fileName)) {
             System.out.println("GET THE FILE");
             System.out.println(soundclipPath + "/" + this.fileName);
-            as.execute("download", "/" + this.fileName, soundclipPath);
+            as.execute("download", this.fileName, soundclipPath);
         }
+
+        Log.w("seshMan", "soundclip path is " + soundclipPath + " and the filenae is " + this.fileName);
 
 
 
@@ -241,7 +243,7 @@ public class SessionManager extends Activity {
         } else if (requestCode == 2 && resultCode == 1) {
             Log.w("seshMan", "test 3");
             Intent i = new Intent(this, Audio.class);
-            i.putExtra("com.example.pmed.SOUNDCLIP_PATH", soundclipPath);
+            i.putExtra("com.example.pmed.SOUNDCLIP_PATH", soundclipPath + "/" + this.fileName);
             listener.experimentState = NewConnectedListener.ExperimentState.During;
             startActivityForResult(i,3);
 
