@@ -213,10 +213,32 @@ public class RecordPhysData extends AppCompatActivity {
             });
         } else if (((MindfulnessMeditation)getApplication())._bt.IsConnected())
         {
+            String BhMacID = "00:07:80:9D:8A:E8";
+            //String BhMacID = "00:07:80:88:F6:BF";
+            adapter = BluetoothAdapter.getDefaultAdapter();
+
+            Set<BluetoothDevice> pairedDevices = adapter.getBondedDevices();
+
+            if (pairedDevices.size() > 0)
+            {
+                for (BluetoothDevice device : pairedDevices)
+                {
+                    if (device.getName().startsWith("BH"))
+                    {
+                        BluetoothDevice btDevice = device;
+                        BhMacID = btDevice.getAddress();
+                        break;
+                    }
+                }
+
+            }
+
             //_bt.start();
-            //TextView tv = (TextView) findViewById(R.id.labelStatusMsg);
-            //ErrorText  = "Connected to BioHarness "+ DeviceName;
-            //tv.setText(ErrorText);
+            BluetoothDevice Device = adapter.getRemoteDevice(BhMacID);
+            String DeviceName = Device.getName();
+            tv = (TextView) findViewById(R.id.labelStatusMsg);
+            ErrorText  = "Connected to BioHarness "+ DeviceName;
+            tv.setText(ErrorText);
 
             //Reset all the values to 0s
 
@@ -232,6 +254,7 @@ public class RecordPhysData extends AppCompatActivity {
             connectText.setVisibility((View.GONE));
             timerText = (TextView)findViewById(R.id.CountdownText);
             timerText.setVisibility((View.VISIBLE));
+
             Integer min = physioDuration / 60;
             Integer sec = physioDuration - (min * 60);
             timerText.setText(min + ":" + String.format("%02d", sec));
@@ -248,15 +271,15 @@ public class RecordPhysData extends AppCompatActivity {
                     startBtn.setVisibility(View.GONE);
                     timerText.setVisibility(View.GONE);
                     nextBtn.setVisibility(View.VISIBLE);
-                    //_NConnListener.transmitData = false;
-                    timeStampExperimentState(); //Caleb's method
+                    _NConnListener.transmitData = false;
+                    //timeStampExperimentState(); //Caleb's method
                 }
             };
             startBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     timer.start();
-                    //_NConnListener.transmitData = true;
+                    _NConnListener.transmitData = true;
                     startBtn.setVisibility(View.GONE);
                 }
             });
