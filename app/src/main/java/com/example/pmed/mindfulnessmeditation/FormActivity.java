@@ -344,7 +344,7 @@ public class FormActivity extends AppCompatActivity {
                     }
                     else if(!p.likertQuestions.get(qIndex).isPositive())
                     {
-                        results.setValue("likert_pos_affects", Integer.toString(Integer.parseInt(results.getValue("likert_pos_affects")) + Integer.parseInt(score))); //NEED TO FIX
+                        results.setValue("likert_neg_affects", Integer.toString(Integer.parseInt(results.getValue("likert_pos_affects")) + Integer.parseInt(score))); //NEED TO FIX
                     }
                 }
 
@@ -617,7 +617,7 @@ public class FormActivity extends AppCompatActivity {
                 params.add(new BasicNameValuePair("user_id", userId));
                 params.add(new BasicNameValuePair("positive", results.results.get("likert_pos_affects")));
                 params.add(new BasicNameValuePair("negative", results.results.get("likert_neg_affects")));
-
+                System.out.println("THESE ARE THE RESULTS: " + results.results.get("likert_neg_affects"));
                 JSONArray responses = new JSONArray();
                 ArrayList<String> sortedIds = SortIds();
                 for(int i = 0; i < sortedIds.size(); i++)
