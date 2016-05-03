@@ -128,11 +128,13 @@ public class ListViewBarChartActivity extends DemoBase {
             leftAxis1.setLabelCount(5, false);
             leftAxis1.setSpaceTop(15f);
             leftAxis1.setSpaceBottom(0f);
+            leftAxis1.setStartAtZero(true);
 
             YAxis rightAxis1 = holder.chart1.getAxisRight();
             rightAxis1.setLabelCount(5, false);
             rightAxis1.setSpaceTop(15f);
             rightAxis1.setSpaceBottom(0f);
+            rightAxis1.setStartAtZero(true);
 
             // set data
             holder.chart1.setData(data);
@@ -339,7 +341,6 @@ public class ListViewBarChartActivity extends DemoBase {
                 public void run() {
                     //BuildFormFromDatabase();
 
-                    //TextView tv = (TextView) findViewById(R.id.chart_title);
                     ListView lv = (ListView) findViewById(R.id.listView1);
 
                     ArrayList<BarData> list = new ArrayList<BarData>();
@@ -354,7 +355,6 @@ public class ListViewBarChartActivity extends DemoBase {
                     ArrayList<BarEntry> yVals8 = new ArrayList<BarEntry>();
 
                     //generates the # of days of data on the charts
-
                     for(int i = 1; i <= values.size(); i++)
                     {
                         HashMap<String, HashMap<String, String>> day = values.get(Integer.toString(i));
@@ -381,9 +381,6 @@ public class ListViewBarChartActivity extends DemoBase {
 
                     }
 
-                    //final boolean negative = title1.add(new BarEntry("negative", negT));
-                    //String m = getString(TAG_NEGATIVE);
-                    //setTitle(TAG_NEGATIVE);
 
                     //****pre and post bars****//
                     BarDataSet a = new BarDataSet(yVals1, "Pre HR");
@@ -425,9 +422,6 @@ public class ListViewBarChartActivity extends DemoBase {
                     h.setBarShadowColor(Color.rgb(203, 203, 203));
                     h.setColor(Color.rgb(255, 164, 1));
 
-                    //BarDataSet i = new BarDataSet(title1, "NEGATIVE");
-
-
 
                     ArrayList<IBarDataSet> sets1 = new ArrayList<IBarDataSet>();
                     sets1.add(a);
@@ -447,8 +441,18 @@ public class ListViewBarChartActivity extends DemoBase {
 
 
 
+                    /*TextView tv = (TextView) findViewById(R.id.chart_title);
+                    String hrT = "HEART RATE";
+                    tv.setText(hrT);
+                    String hrvT = "HEART RATE VARIABILITY";
+                    tv.setText(hrvT);
+                    String negT = "NEGATIVE EMOTIONS";
+                    tv.setText(negT);
+                    String posT = "POSITIVE EMOTIONS";
+                    tv.setText(posT);*/
+
+
                     BarData data1 = new BarData(getDays(numOfDays), sets1);
-                    //tv.setText(negT);
                     list.add(data1);
                     BarData data2 = new BarData(getDays(numOfDays), sets2);
                     list.add(data2);
