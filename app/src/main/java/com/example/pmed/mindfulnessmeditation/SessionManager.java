@@ -106,7 +106,7 @@ public class SessionManager extends Activity {
         Log.w("seshMan", "experiment id is " + experimentId);
         if(Integer.parseInt(experimentId) == 0)
         {
-            i = new Intent(this, ListViewBarChartActivity.class);
+            i = new Intent(this, UserCompleted.class);
             i.putExtra("com.example.pmed.USER_ID", this.userId);
             startActivityForResult(i, 7);
             Log.w("seshMan", "shouldn't get here");

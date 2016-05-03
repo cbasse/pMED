@@ -57,6 +57,10 @@ public class UpdateExperiment extends AppCompatActivity {
 
 
         File expDir = new File( Environment.getExternalStorageDirectory().getPath() + "/Experiments");
+        if(!expDir.exists())
+        {
+            expDir.mkdirs();
+        }
         List<File> folders = GetDirectories(expDir);
         int id = R.id.SelectFileText;
         for(File folder : folders) {
