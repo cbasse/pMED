@@ -130,19 +130,22 @@ public class RecordPhysData extends AppCompatActivity {
 
                     BluetoothDevice Device = adapter.getRemoteDevice(BhMacID);
                     String DeviceName = Device.getName();
-                    String ErrorText = "Connected to BioHarness "+ DeviceName;
-                    TextView tv = (TextView) findViewById(R.id.labelStatusMsg);
-                    tv.setText(ErrorText);
+
                     ((MindfulnessMeditation)getApplication())._bt = new BTClient(adapter, BhMacID);
                     _bt = ((MindfulnessMeditation)getApplication())._bt;
                     //_NConnListener = new NewConnectedListener(Newhandler,Newhandler);
                     _NConnListener = ((MindfulnessMeditation)getApplication()).listener;
                     dirPath = _NConnListener.directoryPath;
 
+
                     _bt.addConnectedEventListener(_NConnListener);
 
                     if (_bt.IsConnected())
                     {
+                        TextView tv = (TextView) findViewById(R.id.labelStatusMsg);
+                        String ErrorText = "Connected to BioHarness "+ DeviceName;
+                        tv.setText(ErrorText);
+
                         _bt.start();
                         //TextView tv = (TextView) findViewById(R.id.labelStatusMsg);
                         //ErrorText  = "Connected to BioHarness "+ DeviceName;
@@ -204,8 +207,8 @@ public class RecordPhysData extends AppCompatActivity {
                     }
                     else
                     {
-                        //TextView tv = (TextView) findViewById(R.id.labelStatusMsg);
-                        ErrorText  = "Unable to Connect";
+                        TextView tv = (TextView) findViewById(R.id.labelStatusMsg);
+                        String ErrorText  = "Unable to Connect";
                         tv.setText(ErrorText);
                     }
 
@@ -213,9 +216,10 @@ public class RecordPhysData extends AppCompatActivity {
             });
         } else if (((MindfulnessMeditation)getApplication())._bt.IsConnected())
         {
+
             //_bt.start();
             //TextView tv = (TextView) findViewById(R.id.labelStatusMsg);
-            //ErrorText  = "Connected to BioHarness "+ DeviceName;
+            //ErrorText  = "Connected to BioHarness ";
             //tv.setText(ErrorText);
 
             //Reset all the values to 0s
@@ -249,7 +253,7 @@ public class RecordPhysData extends AppCompatActivity {
                     timerText.setVisibility(View.GONE);
                     nextBtn.setVisibility(View.VISIBLE);
                     //_NConnListener.transmitData = false;
-                    timeStampExperimentState(); //Caleb's method
+                    //timeStampExperimentState(); //Caleb's method
                 }
             };
             startBtn.setOnClickListener(new View.OnClickListener() {
