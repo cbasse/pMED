@@ -60,7 +60,6 @@ public class FormActivity extends AppCompatActivity {
     Integer neg_affects;
     JSONParser jsonParser = new JSONParser();
     String TAG_SUCCESS = "success";
-    Integer reqCode;
     JSONParser jsParser = new JSONParser();
     String resultId;
     // ^^^^^^^^^^^^^^^^^^
@@ -85,7 +84,6 @@ public class FormActivity extends AppCompatActivity {
         this.userId = intent.getStringExtra("com.example.pmed.USER_ID");
         this.experimentId = intent.getStringExtra("com.example.pmed.EXPERIMENT_ID");
         this.questionnaireId = intent.getStringExtra("com.example.pmed.QUESTIONNAIRE_ID");
-        this.reqCode = Integer.parseInt(intent.getStringExtra("com.example.pmed.REQUEST_CODE"));
 
         try {
             //form = new Form(new File(formsDirectoryPath + "/" + formName));

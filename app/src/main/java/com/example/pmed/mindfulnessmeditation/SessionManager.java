@@ -90,7 +90,8 @@ public class SessionManager extends Activity {
 
         ((MindfulnessMeditation)getApplication()).listener.directory = new File(Environment.getExternalStorageDirectory().getPath() + "/BioHarness/" + "DirName");
         System.out.println("asdfasdfasdfasdfasdfasdf" + getAvgFromFile(new File(((MindfulnessMeditation)getApplication()).listener.directory,"PhysioHRVPre.txt")));
-        ((MindfulnessMeditation)getApplication()).listener = new NewConnectedListener(Newhandler,Newhandler);
+        if (((MindfulnessMeditation)getApplication()).listener == null)
+            ((MindfulnessMeditation)getApplication()).listener = new NewConnectedListener(Newhandler,Newhandler);
         ((MindfulnessMeditation)getApplication()).listener.directory.mkdir();
 
         listener = ((MindfulnessMeditation)getApplication()).listener;
