@@ -58,7 +58,9 @@
         <activity android:name=".Audio" />
         <activity android:name=".SessionManager" />
         <activity android:name=".ListViewBarChartActivity" />
-        <activity android:name=".ChangeUserPassword"></activity>
+        <activity android:name=".ChangeUserPassword" />
+        <activity android:name=".DeleteAccounts" />
+        <activity android:name=".BaselineFinished"></activity>
     </application>
 
 </manifest>

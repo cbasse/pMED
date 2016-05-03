@@ -102,6 +102,8 @@ public class UserLogin extends AppCompatActivity {
                     String pDur = json.getString("physio_duration");
                     String fName = json.getString("intervention_filename");
                     String qType = json.getString("questionnaire_type");
+                    String dayNum = json.getString("day_number");
+                    String totDays = json.getString("number_of_days");
 
                     Log.w("stuff", "questionnaire id is " + qId);
 
@@ -114,6 +116,10 @@ public class UserLogin extends AppCompatActivity {
                     i.putExtra("com.example.pmed.PHYSIO_DURATION", pDur);
                     i.putExtra("com.example.pmed.FILENAME", fName);
                     i.putExtra("com.example.pmed.QUESTIONNAIRE_TYPE", qType);
+                    i.putExtra("com.example.pmed.DAY_NUMBER", dayNum);
+                    i.putExtra("com.example.pmed.TOTAL_DAYS", totDays);
+
+                    Log.w("stuf", "day num is " + dayNum + " and tot days is " + totDays );
 
                     startActivity(i);
 

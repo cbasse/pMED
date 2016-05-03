@@ -28,16 +28,18 @@ import java.net.UnknownHostException;
  * Created by calebbasse on 4/25/16.
  */
 public class AudioSync extends AsyncTask<String, Void, Void> {
-    public static String tabletPath;
+    public static String tabletPath = Environment.getExternalStorageDirectory().getPath() + "/AudioInterventions";
     private FTPClient mFtpClient;
+
     @Override
     protected Void doInBackground(String... params) {
         connnectingwithFTP("ftp.meagherlab.co", "audio@meagherlab.co", "pancakes");
         if (params[0].equals("download")) {
-            downloadSingleFile("/" + params[1],new File(tabletPath + params[2]));
+            Log.w("audioSync", "params[1] + '/' = " + "/" + params[1] + " and tablepath + params = " + params[2]);
+            downloadSingleFile("/" + params[1],new File( params[2] + "/" + params[1]));
         } else if (params[0].equals("upload")) {
+            Log.w("audioSync", "uploading dat file " + params[2]);
             uploadSingleFile(new File(params[1]), "/" + params[2]);
-
         }
         return null;
     }
@@ -72,6 +74,7 @@ public class AudioSync extends AsyncTask<String, Void, Void> {
         OutputStream outputStream = null;
         try {
             downloadFile.createNewFile();
+            Log.w("audioSync", "downloadpath = " + downloadFile.getAbsolutePath());
             outputStream = new BufferedOutputStream(new FileOutputStream(
                     downloadFile));
             mFtpClient.setFileType(FTP.BINARY_FILE_TYPE);
@@ -108,7 +111,7 @@ public class AudioSync extends AsyncTask<String, Void, Void> {
     }
 
     public boolean checkForAudioFileOnTablet(String filename) {
-        if (new File(tabletPath + filename).exists()) {
+        if (new File(tabletPath + "/" + filename).exists()) {
             return true;
         } else {
             return false;

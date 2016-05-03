@@ -32,8 +32,8 @@ public class AdminHome extends AppCompatActivity {
             startActivity(i);
         }
 
-        if(v.getId() == R.id.icon_logout) {
-            Intent i = new Intent(AdminHome.this, MainActivity.class);
+        if(v.getId() == R.id.icon_delete) {
+            Intent i = new Intent(AdminHome.this, DeleteAccounts.class);
             startActivity(i);
         }
 
@@ -47,6 +47,12 @@ public class AdminHome extends AppCompatActivity {
             Intent i = new Intent(AdminHome.this, ExportData.class);
             startActivity(i);
         }
+
+        if(v.getId() == R.id.button_logout) {
+            Intent i = new Intent(AdminHome.this, MainActivity.class);
+            startActivity(i);
+        }
+
 
     }
 

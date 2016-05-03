@@ -80,7 +80,7 @@
         android:layout_height="110dp"
         android:src="@drawable/icon_export"
         android:onClick="onClickButton"
-        android:layout_alignTop="@+id/icon_logout"
+        android:layout_alignTop="@+id/icon_delete"
         android:layout_alignLeft="@+id/icon_participants"
         android:layout_alignStart="@+id/icon_participants" />
 
@@ -97,10 +97,10 @@
         android:layout_marginStart="50dp" />
 
     <ImageView
-        android:id="@+id/icon_logout"
+        android:id="@+id/icon_delete"
         android:layout_width="110dp"
         android:layout_height="110dp"
-        android:src="@drawable/icon_logout"
+        android:src="@drawable/icon_delete"
         android:onClick="onClickButton"
         android:layout_below="@+id/icon_update"
         android:layout_alignLeft="@+id/icon_update"
@@ -150,13 +150,13 @@
         android:layout_width="110dp"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Logout"
+        android:text="Clear Database"
         android:id="@+id/textView13"
         android:textSize="20dp"
         android:gravity="center"
-        android:layout_below="@+id/icon_logout"
-        android:layout_alignLeft="@+id/icon_logout"
-        android:layout_alignStart="@+id/icon_logout"
+        android:layout_below="@+id/icon_delete"
+        android:layout_alignLeft="@+id/icon_delete"
+        android:layout_alignStart="@+id/icon_delete"
         android:textStyle="bold"
         android:layout_marginTop="5dp"/>
 
@@ -188,7 +188,7 @@
         android:layout_below="@id/icon_admin"
         android:layout_marginTop="5dp"/>
 
-    Button
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="LOGOUT"
@@ -196,7 +196,7 @@
         android:layout_marginBottom="2dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:textSize="18dp"
+        android:textSize="20dp"
         android:typeface="normal"
         android:onClick="onClickButton"
         android:background="#3a4f9c"
