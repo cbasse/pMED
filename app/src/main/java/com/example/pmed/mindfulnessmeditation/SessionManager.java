@@ -72,10 +72,10 @@ public class SessionManager extends Activity {
         };
 
         AudioSync as = new AudioSync();
-        soundclipPath = AudioSync.tabletPath + "somefile";
+        soundclipPath = AudioSync.tabletPath + this.fileName;
         if (!as.checkForAudioFileOnTablet(soundclipPath)) {
             System.out.println("GET THE FILE");
-            System.out.println(soundclipPath);
+            System.out.println(soundclipPath + "/" + this.fileName);
             as.execute("download", "/" + this.fileName, soundclipPath);
         }
 
