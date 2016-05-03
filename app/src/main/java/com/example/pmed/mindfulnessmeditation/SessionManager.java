@@ -70,7 +70,7 @@ public class SessionManager extends Activity {
 
 
         ((MindfulnessMeditation)getApplication()).listener.directory = new File(Environment.getExternalStorageDirectory().getPath() + "/BioHarness/" + "DirName");
-        System.out.println(((MindfulnessMeditation)getApplication()).listener.directory.getPath());
+        System.out.println("asdfasdfasdfasdfasdfasdf" + getAvgFromFile(new File(((MindfulnessMeditation)getApplication()).listener.directory,"PhysioHRVPre.txt")));
         ((MindfulnessMeditation)getApplication()).listener = new NewConnectedListener(Newhandler,Newhandler);
         ((MindfulnessMeditation)getApplication()).listener.directory.mkdir();
 
@@ -198,6 +198,11 @@ public class SessionManager extends Activity {
         }
     }
 
+
+    //returns average from file with comma seperated values
+    //Just give it the file
+    //for example new File(((MindfulnessMeditation)getApplication()).listener.directory,"PhysioHRVPre.txt"))
+    //^^^ that should work rn, even if PhysioHRVPre.txt is empty
     private int getAvgFromFile(File f) {
         try {
             String fileText = "0";
@@ -224,7 +229,11 @@ public class SessionManager extends Activity {
             for (String val : valueStrings) {
                 accum += Integer.parseInt(val);
             }
-            return accum/(valueStrings.length+1);
+
+            if (valueStrings.length > 0)
+                return accum/valueStrings.length;
+            else
+                return 0;
         }
         catch(FileNotFoundException ex) {
             System.out.println(
