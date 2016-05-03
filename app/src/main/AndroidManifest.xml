@@ -60,7 +60,8 @@
         <activity android:name=".ListViewBarChartActivity" />
         <activity android:name=".ChangeUserPassword" />
         <activity android:name=".DeleteAccounts" />
-        <activity android:name=".BaselineFinished"></activity>
+        <activity android:name=".BaselineFinished" />
+        <activity android:name=".UserCompleted"></activity>
     </application>
 
 </manifest>
