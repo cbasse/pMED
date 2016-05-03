@@ -40,7 +40,13 @@ public class MainActivity extends AppCompatActivity {
             startActivity(i);
         }
 
-        if(v.getId() == R.id.test) {
+        if(v.getId() == R.id.button_results) {
+
+            Intent i = new Intent(MainActivity.this, ListViewBarChartActivity.class);
+            startActivity(i);
+        }
+
+      /*  if(v.getId() == R.id.test) {
             final Handler Newhandler = new Handler(){
                 public void handleMessage(Message msg)
                 {
@@ -51,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
             ((MindfulnessMeditation)getApplication()).listener.experimentState = NewConnectedListener.ExperimentState.Post;
             System.out.println(((MindfulnessMeditation)getApplication()).listener.experimentState);
             startActivityForResult(i, 2);
-        }
+        } */
     }
 
     public static void buttonEffect(View button){

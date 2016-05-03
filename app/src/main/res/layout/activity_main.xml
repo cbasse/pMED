@@ -101,9 +101,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="New Button"
-        android:id="@+id/test"
+        android:id="@+id/button_results"
         android:onClick="onButtonClick"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:visibility="visible"/>
 
 </RelativeLayout>

@@ -6,9 +6,11 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.Typeface;
+import android.os.AsyncTask;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,24 +28,46 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Utils;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class ListViewBarChartActivity extends DemoBase {
 
     BarChart chart1, chart2, chart3, chart4;
+    String userId;
+
+    final String TAG_SECTION = "section";
+    final String TAG_POSITIVE = "positive";
+    final String TAG_NEGATIVE = "negative";
+    final String TAG_HEART_RATE = "heart_rate";
+    final String TAG_HRV = "heart_rate_variability";
+    Integer numOfDays;
+    HashMap<String, HashMap<String, HashMap<String, String>>> values;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Log.w("charts","made it to charts");
+        this.userId = getIntent().getStringExtra("com.example.pmed.USER_ID");
+
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_listview_chart);
 
+        /*
         ListView lv = (ListView) findViewById(R.id.listView1);
 
         ArrayList<BarData> list = new ArrayList<BarData>();
@@ -55,6 +79,8 @@ public class ListViewBarChartActivity extends DemoBase {
 
         ChartDataAdapter cda = new ChartDataAdapter(getApplicationContext(), list);
         lv.setAdapter(cda);
+        */
+        new GetData().execute();
     }
 
     private class ChartDataAdapter extends ArrayAdapter<BarData> {
@@ -234,8 +260,9 @@ public class ListViewBarChartActivity extends DemoBase {
             set1 = new LineDataSet(yVals1, "DataSet 1");
 */
 
+
         //****pre and post bars****//
-        BarDataSet a = new BarDataSet(yVals1, "Pre");
+       BarDataSet a = new BarDataSet(yVals1, "Pre");
         a.setBarSpacePercent(20f);
         a.setBarShadowColor(Color.rgb(203, 203, 203));
         a.setColor(Color.rgb(58, 79, 156));
@@ -252,25 +279,17 @@ public class ListViewBarChartActivity extends DemoBase {
         sets.add(d);
 
         //returns the days
-        BarData cd = new BarData(getDays(), sets);
-        return cd;
+        //BarData cd = new BarData(getDays(), sets);
+        //return cd;
+        return new BarData();
     }
 
-    private ArrayList<String> getDays() {
+    private ArrayList<String> getDays(Integer number_of_days) {
 
         ArrayList<String> m = new ArrayList<String>();
-        m.add("Day1");
-        m.add("Day2");
-        m.add("Day3");
-        m.add("Day4");
-        m.add("Day5");
-        m.add("Day6");
-        m.add("Day7");
-        m.add("Day8");
-        m.add("Day9");
-        m.add("Day10");
-        m.add("Day11");
-        m.add("Day12");
+        for(int i = 1; i <= number_of_days; i++) {
+            m.add("Day" + Integer.toString(i));
+        }
 
         return m;
     }
@@ -281,5 +300,180 @@ public class ListViewBarChartActivity extends DemoBase {
             setResult(1);
             finish();
         }
+    }
+
+
+    class GetData extends AsyncTask<String, String, String> {
+
+        JSONParser jsParser = new JSONParser();
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+
+        protected String doInBackground(String... args) {
+            // Building Parameters
+            List<NameValuePair> params = new ArrayList<NameValuePair>();
+
+            params.add(new BasicNameValuePair("id", userId));
+            // getting JSON string from URL
+            JSONObject json = jsParser.makeHttpRequest("http://meagherlab.co/read_results_for_user.php", "GET", params);
+
+            // Check your log cat for JSON reponse
+            Log.d("All Products: ", json.toString());
+            try {
+                // Checking for SUCCESS TAG
+                int success = json.getInt("success");
+
+                if (success == 1) {
+                    numOfDays = Integer.parseInt(json.getString("number_of_days"));
+
+
+                    values = new HashMap<String,HashMap<String, HashMap<String,String>>>();
+
+                    JSONArray results = json.getJSONArray("results");
+
+                    for(int i =0; i < results.length(); i++)
+                    {
+                        JSONObject result = results.getJSONObject(i);
+
+                        String day = result.getString("day");
+
+                        JSONArray res = result.getJSONArray("results");
+
+                        for(int j=0; j<res.length(); j++) {
+                            JSONObject currentResult = res.getJSONObject(j);
+                            String section = currentResult.getString(TAG_SECTION); // either A or B
+                            String pos = currentResult.getString(TAG_POSITIVE);
+                            String neg = currentResult.getString(TAG_NEGATIVE);
+                            String hr = currentResult.getString(TAG_HEART_RATE);
+                            String hrv = currentResult.getString(TAG_HRV);
+
+                            HashMap<String, String> inner = new HashMap<String, String>();
+                            inner.put(TAG_POSITIVE, pos);
+                            inner.put(TAG_NEGATIVE, neg);
+                            inner.put(TAG_HEART_RATE, hr);
+                            inner.put(TAG_HRV, hrv);
+
+                            if (values.get(day) == null) {
+                                values.put(day, new HashMap<String, HashMap<String, String>>());
+                            }
+                            values.get(day).put(section, inner);
+                        }
+
+                    }
+
+                } else {
+                    /*
+                    // no products found
+                    // Launch Add New product Activity
+                    Intent i = new Intent(getApplicationContext(),
+                            NewProductActivity.class);
+                    // Closing all previous activities
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(i);
+                    */
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+
+        protected void onPostExecute(String file_url) {
+            // updating UI from Background Thread
+            runOnUiThread(new Runnable() {
+                public void run() {
+                    //BuildFormFromDatabase();
+
+                    ListView lv = (ListView) findViewById(R.id.listView1);
+
+                    ArrayList<BarData> list = new ArrayList<BarData>();
+
+                    ArrayList<BarEntry> yVals1 = new ArrayList<BarEntry>();
+                    ArrayList<BarEntry> yVals2 = new ArrayList<BarEntry>();
+
+                    //generates the # of days of data on the charts
+                    for(int i = 1; i <= values.size(); i++)
+                    {
+                        HashMap<String, HashMap<String, String>> day = values.get(Integer.toString(i));
+
+                        HashMap<String, String> pre = day.get("Pre");
+                        String preHR = pre.get(TAG_POSITIVE);
+                        yVals1.add(new BarEntry(Integer.parseInt(preHR), i-1));
+                        //yVals1.add(new BarEntry((int) (Math.random() * 70) + 30, i, i));
+
+                        HashMap<String, String> post = day.get("Post");
+                        String postHR = post.get(TAG_POSITIVE);
+                        yVals2.add(new BarEntry(Integer.parseInt(postHR), i-1));
+                        //yVals2.add(new BarEntry((int) (Math.random() * 70) + 30, i, i));
+                    }
+
+/*
+        LineDataSet set1, set2;
+
+        if (mChart.getData() != null &&
+                mChart.getData().getDataSetCount() > 0) {
+            set1 = (LineDataSet)mChart.getData().getDataSetByIndex(0);
+            set2 = (LineDataSet)mChart.getData().getDataSetByIndex(1);
+            set1.setYVals(yVals1);
+            set2.setYVals(yVals2);
+            mChart.notifyDataSetChanged();
+        } else {
+            // create a dataset and give it a type
+            set1 = new LineDataSet(yVals1, "DataSet 1");
+*/
+
+                    //****pre and post bars****//
+                    BarDataSet a = new BarDataSet(yVals1, "Pre");
+                    a.setBarSpacePercent(20f);
+                    a.setBarShadowColor(Color.rgb(203, 203, 203));
+                    a.setColor(Color.rgb(58, 79, 156));
+
+
+                    BarDataSet d = new BarDataSet(yVals2, "Post");
+                    d.setBarSpacePercent(20f);
+                    d.setBarShadowColor(Color.rgb(203, 203, 203));
+                    d.setColor(Color.rgb(255, 164, 1));
+
+
+                    ArrayList<IBarDataSet> sets = new ArrayList<IBarDataSet>();
+                    sets.add(a);
+                    sets.add(d);
+
+                    /*
+                    //returns the days
+                    List<NameValuePair> params = new ArrayList<NameValuePair>();
+                    params.add(new BasicNameValuePair("id", userId));
+                    JSONObject json = jsParser.makeHttpRequest("http://meagherlab.co/read_results_for_user.php", "GET", params);
+                    JSONObject number_of_days = null;
+                    try {
+                        number_of_days = json.getJSONObject("number_of_days");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    */
+
+                    BarData cd = new BarData(getDays(numOfDays), sets);
+                    list.add(cd);
+
+
+                    ChartDataAdapter cda = new ChartDataAdapter(getApplicationContext(), list);
+                    lv.setAdapter(cda);
+
+
+                }
+            });
+
+            //values.get("1").get("pre").get(TAG_HEART_RATE);
+            //values.get("1").get("pre").get(TAG_HEART_RATE);
+
+        }
+
+
     }
 }

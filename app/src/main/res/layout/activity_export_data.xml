@@ -23,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Export"
+            android:text="EXPORT"
             android:id="@+id/textView9"
             android:textColor="#FFA401"
             android:textSize="40dp"
@@ -74,6 +74,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:textColor="#ffffffff"
+        android:popupBackground="#FFA401"
         android:theme="@style/MyEditTextTheme"/>
 
     <!--

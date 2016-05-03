@@ -244,6 +244,7 @@ public class StudyManifest {
                 params.add(new BasicNameValuePair("physio_duration", Integer.toString(readingA)));
                 Log.w("create study", "test 4");
                 params.add(new BasicNameValuePair("intervention_filename", audioFileName));
+                params.add(new BasicNameValuePair("number_of_days", Integer.toString(days)));
                 Log.w("create study", "test 5");
 
                 //jsonStudy.put("name", studyName);
@@ -350,6 +351,7 @@ public class StudyManifest {
 
                 if (success == 1) {
                     // successfully created product
+                    Log.w("parse", "SUCCEEED!!!!");
 
                     /*
                     Intent i = new Intent(AddUser.this, ManageUserAccounts.class);
@@ -361,6 +363,7 @@ public class StudyManifest {
 
                 } else {
                     // failed to create product
+                    Log.w("parse", "failed!!!!");
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
