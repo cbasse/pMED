@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.sax.StartElementListener;
 import android.util.Log;
 
 import com.example.pmed.formmanager.FormResultsManager;
@@ -32,9 +33,9 @@ import java.util.StringTokenizer;
  * Created by calebbasse on 4/17/16.
  */
 public class SessionManager extends Activity {
-    public final static int START_DAY = 0;
-    public final static int STANDARD_DAY = 1;
-    public final static int LAST_DAY = 2;
+    public final static int START_DAY = 1;
+    public final static int STANDARD_DAY = 2;
+    public int LAST_DAY;
     public String userId;
     public String experimentId;
     public String questionnaireId;
@@ -47,6 +48,7 @@ public class SessionManager extends Activity {
     String soundclipPath;
     String fileName;
     String resultId;
+    String qType;
     JSONParser jParser = new JSONParser();
 
 
@@ -62,6 +64,9 @@ public class SessionManager extends Activity {
         this.questionnaireId = i.getStringExtra("com.example.pmed.QUESTIONNAIRE_ID");
         this.physioDuration = i.getStringExtra("com.example.pmed.PHYSIO_DURATION");
         this.fileName = i.getStringExtra("com.example.pmed.FILENAME");
+        this.qType = i.getStringExtra("com.example.pmed.QUESTIONNAIRE_TYPE");
+        this.day = Integer.parseInt(i.getStringExtra("com.example.pmed.DAY_NUMBER"));
+        this.LAST_DAY = Integer.parseInt(i.getStringExtra("com.example.pmed.TOTAL_DAYS"));
         Log.w("ses man", "q id is " + this.questionnaireId);
 
 
@@ -94,8 +99,65 @@ public class SessionManager extends Activity {
     public void runSession() {
         //get info from database with user_id
         Log.w("sessionmanager", "test 1");
-        day = LAST_DAY ;
+        //day = LAST_DAY ;
         Intent i;
+        if(qType.equals("Baseline"))
+        {
+            i = new Intent(this, FormActivity.class);
+            i.putExtra("com.example.pmed.FORM_NAME", "TestStudy/bl_q.xml");
+            i.putExtra("com.example.pmed.REQUEST_CODE", "0");
+            i.putExtra("com.example.pmed.USER_ID", this.userId);
+            i.putExtra("com.example.pmed.EXPERIMENT_ID", this.experimentId);
+            i.putExtra("com.example.pmed.QUESTIONNAIRE_ID", this.questionnaireId);
+            i.putExtra("com.example.pmed.REQUEST_CODE", "0");
+            i.putExtra("com.example.pmed.UPDATE_FORM", "false");
+            Log.w("seshManager", "its the first day flava flav");
+            startActivityForResult(i, 0);
+        }
+        else if(qType.equals("Final"))
+        {
+            i = new Intent(this, FormActivity.class);
+            i.putExtra("com.example.pmed.FORM_NAME", "TestStudy/bl_q.xml");
+            i.putExtra("com.example.pmed.REQUEST_CODE", "1");
+            i.putExtra("com.example.pmed.USER_ID", this.userId);
+            i.putExtra("com.example.pmed.EXPERIMENT_ID", this.experimentId);
+            i.putExtra("com.example.pmed.QUESTIONNAIRE_ID", this.questionnaireId);
+            i.putExtra("com.example.pmed.REQUEST_CODE", "0");
+            i.putExtra("com.example.pmed.UPDATE_FORM", "false");
+            Log.w("seshMan", "its the last day dawg");
+            startActivityForResult(i, 6);
+
+            //i = new Intent(this, RecordPhysData.class);
+            //listener.experimentState = NewConnectedListener.ExperimentState.Pre;
+            //System.out.println(listener.experimentState);
+            //startActivityForResult(i, 2);
+        }
+        else if (qType.equals("B")) {
+            i = new Intent(this, FormActivity.class);
+            i.putExtra("com.example.pmed.FORM_NAME", "TestStudy/bl_q.xml");
+            i.putExtra("com.example.pmed.REQUEST_CODE", "1");
+            i.putExtra("com.example.pmed.USER_ID", this.userId);
+            i.putExtra("com.example.pmed.EXPERIMENT_ID", this.experimentId);
+            i.putExtra("com.example.pmed.QUESTIONNAIRE_ID", this.questionnaireId);
+            i.putExtra("com.example.pmed.REQUEST_CODE", "0");
+            i.putExtra("com.example.pmed.UPDATE_FORM", "false");
+            Log.w("seshMan", "its just a normal ass day");
+            startActivityForResult(i, 5);
+        }
+        else {
+            i = new Intent(this, FormActivity.class);
+            i.putExtra("com.example.pmed.FORM_NAME", "TestStudy/bl_q.xml");
+            i.putExtra("com.example.pmed.REQUEST_CODE", "1");
+            i.putExtra("com.example.pmed.USER_ID", this.userId);
+            i.putExtra("com.example.pmed.EXPERIMENT_ID", this.experimentId);
+            i.putExtra("com.example.pmed.QUESTIONNAIRE_ID", this.questionnaireId);
+            i.putExtra("com.example.pmed.REQUEST_CODE", "0");
+            i.putExtra("com.example.pmed.UPDATE_FORM", "false");
+            Log.w("seshMan", "its just a normal ass day");
+            startActivityForResult(i, 1);
+        }
+
+        /*
         switch (day) {
             case START_DAY:
                 i = new Intent(this, FormActivity.class);
@@ -139,6 +201,7 @@ public class SessionManager extends Activity {
                 i = new Intent(this, FormActivity.class);
                 break;
         }
+        */
         Log.w("sessionmanager", "test 2");
         i.putExtra("com.example.pmed.USER_ID", this.userId);
         i.putExtra("com.example.pmed.EXPERIMENT_ID", this.experimentId);
@@ -159,8 +222,11 @@ public class SessionManager extends Activity {
 
         if (requestCode == 0 && resultCode == 1) {
             FormResultsManager results = data.getParcelableExtra("com.example.pmed.FORM_RESULTS");
-
+            Log.w("seshMan", "test 1");
+            Intent i = new Intent(this, MainActivity.class);
+            startActivity(i);
         } else if (requestCode == 1 && resultCode == 1) {
+            Log.w("seshMan", "test 2");
             formAResults = data.getParcelableExtra("com.example.pmed.FORM_RESULTS");
             resultId = data.getStringExtra("com.example.pmed.RESULT_ID");
             Intent i = new Intent(this, RecordPhysData.class);
@@ -173,12 +239,14 @@ public class SessionManager extends Activity {
             startActivityForResult(i, 2);
 
         } else if (requestCode == 2 && resultCode == 1) {
+            Log.w("seshMan", "test 3");
             Intent i = new Intent(this, Audio.class);
             i.putExtra("com.example.pmed.SOUNDCLIP_PATH", soundclipPath);
             listener.experimentState = NewConnectedListener.ExperimentState.During;
             startActivityForResult(i,3);
 
         } else if (requestCode == 3 && resultCode == 1) {
+            Log.w("seshMan", "test 4");
             //new UpdateQuestionnaireNumber().execute();
 
             Intent i = new Intent(this, FormActivity.class);
@@ -193,6 +261,7 @@ public class SessionManager extends Activity {
 
 
         } else if (requestCode == 4 && resultCode == 1) {
+            Log.w("seshMan", "test 5");
             formBResults = data.getParcelableExtra("com.example.pmed.FORM_RESULTS");
             resultId = data.getStringExtra("com.example.pmed.RESULT_ID");
             listener.experimentState = NewConnectedListener.ExperimentState.Post;
@@ -205,7 +274,7 @@ public class SessionManager extends Activity {
 
         } else if (requestCode == 5 && resultCode == 1) {
             Log.w("sesMNGR", "made it to final spot");
-            day = STANDARD_DAY;
+            //day = STANDARD_DAY;
             if (day != LAST_DAY) {
 
                 Log.w("sesMNGR", "test 1");
