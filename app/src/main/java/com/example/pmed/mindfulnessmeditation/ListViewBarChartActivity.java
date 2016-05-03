@@ -30,6 +30,7 @@ import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
+import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Utils;
 
@@ -54,13 +55,14 @@ public class ListViewBarChartActivity extends DemoBase {
     final String TAG_HEART_RATE = "heart_rate";
     final String TAG_HRV = "heart_rate_variability";
     Integer numOfDays;
+    String posT, negT, hrT, hrvT;
     HashMap<String, HashMap<String, HashMap<String, String>>> values;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Log.w("charts","made it to charts");
+        Log.w("charts", "made it to charts");
         this.userId = getIntent().getStringExtra("com.example.pmed.USER_ID");
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -69,14 +71,7 @@ public class ListViewBarChartActivity extends DemoBase {
 
         /*
         ListView lv = (ListView) findViewById(R.id.listView1);
-
         ArrayList<BarData> list = new ArrayList<BarData>();
-
-        // 4 items
-        for (int i = 0; i < 1; i++) {
-            list.add(generateData(i + 1));
-        }
-
         ChartDataAdapter cda = new ChartDataAdapter(getApplicationContext(), list);
         lv.setAdapter(cda);
         */
@@ -101,7 +96,6 @@ public class ListViewBarChartActivity extends DemoBase {
 
             ViewHolder holder = null;
 
-
             if (convertView == null) {
 
                 holder = new ViewHolder();
@@ -109,16 +103,18 @@ public class ListViewBarChartActivity extends DemoBase {
                 convertView = LayoutInflater.from(getContext()).inflate(
                         R.layout.list_item_barchart, null);
                 holder.chart1 = (BarChart) convertView.findViewById(R.id.chart1);
-                holder.chart2 = (BarChart) convertView.findViewById(R.id.chart2);
-                holder.chart3 = (BarChart) convertView.findViewById(R.id.chart3);
-                holder.chart4 = (BarChart) convertView.findViewById(R.id.chart4);
+                //holder.chart2 = (BarChart) convertView.findViewById(R.id.chart2);
+                //holder.chart3 = (BarChart) convertView.findViewById(R.id.chart3);
+                //holder.chart4 = (BarChart) convertView.findViewById(R.id.chart4);
 
                 convertView.setTag(holder);
 
             } else {
                 holder = (ViewHolder) convertView.getTag();
             }
-            //////////////////////CHART 1/////
+
+
+//////////////////////CHART 1///////////////////////////////////////
             // apply styling
             //data1.setValueTextColor(Color.RED);
             holder.chart1.setDescription("");
@@ -131,22 +127,24 @@ public class ListViewBarChartActivity extends DemoBase {
             YAxis leftAxis1 = holder.chart1.getAxisLeft();
             leftAxis1.setLabelCount(5, false);
             leftAxis1.setSpaceTop(15f);
+            leftAxis1.setSpaceBottom(0f);
 
             YAxis rightAxis1 = holder.chart1.getAxisRight();
             rightAxis1.setLabelCount(5, false);
             rightAxis1.setSpaceTop(15f);
+            rightAxis1.setSpaceBottom(0f);
 
             // set data
             holder.chart1.setData(data);
 
             // do not forget to refresh the chart
-//            holder.chart.invalidate();
+            //holder.chart.invalidate();
             holder.chart1.animateY(700, Easing.EasingOption.EaseInCubic);
 
-            //////////////////////CHART 2/////
+////////////////////CHART 2///////////////////////////////////////////
             // apply styling
             //data1.setValueTextColor(Color.RED);
-            holder.chart2.setDescription("");
+   /*         holder.chart2.setDescription("");
             holder.chart2.setDrawGridBackground(false);
 
             XAxis xAxis2 = holder.chart2.getXAxis();
@@ -156,20 +154,22 @@ public class ListViewBarChartActivity extends DemoBase {
             YAxis leftAxis2 = holder.chart2.getAxisLeft();
             leftAxis2.setLabelCount(5, false);
             leftAxis2.setSpaceTop(15f);
+            leftAxis2.setSpaceBottom(0f);
 
             YAxis rightAxis2 = holder.chart2.getAxisRight();
             rightAxis2.setLabelCount(5, false);
             rightAxis2.setSpaceTop(15f);
+            rightAxis2.setSpaceBottom(0f);
 
             // set data
             holder.chart2.setData(data);
 
             // do not forget to refresh the chart
-//            holder.chart.invalidate();
+            //holder.chart.invalidate();
             holder.chart2.animateY(700, Easing.EasingOption.EaseInCubic);
 
 
-            //////////////////////CHART 3/////
+////////////////////CHART 3///////////////////////////////////////////
             // apply styling
             //data1.setValueTextColor(Color.RED);
             holder.chart3.setDescription("");
@@ -182,21 +182,23 @@ public class ListViewBarChartActivity extends DemoBase {
             YAxis leftAxis3 = holder.chart3.getAxisLeft();
             leftAxis3.setLabelCount(5, false);
             leftAxis3.setSpaceTop(15f);
+            leftAxis3.setSpaceBottom(0f);
 
             YAxis rightAxis3 = holder.chart3.getAxisRight();
             rightAxis3.setLabelCount(5, false);
             rightAxis3.setSpaceTop(15f);
+            rightAxis3.setSpaceBottom(0f);
 
             // set data
             holder.chart3.setData(data);
 
             // do not forget to refresh the chart
-//            holder.chart.invalidate();
+            //holder.chart.invalidate();
             holder.chart3.animateY(700, Easing.EasingOption.EaseInCubic);
 
-            /////////////////////////CHART 4//
+////////////////////CHART 4///////////////////////////////////////////
             // apply styling
-            data.setValueTextColor(Color.BLACK);
+            //data.setValueTextColor(Color.BLACK);
             holder.chart4.setDescription("");
             //holder.chart.setDescriptionPosition(data.getXValMaximumLength(),data.getYMin()); //HELP
             holder.chart4.setDrawGridBackground(false);
@@ -208,17 +210,19 @@ public class ListViewBarChartActivity extends DemoBase {
             YAxis leftAxis4 = holder.chart4.getAxisLeft();
             leftAxis4.setLabelCount(5, false);
             leftAxis4.setSpaceTop(15f);
+            leftAxis4.setSpaceBottom(0f);
 
             YAxis rightAxis4 = holder.chart4.getAxisRight();
             rightAxis4.setLabelCount(5, false);
             rightAxis4.setSpaceTop(15f);
+            rightAxis4.setSpaceBottom(0f);
 
             // set data
             holder.chart4.setData(data);
 
             // do not forget to refresh the chart
             //holder.chart.invalidate();
-            holder.chart4.animateY(700, Easing.EasingOption.EaseInCubic);
+            holder.chart4.animateY(700, Easing.EasingOption.EaseInCubic);*/
 
             return convertView;
         }
@@ -229,68 +233,12 @@ public class ListViewBarChartActivity extends DemoBase {
         }
     }
 
-    /**
-     * generates a random ChartData object with just one DataSet
-     *
-     * @return
-     */
-    private BarData generateData(int cnt) {
-
-        ArrayList<BarEntry> yVals1 = new ArrayList<BarEntry>();
-        ArrayList<BarEntry> yVals2 = new ArrayList<BarEntry>();
-
-        //generates the # of days of data on the charts
-        for (int i = 0; i < 12; i++) {
-            yVals1.add(new BarEntry((int) (Math.random() * 70) + 30, i));
-            yVals2.add(new BarEntry((int) (Math.random() * 70) + 30, i));
-        }
-
-/*
-        LineDataSet set1, set2;
-
-        if (mChart.getData() != null &&
-                mChart.getData().getDataSetCount() > 0) {
-            set1 = (LineDataSet)mChart.getData().getDataSetByIndex(0);
-            set2 = (LineDataSet)mChart.getData().getDataSetByIndex(1);
-            set1.setYVals(yVals1);
-            set2.setYVals(yVals2);
-            mChart.notifyDataSetChanged();
-        } else {
-            // create a dataset and give it a type
-            set1 = new LineDataSet(yVals1, "DataSet 1");
-*/
-
-
-        //****pre and post bars****//
-       BarDataSet a = new BarDataSet(yVals1, "Pre");
-        a.setBarSpacePercent(20f);
-        a.setBarShadowColor(Color.rgb(203, 203, 203));
-        a.setColor(Color.rgb(58, 79, 156));
-
-
-        BarDataSet d = new BarDataSet(yVals2, "Post");
-        d.setBarSpacePercent(20f);
-        d.setBarShadowColor(Color.rgb(203, 203, 203));
-        d.setColor(Color.rgb(255, 164, 1));
-
-
-        ArrayList<IBarDataSet> sets = new ArrayList<IBarDataSet>();
-        sets.add(a);
-        sets.add(d);
-
-        //returns the days
-        //BarData cd = new BarData(getDays(), sets);
-        //return cd;
-        return new BarData();
-    }
-
     private ArrayList<String> getDays(Integer number_of_days) {
 
         ArrayList<String> m = new ArrayList<String>();
         for(int i = 1; i <= number_of_days; i++) {
             m.add("Day" + Integer.toString(i));
         }
-
         return m;
     }
 
@@ -328,6 +276,7 @@ public class ListViewBarChartActivity extends DemoBase {
                 int success = json.getInt("success");
 
                 if (success == 1) {
+                    //negT = json.getString("negative");
                     numOfDays = Integer.parseInt(json.getString("number_of_days"));
 
 
@@ -390,77 +339,123 @@ public class ListViewBarChartActivity extends DemoBase {
                 public void run() {
                     //BuildFormFromDatabase();
 
+                    //TextView tv = (TextView) findViewById(R.id.chart_title);
                     ListView lv = (ListView) findViewById(R.id.listView1);
 
                     ArrayList<BarData> list = new ArrayList<BarData>();
 
                     ArrayList<BarEntry> yVals1 = new ArrayList<BarEntry>();
                     ArrayList<BarEntry> yVals2 = new ArrayList<BarEntry>();
+                    ArrayList<BarEntry> yVals3 = new ArrayList<BarEntry>();
+                    ArrayList<BarEntry> yVals4 = new ArrayList<BarEntry>();
+                    ArrayList<BarEntry> yVals5 = new ArrayList<BarEntry>();
+                    ArrayList<BarEntry> yVals6 = new ArrayList<BarEntry>();
+                    ArrayList<BarEntry> yVals7 = new ArrayList<BarEntry>();
+                    ArrayList<BarEntry> yVals8 = new ArrayList<BarEntry>();
 
                     //generates the # of days of data on the charts
+
                     for(int i = 1; i <= values.size(); i++)
                     {
                         HashMap<String, HashMap<String, String>> day = values.get(Integer.toString(i));
 
                         HashMap<String, String> pre = day.get("Pre");
-                        String preHR = pre.get(TAG_POSITIVE);
+                        String preHR = pre.get(TAG_HEART_RATE);
                         yVals1.add(new BarEntry(Integer.parseInt(preHR), i-1));
-                        //yVals1.add(new BarEntry((int) (Math.random() * 70) + 30, i, i));
+                        String preHRV = pre.get(TAG_HRV);
+                        yVals3.add(new BarEntry(Integer.parseInt(preHRV), i-1));
+                        String prePos = pre.get(TAG_POSITIVE);
+                        yVals5.add(new BarEntry(Integer.parseInt(prePos), i-1));
+                        String preNeg = pre.get(TAG_NEGATIVE);
+                        yVals7.add(new BarEntry(Integer.parseInt(preNeg), i - 1));
 
                         HashMap<String, String> post = day.get("Post");
-                        String postHR = post.get(TAG_POSITIVE);
+                        String postHR = post.get(TAG_HEART_RATE);
                         yVals2.add(new BarEntry(Integer.parseInt(postHR), i-1));
-                        //yVals2.add(new BarEntry((int) (Math.random() * 70) + 30, i, i));
+                        String postHRV = post.get(TAG_HRV);
+                        yVals4.add(new BarEntry(Integer.parseInt(postHRV), i-1));
+                        String postPos = post.get(TAG_POSITIVE);
+                        yVals6.add(new BarEntry(Integer.parseInt(postPos), i-1));
+                        String postNeg = post.get(TAG_NEGATIVE);
+                        yVals8.add(new BarEntry(Integer.parseInt(postNeg), i - 1));
+
                     }
 
-/*
-        LineDataSet set1, set2;
-
-        if (mChart.getData() != null &&
-                mChart.getData().getDataSetCount() > 0) {
-            set1 = (LineDataSet)mChart.getData().getDataSetByIndex(0);
-            set2 = (LineDataSet)mChart.getData().getDataSetByIndex(1);
-            set1.setYVals(yVals1);
-            set2.setYVals(yVals2);
-            mChart.notifyDataSetChanged();
-        } else {
-            // create a dataset and give it a type
-            set1 = new LineDataSet(yVals1, "DataSet 1");
-*/
+                    //final boolean negative = title1.add(new BarEntry("negative", negT));
+                    //String m = getString(TAG_NEGATIVE);
+                    //setTitle(TAG_NEGATIVE);
 
                     //****pre and post bars****//
-                    BarDataSet a = new BarDataSet(yVals1, "Pre");
+                    BarDataSet a = new BarDataSet(yVals1, "Pre HR");
                     a.setBarSpacePercent(20f);
                     a.setBarShadowColor(Color.rgb(203, 203, 203));
                     a.setColor(Color.rgb(58, 79, 156));
+                    BarDataSet b = new BarDataSet(yVals2, "Post HR");
+                    b.setBarSpacePercent(20f);
+                    b.setBarShadowColor(Color.rgb(203, 203, 203));
+                    b.setColor(Color.rgb(255, 164, 1));
 
-
-                    BarDataSet d = new BarDataSet(yVals2, "Post");
+                    //****pre and post bars****//
+                    BarDataSet c = new BarDataSet(yVals3, "Pre HRV");
+                    c.setBarSpacePercent(20f);
+                    c.setBarShadowColor(Color.rgb(203, 203, 203));
+                    c.setColor(Color.rgb(58, 79, 156));
+                    BarDataSet d = new BarDataSet(yVals4, "Post HRV");
                     d.setBarSpacePercent(20f);
                     d.setBarShadowColor(Color.rgb(203, 203, 203));
                     d.setColor(Color.rgb(255, 164, 1));
 
+                    //****pre and post bars****//
+                    BarDataSet e = new BarDataSet(yVals5, "Pre Positive Emotions");
+                    e.setBarSpacePercent(20f);
+                    e.setBarShadowColor(Color.rgb(203, 203, 203));
+                    e.setColor(Color.rgb(58, 79, 156));
+                    BarDataSet f = new BarDataSet(yVals6, "Post Positive Emotions");
+                    f.setBarSpacePercent(20f);
+                    f.setBarShadowColor(Color.rgb(203, 203, 203));
+                    f.setColor(Color.rgb(255, 164, 1));
 
-                    ArrayList<IBarDataSet> sets = new ArrayList<IBarDataSet>();
-                    sets.add(a);
-                    sets.add(d);
+                    //****pre and post bars****//
+                    BarDataSet g = new BarDataSet(yVals7, "Pre Negative Emotions");
+                    g.setBarSpacePercent(20f);
+                    g.setBarShadowColor(Color.rgb(203, 203, 203));
+                    g.setColor(Color.rgb(58, 79, 156));
+                    BarDataSet h = new BarDataSet(yVals8, "Post Negative Emotions");
+                    h.setBarSpacePercent(20f);
+                    h.setBarShadowColor(Color.rgb(203, 203, 203));
+                    h.setColor(Color.rgb(255, 164, 1));
 
-                    /*
-                    //returns the days
-                    List<NameValuePair> params = new ArrayList<NameValuePair>();
-                    params.add(new BasicNameValuePair("id", userId));
-                    JSONObject json = jsParser.makeHttpRequest("http://meagherlab.co/read_results_for_user.php", "GET", params);
-                    JSONObject number_of_days = null;
-                    try {
-                        number_of_days = json.getJSONObject("number_of_days");
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    */
+                    //BarDataSet i = new BarDataSet(title1, "NEGATIVE");
 
-                    BarData cd = new BarData(getDays(numOfDays), sets);
-                    list.add(cd);
 
+
+                    ArrayList<IBarDataSet> sets1 = new ArrayList<IBarDataSet>();
+                    sets1.add(a);
+                    sets1.add(b);
+
+                    ArrayList<IBarDataSet> sets2 = new ArrayList<IBarDataSet>();
+                    sets2.add(c);
+                    sets2.add(d);
+
+                    ArrayList<IBarDataSet> sets3 = new ArrayList<IBarDataSet>();
+                    sets3.add(e);
+                    sets3.add(f);
+
+                    ArrayList<IBarDataSet> sets4 = new ArrayList<IBarDataSet>();
+                    sets4.add(g);
+                    sets4.add(h);
+
+
+
+                    BarData data1 = new BarData(getDays(numOfDays), sets1);
+                    //tv.setText(negT);
+                    list.add(data1);
+                    BarData data2 = new BarData(getDays(numOfDays), sets2);
+                    list.add(data2);
+                    BarData data3 = new BarData(getDays(numOfDays), sets3);
+                    list.add(data3);
+                    BarData data4 = new BarData(getDays(numOfDays), sets4);
+                    list.add(data4);
 
                     ChartDataAdapter cda = new ChartDataAdapter(getApplicationContext(), list);
                     lv.setAdapter(cda);
@@ -469,11 +464,7 @@ public class ListViewBarChartActivity extends DemoBase {
                 }
             });
 
-            //values.get("1").get("pre").get(TAG_HEART_RATE);
-            //values.get("1").get("pre").get(TAG_HEART_RATE);
-
         }
-
 
     }
 }

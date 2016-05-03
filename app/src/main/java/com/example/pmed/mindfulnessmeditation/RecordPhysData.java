@@ -178,7 +178,7 @@ public class RecordPhysData extends AppCompatActivity {
                                 timerText.setVisibility(View.GONE);
                                 nextBtn.setVisibility(View.VISIBLE);
                                 _NConnListener.transmitData = false;
-                                timeStampExperimentState(); //Caleb's method
+                                //timeStampExperimentState(); //Caleb's method
                             }
                         };
                         startBtn.setOnClickListener(new View.OnClickListener() {
