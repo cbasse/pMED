@@ -170,7 +170,7 @@ public class NewConnectedListener extends ConnectListenerImpl {
                         // mindful meditation stuff
                         try{
                             String st = String.valueOf(HRate) + " , ";
-                            System.out.println("exp state " + experimentState.getValue());
+                            Log.w("connectedList", "heart rate is " + Integer.toString(HRate));
                             outputStreams[experimentState.getValue()][DataType.HearRate.getValue()].write(st.getBytes());
                         }
                         catch (Exception e)

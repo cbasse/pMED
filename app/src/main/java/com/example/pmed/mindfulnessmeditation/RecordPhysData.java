@@ -221,6 +221,7 @@ public class RecordPhysData extends AppCompatActivity {
             //Reset all the values to 0s
 
             //!!!!!!!!!!!!!CONECTED
+            Log.w("record_phys_data", "bluetooth is connected dawg");
             _NConnListener = ((MindfulnessMeditation)getApplication()).listener;
             dirPath = _NConnListener.directoryPath;
 
@@ -494,11 +495,13 @@ public class RecordPhysData extends AppCompatActivity {
             {
                 avgHR = getAvgFromFile(new File(dirPath +  "/PhysioHRpre.txt"));
                 avgHRV = getAvgFromFile(new File(dirPath +  "/PhysioHRVpre.txt"));
+                Log.w("record phys", "its pre");
             }
             else
             {
                 avgHR = getAvgFromFile(new File(dirPath +  "/PhysioHRpost.txt"));
                 avgHRV = getAvgFromFile(new File(dirPath +  "/PhysioHRVpost.txt"));
+                Log.w("record phys", "its NOT pre and hr is " + Integer.toString(avgHR));
             }
 
 

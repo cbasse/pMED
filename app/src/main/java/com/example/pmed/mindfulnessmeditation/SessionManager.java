@@ -103,7 +103,15 @@ public class SessionManager extends Activity {
         Log.w("sessionmanager", "test 1");
         //day = LAST_DAY ;
         Intent i;
-        if(qType.equals("Baseline"))
+        Log.w("seshMan", "experiment id is " + experimentId);
+        if(Integer.parseInt(experimentId) == 0)
+        {
+            i = new Intent(this, ListViewBarChartActivity.class);
+            i.putExtra("com.example.pmed.USER_ID", this.userId);
+            startActivityForResult(i, 7);
+            Log.w("seshMan", "shouldn't get here");
+        }
+        else if(qType.equals("Baseline"))
         {
             i = new Intent(this, FormActivity.class);
             i.putExtra("com.example.pmed.FORM_NAME", "TestStudy/bl_q.xml");
@@ -225,17 +233,19 @@ public class SessionManager extends Activity {
         if (requestCode == 0 && resultCode == 1) {
             FormResultsManager results = data.getParcelableExtra("com.example.pmed.FORM_RESULTS");
             Log.w("seshMan", "test 1");
-            Intent i = new Intent(this, MainActivity.class);
+            Intent i = new Intent(this, BaselineFinished.class);
             startActivity(i);
         } else if (requestCode == 1 && resultCode == 1) {
             Log.w("seshMan", "test 2");
             formAResults = data.getParcelableExtra("com.example.pmed.FORM_RESULTS");
             resultId = data.getStringExtra("com.example.pmed.RESULT_ID");
+            Log.w("seshMAn", "result id is " + resultId);
             Intent i = new Intent(this, RecordPhysData.class);
             i.putExtra("com.example.pmed.IS_PRE", "true");
             i.putExtra("com.example.pmed.DIRECTORY",listener.directory.getAbsolutePath() );
             i.putExtra("com.example.pmed.PHYSIO_DURATION", this.physioDuration);
             i.putExtra("com.example.pmed.RESULT_ID", resultId);
+            Log.w("seshMan", "result id is " + resultId);
             listener.experimentState = NewConnectedListener.ExperimentState.Pre;
             System.out.println(listener.experimentState);
             startActivityForResult(i, 2);
@@ -266,6 +276,7 @@ public class SessionManager extends Activity {
             Log.w("seshMan", "test 5");
             formBResults = data.getParcelableExtra("com.example.pmed.FORM_RESULTS");
             resultId = data.getStringExtra("com.example.pmed.RESULT_ID");
+            Log.w("seshMan", "result id is " + resultId);
             listener.experimentState = NewConnectedListener.ExperimentState.Post;
             Intent i = new Intent(this, RecordPhysData.class);
             i.putExtra("com.example.pmed.IS_PRE", "false");
