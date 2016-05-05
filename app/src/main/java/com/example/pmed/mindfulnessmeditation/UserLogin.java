@@ -104,9 +104,12 @@ public class UserLogin extends AppCompatActivity {
                     String qType = json.getString("questionnaire_type");
                     String dayNum = json.getString("day_number");
                     String totDays = json.getString("number_of_days");
+                    String expName = json.getString("experiment_name");
+
+
 
                     Log.w("stuff", "questionnaire id is " + qId);
-
+                    System.out.println(json.toString());
                     isCorrect = true;
                     Intent i = new Intent(UserLogin.this, SessionManager.class);
 
@@ -118,8 +121,9 @@ public class UserLogin extends AppCompatActivity {
                     i.putExtra("com.example.pmed.QUESTIONNAIRE_TYPE", qType);
                     i.putExtra("com.example.pmed.DAY_NUMBER", dayNum);
                     i.putExtra("com.example.pmed.TOTAL_DAYS", totDays);
+                    i.putExtra("com.example.pmed.EXPERIMENT_NAME", expName);
 
-                    Log.w("stuf", "day num is " + dayNum + " and tot days is " + totDays );
+                    Log.w("stuf", "day num is " + dayNum + " and tot days is " + totDays);
 
                     startActivity(i);
 

@@ -45,6 +45,7 @@ public class UpdateExperiment extends AppCompatActivity {
             Intent i = new Intent(UpdateExperiment.this, AdminHome.class);
             //i.putExtra("Username", str);
             startActivity(i);
+            finish();
         }
 
         return super.onOptionsItemSelected(item);
@@ -106,6 +107,7 @@ public class UpdateExperiment extends AppCompatActivity {
                 Intent i = new Intent(UpdateExperiment.this, ConfirmExpParse.class);
                 i.putExtra("folderName", btn.getText().toString());
                 startActivity(i);
+                finish();
             }
         };
     }

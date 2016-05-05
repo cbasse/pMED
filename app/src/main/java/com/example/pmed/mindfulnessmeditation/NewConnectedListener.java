@@ -89,23 +89,23 @@ public class NewConnectedListener extends ConnectListenerImpl {
 
 
         // pmed Stuff
-        File dir = new File(Environment.getExternalStorageDirectory(), "BioHarness");
-        if(!dir.exists())
+        //File dir = new File(Environment.getExternalStorageDirectory(), "BioHarness");
+        if(!directory.exists())
         {
-            dir.mkdirs();
+            directory.mkdirs();
         }
 
-        this.directoryPath = dir.getAbsolutePath();
-
+        //this.directoryPath = dir.getAbsolutePath();
+        System.out.println(directory);
         files = new File[ExperimentState.values().length][DataType.values().length];
         outputStreams = new FileOutputStream[ExperimentState.values().length][DataType.values().length];
 
-        files[ExperimentState.Pre.getValue()][DataType.HearRate.getValue()] = new File(dir, "PhysioHRpre.txt");
-        files[ExperimentState.Pre.getValue()][DataType.HRV.getValue()] = new File(dir, "PhysioHRVpre.txt");
-        files[ExperimentState.During.getValue()][DataType.HearRate.getValue()] = new File(dir, "PhysioHRduring.txt");
-        files[ExperimentState.During.getValue()][DataType.HRV.getValue()] = new File(dir, "PhysioHRVduring.txt");
-        files[ExperimentState.Post.getValue()][DataType.HearRate.getValue()] = new File(dir, "PhysioHRpost.txt");
-        files[ExperimentState.Post.getValue()][DataType.HRV.getValue()] = new File(dir, "PhysioHRVpost.txt");
+        files[ExperimentState.Pre.getValue()][DataType.HearRate.getValue()] = new File(directory, "PhysioHRpre.txt");
+        files[ExperimentState.Pre.getValue()][DataType.HRV.getValue()] = new File(directory, "PhysioHRVpre.txt");
+        files[ExperimentState.During.getValue()][DataType.HearRate.getValue()] = new File(directory, "PhysioHRduring.txt");
+        files[ExperimentState.During.getValue()][DataType.HRV.getValue()] = new File(directory, "PhysioHRVduring.txt");
+        files[ExperimentState.Post.getValue()][DataType.HearRate.getValue()] = new File(directory, "PhysioHRpost.txt");
+        files[ExperimentState.Post.getValue()][DataType.HRV.getValue()] = new File(directory, "PhysioHRVpost.txt");
 
         for (ExperimentState state : ExperimentState.values() )
         {
@@ -118,7 +118,6 @@ public class NewConnectedListener extends ConnectListenerImpl {
                 try {
                     files[state.getValue()][type.getValue()].createNewFile();
                     //outputStreams[ExperimentState.Pre.getValue()][DataType.HearRate.getValue()] = new FileOutputStream(files[state.getValue()][type.getValue()]);
-                    System.out.println("hhhhrrrr");
                     outputStreams[state.getValue()][type.getValue()] = new FileOutputStream(files[state.getValue()][type.getValue()]);
                 }
                 catch (Exception e)

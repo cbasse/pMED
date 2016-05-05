@@ -135,7 +135,7 @@ public class RecordPhysData extends AppCompatActivity {
                     _bt = ((MindfulnessMeditation)getApplication())._bt;
                     //_NConnListener = new NewConnectedListener(Newhandler,Newhandler);
                     _NConnListener = ((MindfulnessMeditation)getApplication()).listener;
-                    dirPath = _NConnListener.directoryPath;
+                    dirPath = _NConnListener.directory.getAbsolutePath();
 
 
                     _bt.addConnectedEventListener(_NConnListener);
@@ -253,7 +253,7 @@ public class RecordPhysData extends AppCompatActivity {
             //!!!!!!!!!!!!!CONECTED
             Log.w("record_phys_data", "bluetooth is connected dawg");
             _NConnListener = ((MindfulnessMeditation)getApplication()).listener;
-            dirPath = _NConnListener.directoryPath;
+            dirPath = _NConnListener.directory.getAbsolutePath();
 
             final Button startBtn = (Button) findViewById(R.id.ButtonStart);
             imgBluetooth.setVisibility(View.GONE);

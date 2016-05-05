@@ -87,8 +87,9 @@ public class ConfirmExpParse extends AppCompatActivity {
                     error.setText("Done!");
 
 
-                    Intent i = new Intent(ConfirmExpParse.this, AdminHome.class);
-                    startActivity(i);
+                    //Intent i = new Intent(ConfirmExpParse.this, AdminHome.class);
+                    //startActivity(i);
+                    finish();
 
 
                 } catch (Exception e) {

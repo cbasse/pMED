@@ -43,6 +43,7 @@ public class SessionManager extends Activity {
     public FormResultsManager formAResults;
     public FormResultsManager formBResults;
     public FormResultsManager formCResults;
+    public String expName;
     NewConnectedListener listener;
     public int day;
     String soundclipPath;
@@ -67,6 +68,7 @@ public class SessionManager extends Activity {
         this.qType = i.getStringExtra("com.example.pmed.QUESTIONNAIRE_TYPE");
         this.day = Integer.parseInt(i.getStringExtra("com.example.pmed.DAY_NUMBER"));
         this.LAST_DAY = Integer.parseInt(i.getStringExtra("com.example.pmed.TOTAL_DAYS"));
+        this.expName = i.getStringExtra("com.example.pmed.EXPERIMENT_NAME");
         Log.w("ses man", "q id is " + this.questionnaireId);
 
 
@@ -84,12 +86,12 @@ public class SessionManager extends Activity {
             as.execute("download", this.fileName, soundclipPath);
         }
 
-        Log.w("seshMan", "soundclip path is " + soundclipPath + " and the filenae is " + this.fileName);
+        //Log.w("seshMan", "soundclip path is " + soundclipPath + " and the filenae is " + this.fileName);
 
 
 
-        ((MindfulnessMeditation)getApplication()).listener.directory = new File(Environment.getExternalStorageDirectory().getPath() + "/BioHarness/" + "DirName");
-        System.out.println("asdfasdfasdfasdfasdfasdf" + getAvgFromFile(new File(((MindfulnessMeditation)getApplication()).listener.directory,"PhysioHRVPre.txt")));
+        ((MindfulnessMeditation)getApplication()).listener.directory = new File(Environment.getExternalStorageDirectory().getPath() + "/BioHarness/" + this.expName + "/" + this.userId + "/" + this.day);
+        //System.out.println("asdfasdfasdfasdfasdfasdf" + getAvgFromFile(new File(((MindfulnessMeditation)getApplication()).listener.directory,"PhysioHRVPre.txt")));
         if (((MindfulnessMeditation)getApplication()).listener == null)
             ((MindfulnessMeditation)getApplication()).listener = new NewConnectedListener(Newhandler,Newhandler);
         ((MindfulnessMeditation)getApplication()).listener.directory.mkdir();
@@ -152,7 +154,7 @@ public class SessionManager extends Activity {
             i.putExtra("com.example.pmed.QUESTIONNAIRE_ID", this.questionnaireId);
             i.putExtra("com.example.pmed.REQUEST_CODE", "0");
             i.putExtra("com.example.pmed.UPDATE_FORM", "false");
-            Log.w("seshMan", "its just a normal ass day");
+            Log.w("seshMan", "its just a normal day");
             startActivityForResult(i, 5);
         }
         else {
@@ -303,6 +305,10 @@ public class SessionManager extends Activity {
             } else {
                 Intent i = new Intent(this, FormActivity.class);
                 i.putExtra("com.example.pmed.FORM_NAME", "TestStudy/bl_q.xml");
+                i.putExtra("com.example.pmed.USER_ID", this.userId);
+                i.putExtra("com.example.pmed.EXPERIMENT_ID", this.experimentId);
+                i.putExtra("com.example.pmed.QUESTIONNAIRE_ID", this.questionnaireId);
+                i.putExtra("com.example.pmed.UPDATE_FORM", "true");
                 startActivityForResult(i, 6);
             }
 
@@ -311,6 +317,7 @@ public class SessionManager extends Activity {
                 finish();
             } else {
                 Intent i = new Intent(this, ListViewBarChartActivity.class);
+                i.putExtra("com.example.pmed.USER_ID", this.userId);
                 startActivityForResult(i, 7);
             }
 

@@ -205,7 +205,9 @@ public class ExportData extends AppCompatActivity {
                     String qHeader = "User Id";
                     for(int i = 0; i < headers.length(); i++)
                     {
-                        qHeader = qHeader + ", " + headers.getString(i);
+                        System.out.println(headers.getString(i));
+                        System.out.println(headers.getString(i).replace(',', ' '));
+                        qHeader = qHeader + ", " + headers.getString(i).replace(',', ' ');
                         /*
                         JSONArray line = headers.getJSONArray(i);
                         for(int j = 0; j < line.length(); j++)
@@ -226,7 +228,7 @@ public class ExportData extends AppCompatActivity {
                         JSONArray answers = user.getJSONArray("responses");
                         for(int j = 0; j < answers.length(); j++)
                         {
-                            userLine = userLine + ", " + answers.getString(j);
+                            userLine = userLine + ", " + answers.getString(j).replace(',', ' ');
                         }
 
                         lines.add(userLine);

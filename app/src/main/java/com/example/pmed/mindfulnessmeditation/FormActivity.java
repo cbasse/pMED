@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -123,25 +125,25 @@ public class FormActivity extends AppCompatActivity {
             checkbox = (RadioButton) inflater.inflate(R.layout.prompt_radiobutton, null);
             checkbox.setText(p.options.get(i).choice);
             //id = RadioButton.generateViewId();
-            checkbox.setId(i+1);
+            checkbox.setId(i + 1);
             radioGroup.addView(checkbox);
             if (p.options.get(i).textBox == true) {
                 textField = (EditText) inflater.inflate(R.layout.prompt_optional_textbox, null);
                 textField.setFocusable(false);
                 radioGroup.addView(textField);
-                textField.setOnEditorActionListener(
-                        new EditText.OnEditorActionListener() {
-                            @Override
-                            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                                if (actionId == EditorInfo.IME_ACTION_SEARCH ||
-                                        actionId == EditorInfo.IME_ACTION_DONE ||
-                                        event.getAction() == KeyEvent.ACTION_DOWN &&
-                                                event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
-                                    results.setValue(p.question.id, results.getValue(p.question.id) + v.getText().toString());
-                                }
-                                return false; // pass on to other listeners.
-                            }
-                        });
+                textField.addTextChangedListener(new TextWatcher() {
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                    }
+
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        results.setValue(p.question.id, s.toString());
+                    }
+
+                    public void afterTextChanged(Editable s) {
+
+                    }
+                });
             }
         }
         vg.addView(mult);
@@ -272,25 +274,25 @@ public class FormActivity extends AppCompatActivity {
     }
 
     public void shortAnswer(final int promptIndex) {
-        Prompt p = form.prompts.get(promptIndex);
+        final Prompt p = form.prompts.get(promptIndex);
         ViewGroup shortGroup = (ViewGroup) inflater.inflate(R.layout.prompt_short, null);
         ((TextView)shortGroup.getChildAt(0)).setText(p.question.getText());
 
         EditText textField = (EditText)shortGroup.getChildAt(1);
 
-        textField.setOnEditorActionListener(
-                new EditText.OnEditorActionListener() {
-                    @Override
-                    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                        if (actionId == EditorInfo.IME_ACTION_SEARCH ||
-                                actionId == EditorInfo.IME_ACTION_DONE ||
-                                event.getAction() == KeyEvent.ACTION_DOWN &&
-                                        event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
-                            results.setValue(form.prompts.get(promptIndex).question.id, v.getText().toString());
-                        }
-                        return false; // pass on to other listeners.
-                    }
-                });
+        textField.addTextChangedListener(new TextWatcher() {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                results.setValue(p.question.id, s.toString());
+            }
+
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
 
 
         vg.addView(shortGroup);
@@ -331,21 +333,26 @@ public class FormActivity extends AppCompatActivity {
                         for (int j = 0; j < p.options.size(); j++) {
                             if (score.equals(p.options.get(j).score)) {
                                 score = p.options.get(p.options.size() - (j + 1)).score;
+                                //System.out.println("is reverse: " + score);
                                 break;
                             }
                         }
                     }
 
-                    results.setValue(p.likertQuestions.get(qIndex).id, adapter.getItem(pos).choice);
-
-                    if(p.likertQuestions.get(qIndex).isPositive())
+                    results.setValue(p.likertQuestions.get(qIndex).id, score);
+                    //System.out.println(p.likertQuestions.get(qIndex).id + " " + p.likertQuestions.get(qIndex).getText() + " " + score);
+                    /*if (p.likertQuestions.get(qIndex).positive == null)
+                    {
+                        Log.w("positive", "happa");
+                    }
+                    else if(p.likertQuestions.get(qIndex).positive == true)
                     {
                         results.setValue("likert_pos_affects", Integer.toString(Integer.parseInt(results.getValue("likert_pos_affects")) + Integer.parseInt(score))); //NEED TO FIX
                     }
-                    else if(!p.likertQuestions.get(qIndex).isPositive())
+                    else if(p.likertQuestions.get(qIndex).positive == false)
                     {
-                        results.setValue("likert_neg_affects", Integer.toString(Integer.parseInt(results.getValue("likert_pos_affects")) + Integer.parseInt(score))); //NEED TO FIX
-                    }
+                        results.setValue("likert_neg_affects", Integer.toString(Integer.parseInt(results.getValue("likert_neg_affects")) + Integer.parseInt(score))); //NEED TO FIX
+                    }*/
                 }
 
                 @Override
@@ -429,7 +436,7 @@ public class FormActivity extends AppCompatActivity {
             form.prompts = new ArrayList<Prompt>();
 
             // Check your log cat for JSON reponse
-            Log.d("All Products: ", json.toString());
+            //Log.d("All Products: ", json.toString());
             try {
                 // Checking for SUCCESS TAG
                 int success = json.getInt("success");
@@ -451,12 +458,18 @@ public class FormActivity extends AppCompatActivity {
                         {
                             form.questionnaireId = q.getString("questionnaire_id");
                         }
-
+                        //System.out.println("hekll " + q);
 
                         // Create question
                         String txt = q.getString("text");
                         Boolean rev = Boolean.parseBoolean(q.getString("is_reversed"));
-                        Boolean pos = Boolean.parseBoolean(q.getString("is_positive"));
+
+
+                        Boolean pos = null;
+                        if (!q.getString("is_positive").equals("null"))
+                            pos = Boolean.parseBoolean(q.getString("is_positive"));
+                        //Boolean pos = Boolean.parseBoolean(q.getString("is_positive"));
+                        //System.out.println(pos);
                         Question question = new Question(txt, rev, pos);
                         question.id = q.getString("id");
 
@@ -583,10 +596,22 @@ public class FormActivity extends AppCompatActivity {
                             //System.out.println(results);
 
 
-                            for(Map.Entry<String, String> entry : results.results.entrySet())
-                            {
-                                Log.w("results", "key: " + entry.getKey() + "     value: " + entry.getValue());
+                            for (Prompt p : form.prompts) {
+                                if (p.promptType == "likert") {
+                                    for (Question q : p.likertQuestions) {
+                                        if (q.positive == null) {
+                                            continue;
+                                        } else if (q.positive == true) {
+                                            results.setValue("likert_pos_affects",
+                                                    Integer.toString(Integer.parseInt(results.getValue("likert_pos_affects")) + Integer.parseInt(results.getValue(q.id))));
+                                        } else {
+                                            results.setValue("likert_neg_affects",
+                                                    Integer.toString(Integer.parseInt(results.getValue("likert_neg_affects")) + Integer.parseInt(results.getValue(q.id))));
+                                        }
+                                    }
+                                }
                             }
+                            Log.w("results", results.results.toString());
 
                             new PostResults().execute();
                         }
@@ -626,11 +651,13 @@ public class FormActivity extends AppCompatActivity {
                     response.put("question_id", sortedIds.get(i));
                     response.put("text", results.results.get(sortedIds.get(i)));
                     response.put("score", "");
+                    //System.out.println(sortedIds.get(i) + " " + results.results.get(sortedIds.get(i)));
+                    //System.out.println(response);
                     responses.put(response);
                 }
 
                 params.add(new BasicNameValuePair("responses", responses.toString()));
-
+                //System.out.println("asdfasdf " + params.toString());
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -710,11 +737,10 @@ public class FormActivity extends AppCompatActivity {
             JSONObject json = jsParser.makeHttpRequest("http://meagherlab.co/read_questionnaire_id_for_user.php", "GET", params);
 
             // Check your log cat for JSON reponse
-            Log.d("All Products: ", json.toString());
+
             try {
                 // Checking for SUCCESS TAG
                 int success = json.getInt("success");
-
                 if (success == 1) {
 
                     questionnaireId = json.getString("questionnaire_id");

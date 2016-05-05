@@ -103,7 +103,7 @@ public class StudyManifest {
             if (xpp.getEventType() != XmlPullParser.END_DOCUMENT && xpp.getName().equals("questionnaire-final")) {
                 filename = parseTag("questionnaire-final", true);
                 if (!filename.equals("")) {
-                    formB = new Form(findFile(filename,files));
+                    formFinal = new Form(findFile(filename,files));
                 }
             }
 
@@ -261,7 +261,7 @@ public class StudyManifest {
                     //jsonForm.put("form_desc", form.formDesc);
 
                     JSONArray jsonQuestions = new JSONArray();
-                    Log.w("create study", "test 5.00001");
+                    Log.w("create study", "ff");
                     if (form == null)
                     {
                         Log.w("create study", "form is null");
@@ -294,8 +294,12 @@ public class StudyManifest {
                             jsonQuestion.put("likert_description", prompt.likertDescription);
                             jsonQuestion.put("text", q.getText());
                             jsonQuestion.put("is_reversed", q.isReverse().toString());
-                            jsonQuestion.put("is_positive", q.isPositive().toString());
+                            if (q.positive == null)
+                                jsonQuestion.put("is_positive", "null");
+                            else
+                                jsonQuestion.put("is_positive", q.positive.toString());
 
+                            //System.out.println("Caleb is positive" + q.getText() + " " + jsonQuestion.toString());
 
                             if(!prompt.promptType.equals("short"))
                             {
@@ -329,6 +333,7 @@ public class StudyManifest {
 
 
                 String fixed = jsonForms.toString().replaceAll("'", "*");
+                System.out.println(fixed.substring(500));
                 params.add(new BasicNameValuePair("questionnaires", fixed));
                 //params.add(new BasicNameValuePair("study", jsonStudy.toString()));
             }
@@ -339,6 +344,7 @@ public class StudyManifest {
 
             // getting JSON Object
             // Note that create product url accepts POST method
+            //Log.w("caleb check this out", params.toString());
             JSONObject json = jsonParser.makeHttpRequest(url,
                     "POST", params);
 

@@ -10,7 +10,7 @@ public class Question
 {
     private String text;
     private Boolean reverse = false;
-    private Boolean positive = null;
+    public Boolean positive = null;
     public String id;
 
     public Question() { }
