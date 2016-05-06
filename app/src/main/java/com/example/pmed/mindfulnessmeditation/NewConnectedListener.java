@@ -68,7 +68,7 @@ public class NewConnectedListener extends ConnectListenerImpl {
     public static File directory;
 
     public enum DataType {
-        HearRate(0), HRV(1);
+        HearRate(0), HRV(1), RespRate(2), RtoR(3), TS(4);
         
         private final int value;
         private DataType(int value) { this.value = value; }
@@ -96,16 +96,27 @@ public class NewConnectedListener extends ConnectListenerImpl {
         }
 
         //this.directoryPath = dir.getAbsolutePath();
-        System.out.println(directory);
+        System.out.println("directory as set by session: " + directory);
         files = new File[ExperimentState.values().length][DataType.values().length];
         outputStreams = new FileOutputStream[ExperimentState.values().length][DataType.values().length];
 
         files[ExperimentState.Pre.getValue()][DataType.HearRate.getValue()] = new File(directory, "PhysioHRpre.txt");
         files[ExperimentState.Pre.getValue()][DataType.HRV.getValue()] = new File(directory, "PhysioHRVpre.txt");
+        files[ExperimentState.Pre.getValue()][DataType.RespRate.getValue()] = new File(directory, "PhysioRespRatepre.txt");
+        files[ExperimentState.Pre.getValue()][DataType.RtoR.getValue()] = new File(directory, "PhysioRtoRpre.txt");
+        files[ExperimentState.Pre.getValue()][DataType.TS.getValue()] = new File(directory, "PhysioTSpre.txt");
+
         files[ExperimentState.During.getValue()][DataType.HearRate.getValue()] = new File(directory, "PhysioHRduring.txt");
         files[ExperimentState.During.getValue()][DataType.HRV.getValue()] = new File(directory, "PhysioHRVduring.txt");
+        files[ExperimentState.During.getValue()][DataType.RespRate.getValue()] = new File(directory, "PhysioRespRateduring.txt");
+        files[ExperimentState.During.getValue()][DataType.RtoR.getValue()] = new File(directory, "PhysioRtoRduring.txt");
+        files[ExperimentState.During.getValue()][DataType.TS.getValue()] = new File(directory, "PhysioTSduring.txt");
+
         files[ExperimentState.Post.getValue()][DataType.HearRate.getValue()] = new File(directory, "PhysioHRpost.txt");
         files[ExperimentState.Post.getValue()][DataType.HRV.getValue()] = new File(directory, "PhysioHRVpost.txt");
+        files[ExperimentState.Post.getValue()][DataType.RespRate.getValue()] = new File(directory, "PhysioRespRatepost.txt");
+        files[ExperimentState.Post.getValue()][DataType.RtoR.getValue()] = new File(directory, "PhysioRtoRpost.txt");
+        files[ExperimentState.Post.getValue()][DataType.TS.getValue()] = new File(directory, "PhysioTSpost.txt");
 
         for (ExperimentState state : ExperimentState.values() )
         {
@@ -129,6 +140,56 @@ public class NewConnectedListener extends ConnectListenerImpl {
 
     }
 
+    public void createNewFiles() {
+        if(!directory.exists())
+        {
+            directory.mkdirs();
+        }
+
+        //this.directoryPath = dir.getAbsolutePath();
+        System.out.println("directory as set by session: " + directory);
+        files = new File[ExperimentState.values().length][DataType.values().length];
+        outputStreams = new FileOutputStream[ExperimentState.values().length][DataType.values().length];
+
+        files[ExperimentState.Pre.getValue()][DataType.HearRate.getValue()] = new File(directory, "PhysioHRpre.txt");
+        files[ExperimentState.Pre.getValue()][DataType.HRV.getValue()] = new File(directory, "PhysioHRVpre.txt");
+        files[ExperimentState.Pre.getValue()][DataType.RespRate.getValue()] = new File(directory, "PhysioRespRatepre.txt");
+        files[ExperimentState.Pre.getValue()][DataType.RtoR.getValue()] = new File(directory, "PhysioRtoRpre.txt");
+        files[ExperimentState.Pre.getValue()][DataType.TS.getValue()] = new File(directory, "PhysioTSpre.txt");
+
+        files[ExperimentState.During.getValue()][DataType.HearRate.getValue()] = new File(directory, "PhysioHRduring.txt");
+        files[ExperimentState.During.getValue()][DataType.HRV.getValue()] = new File(directory, "PhysioHRVduring.txt");
+        files[ExperimentState.During.getValue()][DataType.RespRate.getValue()] = new File(directory, "PhysioRespRateduring.txt");
+        files[ExperimentState.During.getValue()][DataType.RtoR.getValue()] = new File(directory, "PhysioRtoRduring.txt");
+        files[ExperimentState.During.getValue()][DataType.TS.getValue()] = new File(directory, "PhysioTSduring.txt");
+
+        files[ExperimentState.Post.getValue()][DataType.HearRate.getValue()] = new File(directory, "PhysioHRpost.txt");
+        files[ExperimentState.Post.getValue()][DataType.HRV.getValue()] = new File(directory, "PhysioHRVpost.txt");
+        files[ExperimentState.Post.getValue()][DataType.RespRate.getValue()] = new File(directory, "PhysioRespRatepost.txt");
+        files[ExperimentState.Post.getValue()][DataType.RtoR.getValue()] = new File(directory, "PhysioRtoRpost.txt");
+        files[ExperimentState.Post.getValue()][DataType.TS.getValue()] = new File(directory, "PhysioTSpost.txt");
+
+        for (ExperimentState state : ExperimentState.values() )
+        {
+            for (DataType type : DataType.values() )
+            {
+                if(files[state.getValue()][type.getValue()].exists())
+                {
+                    files[state.getValue()][type.getValue()].delete();
+                }
+                try {
+                    files[state.getValue()][type.getValue()].createNewFile();
+                    //outputStreams[ExperimentState.Pre.getValue()][DataType.HearRate.getValue()] = new FileOutputStream(files[state.getValue()][type.getValue()]);
+                    outputStreams[state.getValue()][type.getValue()] = new FileOutputStream(files[state.getValue()][type.getValue()]);
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
 
 
     public void Connected(ConnectedEvent<BTClient> eventArgs) {
@@ -138,6 +199,7 @@ public class NewConnectedListener extends ConnectListenerImpl {
         RqPacketType.BREATHING_ENABLE = true;
         RqPacketType.LOGGING_ENABLE = true;
         RqPacketType.SUMMARY_ENABLE = true;
+        RqPacketType.RtoR_ENABLE = true;
 
 
         //Creates a new ZephyrProtocol object and passes it the BTComms object]]
@@ -147,6 +209,7 @@ public class NewConnectedListener extends ConnectListenerImpl {
             public void ReceivedPacket(ZephyrPacketEvent eventArgs) {
 
                 if (!transmitData)
+
                     return;
                 ZephyrPacketArgs msg = eventArgs.getPacket();
                 byte CRCFailStatus;
@@ -236,7 +299,18 @@ public class NewConnectedListener extends ConnectListenerImpl {
                         break;
                     case RtoR_MSG_ID:
 					/*Do what you want. Printing Sequence Number for now*/
-                        System.out.println("R to R Packet Sequence Number is "+RtoRInfoPacket.GetSeqNum(DataArray));
+
+                        System.out.println("R to R Packet Sequence Number is "+RtoRInfoPacket.GetRtoRSamples(DataArray));
+                        int[] rtr = RtoRInfoPacket.GetRtoRSamples(DataArray);
+                        String str = "";
+                        for (int i : rtr) {
+                            str += String.valueOf(i) + ", ";
+                        }
+                        try {
+                            outputStreams[experimentState.getValue()][DataType.RtoR.getValue()].write(str.getBytes());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                         break;
                     case ACCEL_100mg_MSG_ID:
 					/*Do what you want. Printing Sequence Number for now*/
@@ -244,13 +318,24 @@ public class NewConnectedListener extends ConnectListenerImpl {
                         break;
                     case SUMMARY_MSG_ID:
 					/*Do what you want. Printing Sequence Number for now*/
-                        System.out.println("Summary Packet Sequence Number is " + SummaryInfoPacket.GetSeqNum(DataArray));
+                        //System.out.println("Summary Packet Sequence Number is " + SummaryInfoPacket.GetSeqNum(DataArray));
                         int hrv = SummaryInfoPacket.GetHearRateVariability(DataArray);
+                        double breathRate = SummaryInfoPacket.GetRespirationRate(DataArray);
+
+                        int year = SummaryInfoPacket.GetTSYear(DataArray);
+                        int month = SummaryInfoPacket.GetTSMonth(DataArray);
+                        int day = SummaryInfoPacket.GetTSDay(DataArray);
+                        long ms = SummaryInfoPacket.GetMsofDay(DataArray);
 
                         // mindful meditation stuff
                         try{
                             String st = String.valueOf(hrv) + ", ";
                             outputStreams[experimentState.getValue()][DataType.HRV.getValue()].write(st.getBytes());
+                            st = String.valueOf(breathRate) + ", ";
+                            outputStreams[experimentState.getValue()][DataType.RespRate.getValue()].write(st.getBytes());
+                            st = month + "/" + day + "/" + year + " time in ms:" + ms + ", ";
+
+                            outputStreams[experimentState.getValue()][DataType.TS.getValue()].write(st.getBytes());
                         }
                         catch (Exception e)
                         {

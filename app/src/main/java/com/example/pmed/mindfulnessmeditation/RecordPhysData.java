@@ -491,6 +491,7 @@ public class RecordPhysData extends AppCompatActivity {
             System.out.println(
                     "Unable to open file '" +
                             f + "'");
+            ex.printStackTrace();
             System.exit(1);
         }
         catch(IOException ex) {
@@ -522,14 +523,39 @@ public class RecordPhysData extends AppCompatActivity {
 
             int avgHR = 1;
             int avgHRV = 1;
+            File hrFile;
+            File hrvFile;
             if(isPre)
             {
+                hrFile = new File(dirPath +  "/PhysioHRpre.txt");
+                hrvFile = new File(dirPath +  "/PhysioHRVpre.txt");
+                while(!hrFile.exists() || !hrvFile.exists()) {
+                    Log.w("record phys", "where the files at");
+                    System.out.println(hrFile);
+                    System.out.println(hrFile.exists());
+                    System.out.println(hrvFile.exists());
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
                 avgHR = getAvgFromFile(new File(dirPath +  "/PhysioHRpre.txt"));
                 avgHRV = getAvgFromFile(new File(dirPath +  "/PhysioHRVpre.txt"));
-                Log.w("record phys", "its pre");
+
             }
             else
             {
+                hrFile = new File(dirPath +  "/PhysioHRpost.txt");
+                hrvFile = new File(dirPath +  "/PhysioHRVpost.txt");
+                while(!hrFile.exists() || !hrvFile.exists()) {
+                    Log.w("record phys", "where the files at");
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
                 avgHR = getAvgFromFile(new File(dirPath +  "/PhysioHRpost.txt"));
                 avgHRV = getAvgFromFile(new File(dirPath +  "/PhysioHRVpost.txt"));
                 Log.w("record phys", "its NOT pre and hr is " + Integer.toString(avgHR));

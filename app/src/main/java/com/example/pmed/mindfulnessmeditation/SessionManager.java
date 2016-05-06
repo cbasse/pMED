@@ -94,6 +94,8 @@ public class SessionManager extends Activity {
         //System.out.println("asdfasdfasdfasdfasdfasdf" + getAvgFromFile(new File(((MindfulnessMeditation)getApplication()).listener.directory,"PhysioHRVPre.txt")));
         if (((MindfulnessMeditation)getApplication()).listener == null)
             ((MindfulnessMeditation)getApplication()).listener = new NewConnectedListener(Newhandler,Newhandler);
+        else
+            ((MindfulnessMeditation)getApplication()).listener.createNewFiles();
         ((MindfulnessMeditation)getApplication()).listener.directory.mkdir();
 
         listener = ((MindfulnessMeditation)getApplication()).listener;
